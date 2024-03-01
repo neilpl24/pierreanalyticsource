@@ -1,0 +1,16 @@
+<div class="md-form form-fill">
+    <div mdbDropdown class="dropdown">
+        <button class="btn btn-danger dropdown-toggle mat-form-field-appearance-fill" type="button"
+            id="dropdownMenuButton" aria-expanded="false" mdbDropdownToggle>
+            Season
+        </button>
+        <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" (click)="handleSeasonChange(null, $event)">-</a></li>
+            <li *ngFor="let season of seasons">
+                <a class="dropdown-item" href="#" (click)="handleSeasonChange(season, $event)">
+                    {{ season }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+<div class="timeline">
+    <div class="timeline-bar"></div>
+    <div class="circle" [style.left.%]="percentile" [style.backgroundColor]="getCircleColor().background"
+        [style.color]="getCircleColor().text">
+        <span class="percentile" [style.color]="getCircleColor().text">{{ percentile }}</span>
+    </div>
+</div>

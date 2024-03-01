@@ -1,0 +1,18 @@
+div {
+    background-color: black !important;
+    margin: 0;
+    padding: 0;
+}
+
+.video-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.video-container video {
+    width: 50%;
+    height: auto;
+    max-height: 80vh;
+}

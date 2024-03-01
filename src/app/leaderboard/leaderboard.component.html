@@ -1,0 +1,184 @@
+<nav-bar></nav-bar>
+<div class="list">
+  <div class="table-wrapper">
+    <filters></filters>
+    <table
+      mat-table
+      class="table table-hover align-middle mb-0 bg-white table-bordered border-secondary"
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="onSortChange($event)"
+    >
+      <caption>
+        {{
+          season
+        }}
+        NHL Player Leadboards
+      </caption>
+      <ng-container matColumnDef="name">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="lastName"
+          class="left"
+        >
+          Name
+        </th>
+        <td mat-cell *matCellDef="let player" class="left">
+          <img
+            src="{{
+              'https://assets.nhle.com/mugs/nhl/latest/' +
+                player.playerID +
+                '.png'
+            }}"
+            class="logo"
+          />{{ player.firstName }} {{ player.lastName }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="position">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="position"
+          class="small-column"
+        >
+          Position
+        </th>
+        <td mat-cell *matCellDef="let player">{{ player.position }}</td>
+      </ng-container>
+      <ng-container matColumnDef="team">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="team">Team</th>
+        <td mat-cell *matCellDef="let player">
+          <img src="{{ 'assets/' + player.team + '.png' }}" class="logo" />{{
+            player.team
+          }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="goals">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="goals">
+          Goals/60 (EV)
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="getCellColors(player.goals, 'goals').background"
+          [style.color]="getCellColors(player.goals, 'goals').color"
+          class="small-column"
+        >
+          {{ roundDecimal(player.goals) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="finishing">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="gsae">
+          Finishing (GSAE)
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="getCellColors(player.gsae, 'gsae').background"
+          [style.color]="getCellColors(player.gsae, 'gsae').color"
+          class="small-column"
+        >
+          {{ roundDecimal(player.gsae) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="primaryAssistsEV">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="primaryAssistsEV"
+        >
+          Primary Assists/60 (EV)
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="
+            getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')
+              .background
+          "
+          [style.color]="
+            getCellColors(player.primaryAssistsEV, 'primaryAssistsEV').color
+          "
+          class="small-column"
+        >
+          {{ roundDecimal(player.primaryAssistsEV) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="xGF">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="xGF">xGF</th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="getCellColors(player.xGF, 'xGF').background"
+          [style.color]="getCellColors(player.xGF, 'xGF').color"
+        >
+          {{ roundDecimal(player.xGF) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="xGA">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="xGA">xGA</th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="getCellColors(player.xGA, 'xGA').background"
+          [style.color]="getCellColors(player.xGA, 'xGA').color"
+        >
+          {{ roundDecimal(player.xGA) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="xGPercentage">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG">xG%</th>
+        <td
+          mat-cell
+          *matCellDef="let player"
+          [style.background]="getCellColors(player.xG, 'xG').background"
+          [style.color]="getCellColors(player.xG, 'xG').color"
+        >
+          {{ player.xG }}
+        </td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'name',
+          'position',
+          'team',
+          'goals',
+          'finishing',
+          'primaryAssistsEV',
+          'xGPercentage',
+          'xGF',
+          'xGA'
+        ]"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let player;
+          columns: [
+            'name',
+            'position',
+            'team',
+            'goals',
+            'finishing',
+            'primaryAssistsEV',
+            'xGPercentage',
+            'xGF',
+            'xGA'
+          ]
+        "
+        [routerLink]="['/', player.playerID, 'year', season]"
+      ></tr>
+    </table>
+
+    <mat-paginator
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50, 100]"
+      [length]="dataSource.data.length"
+      showFirstLastButtons
+    ></mat-paginator>
+    <ng-template #emptyState> </ng-template>
+  </div>
+</div>

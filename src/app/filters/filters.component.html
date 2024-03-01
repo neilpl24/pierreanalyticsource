@@ -1,0 +1,14 @@
+<div class="filter-container">
+    <div class="filter">
+        <season-filter (seasonChanged)="handleSeasonChange($event)"></season-filter>
+    </div>
+    <div class="filter">
+        <team-filter (teamChanged)="handleTeamChange($event)"></team-filter>
+    </div>
+    <div class="filter">
+        <position-filter (positionChanged)="handlePositionChange($event)"></position-filter>
+    </div>
+    <div class="filter">
+        <nationality-filter (nationalityChanged)="handleNationalityChange($event); "></nationality-filter>
+    </div>
+</div>

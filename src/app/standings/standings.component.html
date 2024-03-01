@@ -1,0 +1,33 @@
+<nav-bar></nav-bar>
+<div style="text-align: center"><p>Updated every Sunday</p></div>
+<div class="standings-container">
+  <mat-card class="division-card score-card" *ngFor="let division of divisions">
+    <mat-card-header>
+      <mat-card-title>{{ division }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="table-container">
+        <table>
+          <tr>
+            <th>Team</th>
+            <th>Actual Points</th>
+            <th>Simulated Points</th>
+          </tr>
+          <tr *ngFor="let team of groupByDivision(division)">
+            <td>
+              <img
+                src="{{ 'assets/' + team.Team + '.png' }}"
+                alt="{{ team.Team }} Logo"
+                class="team-logo"
+              />
+            </td>
+            <td [ngStyle]="getActualPointsStyle(team['Actual Points'])">
+              {{ team["Actual Points"] | number : "1.0-0" }}
+            </td>
+            <td>{{ team["Simulated Points"] | number : "1.1-2" }}</td>
+          </tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

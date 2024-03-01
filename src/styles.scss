@@ -1,0 +1,370 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.nationality-logo {
+  width: 50px;
+  height: 25px;
+  margin-left: 5px;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.main-logo {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.list {
+  margin: 20px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.shot-table {
+  align-self: left;
+}
+
+.shot-table.assists {
+  align-self: right;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.goals-table,
+.assists-table {
+  flex-basis: 50%;
+  margin: 0 10px;
+}
+
+.mat-header-cell,
+.mat-cell {
+  padding: 10px;
+}
+
+.mat-row:hover {
+  background-color: #f2f2f2 !important;
+  cursor: pointer;
+}
+
+.table {
+  font-family: "Roboto", sans-serif;
+}
+
+.small-column {
+  width: 80px;
+}
+
+.timeline {
+  position: relative;
+  height: 4px;
+  background-color: #e5e5e5;
+  width: 150px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  min-width: 100%;
+  margin-top: 0.5rem;
+  transform: translate(0, 0);
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.timeline-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: var(--percentile);
+}
+
+.circle {
+  position: absolute;
+  top: -9px;
+  left: calc(var(--percentile) - 9px);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.8;
+}
+
+.percentile {
+  font-size: 10px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-card {
+  font-family: Roboto;
+  justify-content: start;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-card p {
+  margin: 4px 0;
+}
+
+.statistics-card {
+  font-family: Roboto;
+  width: 400px;
+  align-items: center;
+}
+
+.timeline-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.left-timelines {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-timelines {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.timeline-item h3 {
+  text-align: center;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: Roboto;
+}
+
+.shot-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: -8px;
+  top: -8px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  transform: scale(1);
+  z-index: 1;
+}
+
+.shot-marker::after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.shot-marker:hover {
+  transform: scale(1.2);
+}
+
+.shot-marker:hover::after {
+  opacity: 0.2;
+}
+
+.rink-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shot-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.filter-container {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.filter {
+  margin-right: 10px;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.player-card,
+.statistics-card {
+  flex: 1;
+}
+
+.player-name {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.plot-title-goal {
+  font-weight: bold;
+}
+
+.fill-on-hover {
+  transition: background-color 0.3s;
+}
+
+.fill-on-hover:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-nav .nav-item:not(:last-child) {
+  margin-right: 10px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.about-section {
+  margin-bottom: 30px;
+}
+
+.about-section h2 {
+  font-size: 24px;
+}
+
+.image-section img {
+  width: 100%;
+  max-width: 5479px;
+  height: auto;
+}
+
+.contact-left {
+  margin-top: 30px;
+}
+
+.contact-left h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  margin-top: 10px;
+}
+
+.social-icons a {
+  margin-right: 10px;
+}
+
+.btn-nav {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #337ab7;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn.btn {
+  font-size: 12px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.btn2 {
+  margin-top: 10px;
+}
+
+.small {
+  width: 160px;
+  height: 250px;
+}
+
+.card {
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  width: 18rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .filter-container {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .filter {
+    margin-bottom: 10px;
+  }
+
+  .player-card,
+  .statistics-card {
+    width: 100%;
+    align-self: center;
+  }
+
+  // nav-bar {
+  //   max-width: 100%;
+  //   margin: 0 auto;
+  // }
+
+  .card-container {
+    width: max-content;
+  }
+
+  shots {
+    width: 100% !important;
+    align-self: flex-end;
+  }
+
+  .gtables {
+    flex-direction: column;
+  }
+}

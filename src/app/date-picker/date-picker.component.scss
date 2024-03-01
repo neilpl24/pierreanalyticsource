@@ -1,0 +1,58 @@
+.centered-datepicker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+}
+
+.custom-datepicker {
+  position: relative;
+  max-width: 300px;
+  margin: auto;
+  overflow-y: auto;
+  height: 300px;
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.prev-btn,
+.next-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.current-month {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.ngb-dp-months {
+  display: none;
+}
+
+.ngb-dp-calendar {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.henrique {
+  background-image: url("../../assets/tkachuk.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

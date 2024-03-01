@@ -1,0 +1,12 @@
+.error-container {
+  display: block;
+  text-align-last: center;
+  .error-title {
+    color: #be0000;
+  }
+
+  .error-image {
+    max-width: 1000px;
+    margin-bottom: 2rem;
+  }
+}

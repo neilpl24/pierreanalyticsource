@@ -1,0 +1,19 @@
+<nav-bar></nav-bar>
+<div class="henrique">
+  <div class="centered-datepicker">
+    <mat-form-field appearance="fill">
+      <mat-label>Select a date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="datepicker"
+        [(ngModel)]="selectedDate"
+        (dateChange)="handleDateChange($event)"
+      />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="datepicker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #datepicker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>

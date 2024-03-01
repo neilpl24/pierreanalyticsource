@@ -1,0 +1,38 @@
+.form-check-label {
+  font-size: 15px;
+  color: white;
+}
+
+.search-and-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+mat-form-field {
+  width: 100% !important;
+  height: 70px;
+}
+
+.form-select {
+  width: 100px;
+}
+
+.custom-navbar {
+  background-color: var(--custom-nav-color, inherit);
+}
+
+@media (max-width: 1000px) {
+  .navbar-nav {
+    flex-direction: column;
+  }
+
+  .navbar-nav .nav-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .year-select,
+  .form-control {
+    width: 100%;
+  }
+}

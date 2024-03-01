@@ -1,0 +1,120 @@
+<div class="table-wrapper">
+  <div class="shot-table">
+    <table
+      mat-table
+      class="table table-hover align-middle mb-0 bg-white table-bordered border-secondary"
+      [dataSource]="dataSource"
+      matSort
+    >
+      <ng-container matColumnDef="goalie" class="hide-on-mobile">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="goalie"
+          class="left hide-on-mobile"
+        >
+          Goalie
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.goalie }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef class="left">Score</th>
+        <td mat-cell *matCellDef="let shot" class="left" style="width: 20%">
+          <img src="{{ 'assets/' + shot.away_team + '.png' }}" class="logo" />
+          {{ shot.away_goals }}-{{ shot.home_goals }}
+          <img src="{{ 'assets/' + shot.home_team + '.png' }}" class="logo" />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="strength" class="hide-on-mobile">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="strength"
+          class="left"
+        >
+          Strength
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.strength }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="type"
+          class="left"
+        >
+          Type
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.type }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="xG">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG" class="left">
+          xG
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let shot"
+          class="left"
+          [style.background]="
+            getCircleColor(this.roundValue(shot.xG)).background
+          "
+          [style.color]="getCircleColor(this.roundValue(shot.xG)).color"
+        >
+          {{ this.roundValue(shot.xG) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="link">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="link"
+          class="left"
+        >
+          Video Link
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let shot"
+          class="left"
+          style="width: 20%; max-width: 0"
+        >
+          <ng-container *ngIf="shot.Link == 'No link found.'">
+            <p>No link found for this goal.</p>
+          </ng-container>
+          <ng-container *ngIf="shot.Link != 'No link found.'">
+            <a
+              href="javascript:void(0)"
+              (click)="redirectToLink(shot.Link)"
+              target="_blank"
+              >Link</a
+            >
+          </ng-container>
+        </td>
+      </ng-container>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="['goalie', 'score', 'strength', 'type', 'xG', 'link']"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let shot;
+          columns: ['goalie', 'score', 'strength', 'type', 'xG', 'link']
+        "
+      ></tr>
+    </table>
+    <mat-paginator
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50]"
+      [length]="dataSource.data.length"
+      showFirstLastButtons
+    ></mat-paginator>
+    <ng-template #emptyState> </ng-template>
+  </div>
+</div>

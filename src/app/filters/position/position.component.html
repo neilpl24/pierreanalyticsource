@@ -1,0 +1,16 @@
+<div class="md-form form-fill">
+    <div mdbDropdown class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" aria-expanded="false"
+            mdbDropdownToggle>
+            Position
+        </button>
+        <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" (click)="handlePositionChange(null, $event)">-</a></li>
+            <li *ngFor="let position of positions">
+                <a class="dropdown-item" href="#" (click)="handlePositionChange(position, $event)">
+                    {{ position }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
