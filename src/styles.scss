@@ -126,6 +126,15 @@ body {
   align-items: center;
 }
 
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
 .player-card {
   font-family: Roboto;
   justify-content: start;
@@ -169,6 +178,14 @@ body {
   font-size: 13px;
   font-weight: bold;
   font-family: Roboto;
+}
+
+.shot-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .shot-marker {
