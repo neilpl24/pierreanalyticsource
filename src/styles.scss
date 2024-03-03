@@ -352,6 +352,10 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
+  .card-container {
+    flex-direction: column;
+  }
+
   .filter-container {
     display: block;
     margin-bottom: 20px;
