@@ -69,6 +69,20 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
     return this.getCircleColor(percentile, statName);
   }
 
+  // tooltip text with mappings to the column names
+  tooltipMappings: { [key: string]: string } = {
+    goals: 'Even Strength Goals per 60 Minutes',
+    finishing: 'Finishing Measured in Goals Saved Above Expected (GSAE)',
+    assists: 'Even Strength Primary Assists per 60 Minutes',
+    xgPercent: 'Expected Goals Percentage',
+    xgf: 'Expected Goals For per 60 Minutes',
+    xga: 'Expected Goals Against per 60 Minutes',
+  };
+
+  getTooltip(key: string): string {
+    return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
+  }
+
   roundValue(value: number): number {
     return Math.round(value);
   }

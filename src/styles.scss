@@ -34,6 +34,11 @@ body {
   overflow-x: auto;
 }
 
+.table-bordered th,
+.table-bordered td {
+  border-width: 2px; /* Set border width to 2px */
+}
+
 .shot-table {
   align-self: left;
 }

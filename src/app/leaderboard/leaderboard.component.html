@@ -13,7 +13,7 @@
         {{
           season
         }}
-        NHL Player Leadboards
+        NHL Player Leadboards - Hover over the column names for more info.
       </caption>
       <ng-container matColumnDef="name">
         <th
@@ -39,7 +39,6 @@
         <th
           mat-header-cell
           *matHeaderCellDef
-          mat-sort-header="position"
           class="small-column"
         >
           Position
@@ -47,7 +46,7 @@
         <td mat-cell *matCellDef="let player">{{ player.position }}</td>
       </ng-container>
       <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="team">Team</th>
+        <th mat-header-cell *matHeaderCellDef>Team</th>
         <td mat-cell *matCellDef="let player">
           <img src="{{ 'assets/' + player.team + '.png' }}" class="logo" />{{
             player.team
@@ -55,8 +54,14 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="goals">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="goals">
-          Goals/60 (EV)
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="goals"
+          [matTooltip]="getTooltip('goals')"
+          matTooltipPosition="above"
+        >
+          Goals/60
         </th>
         <td
           mat-cell
@@ -69,8 +74,14 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="finishing">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="gsae">
-          Finishing (GSAE)
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="gsae"
+          [matTooltip]="getTooltip('finishing')"
+          matTooltipPosition="above"
+        >
+          Finishing
         </th>
         <td
           mat-cell
@@ -87,8 +98,10 @@
           mat-header-cell
           *matHeaderCellDef
           mat-sort-header="primaryAssistsEV"
+          [matTooltip]="getTooltip('assists')"
+          matTooltipPosition="above"
         >
-          Primary Assists/60 (EV)
+          Assists/60
         </th>
         <td
           mat-cell
@@ -106,7 +119,15 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="xGF">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="xGF">xGF</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="xGF"
+          [matTooltip]="getTooltip('xgf')"
+          matTooltipPosition="above"
+        >
+          xGF
+        </th>
         <td
           mat-cell
           *matCellDef="let player"
@@ -117,7 +138,15 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="xGA">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="xGA">xGA</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="xGA"
+          [matTooltip]="getTooltip('xga')"
+          matTooltipPosition="above"
+        >
+          xGA
+        </th>
         <td
           mat-cell
           *matCellDef="let player"
@@ -128,7 +157,15 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="xGPercentage">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG">xG%</th>
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="xG"
+          [matTooltip]="getTooltip('xgPercent')"
+          matTooltipPosition="above"
+        >
+          xG%
+        </th>
         <td
           mat-cell
           *matCellDef="let player"
