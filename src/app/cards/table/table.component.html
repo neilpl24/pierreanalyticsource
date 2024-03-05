@@ -54,7 +54,7 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="xG">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG" class="left">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG" class="left" [matTooltip]="getTooltip('xg')" matTooltipPosition="above">
           xG
         </th>
         <td
@@ -85,7 +85,7 @@
           style="width: 20%; max-width: 0"
         >
           <ng-container *ngIf="shot.Link == 'No link found.'">
-            <p>No link found for this goal.</p>
+            <p>No link found.</p>
           </ng-container>
           <ng-container *ngIf="shot.Link != 'No link found.'">
             <a

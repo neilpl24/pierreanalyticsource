@@ -76,6 +76,15 @@ export class TableComponent implements AfterViewInit, OnChanges {
     return Math.round(xG * 100) / 100;
   }
 
+    // tooltip text with mappings to the column names
+    tooltipMappings: { [key: string]: string } = {
+        xg: 'Expected Goals',
+      };
+
+      getTooltip(key: string): string {
+        return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
+      }
+
   private updateDataSource(): void {
     this.shotsData = this.filterShots(this.shotsData);
     this.dataSource.data = this.shotsData;
