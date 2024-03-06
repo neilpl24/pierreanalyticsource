@@ -170,7 +170,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ngAfterViewInit(): void {
+  ngAfterViewInit(): void { 
     this.player$ = this.route.params.pipe(
       switchMap((params) => {
         const playerID = params['playerID'];

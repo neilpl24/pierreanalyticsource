@@ -1,0 +1,21 @@
+<nav-bar></nav-bar>
+
+<div class="container">
+    <div class="center">
+        <ng-container *ngIf="{ team: team$ | async } as data">
+            <div class="row">
+                <div class="card-container">
+                    <mat-card class="player-card border">
+                        <h2> {{ data.team?.TeamName}} </h2>
+                        <img
+                        src="{{ 'assets/' + data.team?.TeamName + '.png' }}"
+                        alt="{{ data.team?.TeamName }} Logo"
+                        class="team-logo"
+                    />
+                    </mat-card>
+
+                </div >
+            </div>
+        </ng-container>
+    </div>
+</div>

@@ -55,6 +55,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GameComponent } from './game/game.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
+import { TeamsComponent } from './teams/teams.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { StandingsComponent } from './standings/standings.component';
     FiltersComponent,
     SearchComponent,
     TeamComponent,
+    TeamsComponent,
     NationalityComponent,
     PositionComponent,
     TimelineComponent,

@@ -9,6 +9,7 @@ import { ScoresComponent } from './scores/scores.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { StandingsComponent } from './standings/standings.component';
+import { TeamsComponent } from './teams/teams.component';
 
 const routes: Routes = [
   { path: 'leaderboard', component: LeaderboardComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: ':playerID/year/:season', component: CardsComponent },
   { path: 'video/:link', component: VideoPlayerComponent },
   { path: 'standings', component: StandingsComponent },
+  { path: 'teams/:teamID', component: TeamsComponent},
   { path: '', component: LandingComponent },
   {
     path: '**',
