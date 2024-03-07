@@ -12,28 +12,26 @@ declare var gtag: Function; // Declare the gtag function
   styleUrls: ['./teams.component.scss'],
 })
 export class TeamsComponent implements AfterViewInit {
-    constructor(
-        private route: ActivatedRoute,
-        private teamSvc: TeamsService,
-        private router: Router
-      ) {}
+  constructor(
+    private route: ActivatedRoute,
+    private teamSvc: TeamsService,
+    private router: Router
+  ) {}
 
+  public team$: Observable<TeamModel | null>;
 
-    public team$: Observable<TeamModel | null>;
+  ngOnInit(): void {
+    gtag('config', 'G-9DLYWS6ZQV', {
+      page_path: window.location.pathname,
+    });
+  }
 
-    ngOnInit(): void {
-        gtag('config', 'G-9DLYWS6ZQV', {
-          page_path: window.location.pathname,
-        });
-      }
-
-    ngAfterViewInit(): void {
-        this.team$ = this.route.params.pipe(
-            switchMap((params) => {
-                const teamId = params['teamId'];
-                return this.teamSvc.getTeam(teamId);
-            })
-        );
-    }
-
+  ngAfterViewInit(): void {
+    this.team$ = this.route.params.pipe(
+      switchMap((params) => {
+        const teamId = params['teamID'];
+        return this.teamSvc.getTeam(teamId);
+      })
+    );
+  }
 }
