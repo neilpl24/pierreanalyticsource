@@ -1,8 +1,10 @@
 export interface TeamModel {
-    TeamName: string;
-    City: string;
-    Name: string;
-    TeamAbbr: string;
-    Division: string;
-    Conference: string;
+    teamName: string;
+    teamId: number;
+    location: string;
+    name: string;
+    teamAbbr: string;
+    division: string;
+    conference: string;
+    teamPrimaryColor: string;
 }

@@ -17,23 +17,40 @@ td {
   text-align: center;
 }
 
-mat-card.score-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f0f0f0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 10px;
-  width: 300px;
-  transition: transform 0.2s;
+.team-name {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 8px 0;
+  text-align: center;
 }
 
-mat-card.score-card:hover {
-  transform: translateY(-10px) rotateX(5deg);
-  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1), 0 20px 32px rgba(0, 0, 0, 0.2);
+.divide-line {
+  border: 1px solid #a7a5a5;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.team-info-title {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+.team-info-value {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.team-card {
+  font-family: Roboto;
+  justify-content: start;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .team-logo {
-  width: 200px;
+  width: 300px;
   height: auto;
 }
 

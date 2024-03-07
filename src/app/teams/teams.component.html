@@ -1,21 +1,49 @@
-<nav-bar></nav-bar>
+<nav-bar [navColor]="navColor"></nav-bar>
 
 <div class="container">
-    <div class="center">
-        <ng-container *ngIf="{ team: team$ | async } as data">
-            <div class="row">
-                <div class="card-container">
-                    <mat-card class="player-card border">
-                        <h2> {{ data.team?.TeamName}} </h2>
-                        <img
-                        src="{{ 'assets/' + data.team?.TeamName + '.png' }}"
-                        alt="{{ data.team?.TeamName }} Logo"
-                        class="team-logo"
-                    />
-                    </mat-card>
-
-                </div >
-            </div>
-        </ng-container>
-    </div>
+  <div class="center">
+    <ng-container *ngIf="{ team: team$ | async } as data">
+      <div class="row">
+        <div class="card-container">
+          <mat-card class="team-card border">
+            <mat-card-content style="margin-top: 3px">
+              <mat-card-title class="team-name">
+                {{ data.team?.teamName }}
+              </mat-card-title>
+              <img
+                src="{{ 'assets/' + data.team?.teamName + '.png' }}"
+                alt="{{ data.team?.teamName }} Logo"
+                class="team-logo"
+              />
+              <hr class="divide-line" />
+              <mat-card-subtitle class="team-info">
+                <span class="team-info-title">Abbreviation: </span>
+                <span class="team-info-value">{{ data.team?.teamAbbr }}</span>
+              </mat-card-subtitle>
+              <mat-card-subtitle class="team-info">
+                <span class="team-info-title">Conference: </span>
+                <span class="team-info-value">{{ data.team?.conference }}</span>
+              </mat-card-subtitle>
+              <mat-card-subtitle class="team-info">
+                <span class="team-info-title">Division: </span>
+                <span class="team-info-value">{{ data.team?.division }}</span>
+              </mat-card-subtitle>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="player-card border">
+            <mat-card-content style="margin-top: 3px">
+              <mat-card-title class="text-center">
+                {{ data.team?.teamName }}
+              </mat-card-title>
+              <img
+                src="{{ 'assets/' + data.team?.teamName + '.png' }}"
+                alt="{{ data.team?.teamName }} Logo"
+                class="team-logo"
+              />
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </div>

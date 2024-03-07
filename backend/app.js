@@ -356,12 +356,13 @@ app.get("/teams/:id", (req, res, next) => {
 
         if (row) {
           const response = {
-            TeamName: row.team_name,
-            teamID: Number(row.team_id),
+            teamName: row.team_name,
+            teamId: Number(row.team_id),
             location: row.location,
             teamAbbr: row.team_abbr,
             conference: row.conference,
             division: row.division,
+            teamPrimaryColor: row.team_primary_color,
           };
           res.status(200).json(response);
         }

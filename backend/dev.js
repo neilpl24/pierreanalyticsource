@@ -359,32 +359,33 @@ app.get("/players/info/:id", (req, res, next) => {
 
 // move this down later
 app.get("/teams/:id", (req, res, next) => {
-    const id = Number(req.query.id);
+  const id = Number(req.query.id);
 
-    db.get(
-      `SELECT * FROM teams
+  db.get(
+    `SELECT * FROM teams
               WHERE team_id = ?`,
-      [id],
-      (err, row) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-          return;
-        }
-
-        if (row) {
-          const response = {
-            TeamName: row.team_name,
-            teamID: Number(row.team_id),
-            location: row.location,
-            teamAbbr: row.team_abbr,
-            conference: row.conference,
-            division: row.division,
-          };
-          res.status(200).json(response);
-        }
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
       }
-    );
-  });
+
+      if (row) {
+        const response = {
+          teamName: row.team_name,
+          teamId: Number(row.team_id),
+          location: row.location,
+          teamAbbr: row.team_abbr,
+          conference: row.conference,
+          division: row.division,
+          teamPrimaryColor: row.team_primary_color,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
 
 app.get("/players_no_percentile", (req, res, next) => {
   let filters = req.query;
