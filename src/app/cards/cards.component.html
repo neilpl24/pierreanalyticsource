@@ -24,11 +24,13 @@
                   />
                 </div>
                 <p>
-                  <strong>Team:</strong> {{ player.team }}
-                  <img
+                  <strong>Team: </strong>
+                  <a [routerLink]="['/teams', player.teamId]">{{ player.team }}
+                    <img
                     src="{{ 'assets/' + player.team + '.png' }}"
                     class="logo"
                   />
+                  </a>
                 </p>
                 <p><strong>Birth Date:</strong> {{ player.birthDate }}</p>
                 <p><strong>Position:</strong> {{ player.position }}</p>

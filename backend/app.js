@@ -52,7 +52,9 @@ function getPlayers(filters, table) {
   } else {
     season = "_2024";
   }
-  let querySegments = [`SELECT * FROM ${table}${season}`];
+  let querySegments = [
+    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+  ];
   let query = [];
   let params = [];
 
@@ -111,10 +113,12 @@ app.get("/players/", (req, res, next) => {
       position: row.position,
       height: row.height,
       weight: row.weight,
+      teamId: Number(row.team_id),
       team: row.team,
       handedness: row.handedness,
       shots: row.shots,
       assists: row.assists,
+      bennett: "Bennett",
     }));
 
     let goalieQuery = getPlayers(filters, "GOALIES");
@@ -133,10 +137,12 @@ app.get("/players/", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
           assists: row.assists,
+          bennett: "Bennett",
         }))
       );
       res.status(200).json(rows);
@@ -277,8 +283,16 @@ app.get("/players/info/:id", (req, res, next) => {
   }
 
   db.get(
-    `SELECT * FROM players${season}
-            WHERE player_id = ?`,
+    `WITH team_ids AS(
+        SELECT team_id,
+        CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+        END AS team_name
+        FROM teams
+    )
+    SELECT *
+        FROM players${season} p
+        JOIN team_ids t on p.team = t.team_name
+        WHERE player_id = ?`,
     [id],
     (err, row) => {
       if (err) {
@@ -296,6 +310,7 @@ app.get("/players/info/:id", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
@@ -304,9 +319,16 @@ app.get("/players/info/:id", (req, res, next) => {
         res.status(200).json(response);
       } else {
         db.get(
-          `SELECT *
-                  FROM goalies${season}
-                  WHERE player_id = ?`,
+          `WITH team_ids AS(
+            SELECT team_id,
+            CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+            END AS team_name
+            FROM teams
+        )
+        SELECT *
+                FROM goalies${season} p
+                JOIN team_ids t on p.team = t.team_name
+                WHERE player_id = ?`,
           [id],
           (err, row) => {
             if (err) {
@@ -324,6 +346,7 @@ app.get("/players/info/:id", (req, res, next) => {
                 position: row.position,
                 height: row.height,
                 weight: row.weight,
+                teamId: Number(row.team_id),
                 team: row.team,
                 handedness: row.handedness,
                 shots: row.shots,
@@ -342,34 +365,34 @@ app.get("/players/info/:id", (req, res, next) => {
 
 // move this down later
 app.get("/teams/:id", (req, res, next) => {
-    const id = Number(req.query.id);
+  const id = Number(req.query.id);
 
-    db.get(
-      `SELECT * FROM teams
+  db.get(
+    `SELECT * FROM teams
               WHERE team_id = ?`,
-      [id],
-      (err, row) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-          return;
-        }
-
-        if (row) {
-          const response = {
-            teamName: row.team_name,
-            teamId: Number(row.team_id),
-            location: row.location,
-            teamAbbr: row.team_abbr,
-            conference: row.conference,
-            division: row.division,
-            teamPrimaryColor: row.team_primary_color,
-          };
-          res.status(200).json(response);
-        }
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
       }
-    );
-  });
 
+      if (row) {
+        const response = {
+          teamName: row.team_name,
+          teamId: Number(row.team_id),
+          location: row.location,
+          teamAbbr: row.team_abbr,
+          conference: row.conference,
+          division: row.division,
+          primaryColor: row.primary_color,
+          secondaryColor: row.secondary_color,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
 
 app.get("/scores/:date", async (req, res, next) => {
   const date = req.query.date;
@@ -609,6 +632,7 @@ app.get("/players_no_percentile", (req, res, next) => {
       goals: row.goals_60,
       gsae: row.gsae,
       primaryAssistsEV: row.primary_assists_EV,
+      teamId: Number(row.team_id),
       team: row.team,
       position: row.position,
       nationality: row.nationality,

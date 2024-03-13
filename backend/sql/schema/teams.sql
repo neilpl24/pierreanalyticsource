@@ -7,5 +7,6 @@ CREATE TABLE teams (
     team_abbr TEXT,
     division TEXT,
     conference TEXT,
-    team_primary_color TEXT
+    primary_color TEXT,
+    secondary_color TEXT
 );

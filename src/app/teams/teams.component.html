@@ -30,13 +30,10 @@
               </mat-card-subtitle>
             </mat-card-content>
           </mat-card>
-          <mat-card class="player-card border">
+          <mat-card class="team-card border" [style.background-color]="secondaryColor + ' !important'">
             <mat-card-content style="margin-top: 3px">
-              <mat-card-title class="text-center">
-                {{ data.team?.teamName }}
-              </mat-card-title>
               <img
-                src="{{ 'assets/' + data.team?.teamName + '.png' }}"
+                src="{{ 'assets/' + data.team?.teamName + '1.png' }}"
                 alt="{{ data.team?.teamName }} Logo"
                 class="team-logo"
               />

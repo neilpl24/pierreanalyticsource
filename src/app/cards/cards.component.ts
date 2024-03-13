@@ -74,7 +74,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     'Tampa Bay Lightning': '#00205B',
     'Toronto Maple Leafs': '#00205B',
     'Vancouver Canucks': '#00205B',
-    'Vegas Golden Knights': '#B4975A',
+    'Vegas Golden Knights': '#B4975A', 
     'Washington Capitals': '#041E42',
     'Winnipeg Jets': '#041E42',
   };
@@ -170,7 +170,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ngAfterViewInit(): void { 
+  ngAfterViewInit(): void {
     this.player$ = this.route.params.pipe(
       switchMap((params) => {
         const playerID = params['playerID'];

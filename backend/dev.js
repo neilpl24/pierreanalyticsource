@@ -29,7 +29,7 @@ function createDbConnection(filepath) {
       return console.error(error.message);
     }
   });
-  console.log("Connection with SQLite has been established");
+  console.log("Connection with SQLite has been established for " + filepath);
   return db;
 }
 
@@ -46,7 +46,9 @@ function getPlayers(filters, table) {
       season = "_" + filters.season;
     }
   }
-  let querySegments = [`SELECT * FROM ${table}${season}`];
+  let querySegments = [
+    `WITH team_ids AS ( SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+  ];
   let query = [];
   let params = [];
 
@@ -105,6 +107,7 @@ app.get("/players/", (req, res, next) => {
       position: row.position,
       height: row.height,
       weight: row.weight,
+      teamId: Number(row.team_id),
       team: row.team,
       handedness: row.handedness,
       shots: row.shots,
@@ -127,6 +130,7 @@ app.get("/players/", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
@@ -294,8 +298,16 @@ app.get("/players/info/:id", (req, res, next) => {
   }
 
   db.get(
-    `SELECT * FROM players${season}
-            WHERE player_id = ?`,
+    `WITH team_ids AS(
+        SELECT team_id,
+        CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+        END AS team_name
+        FROM teams
+    )
+    SELECT *
+        FROM players${season} p
+        JOIN team_ids t on p.team = t.team_name
+        WHERE player_id = ?`,
     [id],
     (err, row) => {
       if (err) {
@@ -313,6 +325,7 @@ app.get("/players/info/:id", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
@@ -321,9 +334,16 @@ app.get("/players/info/:id", (req, res, next) => {
         res.status(200).json(response);
       } else {
         db.get(
-          `SELECT *
-                FROM goalies${season}
-                WHERE player_id = ?`,
+          `WITH team_ids AS(
+            SELECT team_id,
+            CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+            END AS team_name
+            FROM teams
+        )
+            SELECT *
+            FROM goalies${season} p
+            JOIN team_ids t on p.team = t.team_name
+            WHERE player_id = ?`,
           [id],
           (err, row) => {
             if (err) {
@@ -341,6 +361,7 @@ app.get("/players/info/:id", (req, res, next) => {
                 position: row.position,
                 height: row.height,
                 weight: row.weight,
+                teamId: Number(row.team_id),
                 team: row.team,
                 handedness: row.handedness,
                 shots: row.shots,
@@ -379,7 +400,8 @@ app.get("/teams/:id", (req, res, next) => {
           teamAbbr: row.team_abbr,
           conference: row.conference,
           division: row.division,
-          teamPrimaryColor: row.team_primary_color,
+          primaryColor: row.primary_color,
+          secondaryColor: row.secondary_color,
         };
         res.status(200).json(response);
       }
@@ -406,7 +428,8 @@ app.get("/players_no_percentile", (req, res, next) => {
       goals: row.goals_60,
       gsae: row.gsae,
       primaryAssistsEV: row.primary_assists_EV,
-      team: row.team,
+      teamId: Number(row.team_id),
+      team: row.team, // might need teamid here
       position: row.position,
       nationality: row.nationality,
     }));

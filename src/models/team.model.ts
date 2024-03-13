@@ -6,5 +6,6 @@ export interface TeamModel {
     teamAbbr: string;
     division: string;
     conference: string;
-    teamPrimaryColor: string;
+    primaryColor: string;
+    secondaryColor: string;
 }
