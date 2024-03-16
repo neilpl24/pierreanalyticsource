@@ -42,7 +42,7 @@
                   </mat-card-title>
                   <ng-container *ngFor="let forward of forwards">
                     <a
-                      [routerLink]="['/', forward.playerId, 'year']"
+                      [routerLink]="['/', forward.playerId, 'year', '2024']"
                       class="plain-link"
                     >
                       #{{ forward.sweaterNumber }} {{ forward.fullName }} -
@@ -56,9 +56,10 @@
                     Defense ({{ defense.length }})
                   </mat-card-title>
                   <ng-container *ngFor="let defenseman of defense">
-                    <!-- I don't think I like this -->
+                    <!-- I don't think I like the position being hand + D -->
+                    <!-- Also, I thought that player pages without a year should default to current. -->
                     <a
-                      [routerLink]="['/', defenseman.playerId, 'year']"
+                      [routerLink]="['/', defenseman.playerId, 'year', 2024]"
                       class="plain-link"
                     >
                       #{{ defenseman.sweaterNumber }}
@@ -74,7 +75,7 @@
                   </mat-card-title>
                   <ng-container *ngFor="let goalie of goalies">
                     <a
-                      [routerLink]="['/', goalie.playerId, 'year']"
+                      [routerLink]="['/', goalie.playerId, 'year', 2024]"
                       class="plain-link"
                     >
                       #{{ goalie.sweaterNumber }} {{ goalie.fullName }} -
