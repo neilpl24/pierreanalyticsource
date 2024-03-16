@@ -1,74 +1,93 @@
 <nav-bar [navColor]="navColor"></nav-bar>
 <body [ngStyle]="{ 'background-color': secondaryColor }">
-<div class="container">
-  <div class="center">
-    <ng-container
-    *ngIf="{ team: team$ | async,
+  <div class="container">
+    <div class="center">
+      <ng-container
+        *ngIf="{ team: team$ | async,
              standings: standings$ | async,
              roster: roster$ | async,
-    } as data">
-      <div class="row">
-        <div class="card-container">
-          <mat-card class="team-card border">
-            <mat-card-content style="margin-top: 3px">
-              <mat-card-title class="team-name">
-                {{ data.team?.teamName }}
-              </mat-card-title>
-              <img
-                src="{{ 'assets/' + data.team?.teamName + '.png' }}"
-                alt="{{ data.team?.teamName }} Logo"
-                class="team-logo"
-              />
-              <hr class="divide-line" />
-              <mat-card-subtitle class="team-info">
-                <span class="team-info-title">Abbreviation: </span>
-                <span class="team-info-value">{{ data.team?.teamAbbr }}</span>
-              </mat-card-subtitle>
-              <mat-card-subtitle class="team-info">
-                <span class="team-info-title">Conference: </span>
-                <span class="team-info-value">{{ data.team?.conference }}</span>
-              </mat-card-subtitle>
-              <mat-card-subtitle class="team-info">
-                <span class="team-info-title">Division: </span>
-                <span class="team-info-value">{{ data.team?.division }}</span>
-              </mat-card-subtitle>
-            </mat-card-content>
-          </mat-card>
-          <mat-card class="team-card border">
-            <mat-card-content style="margin-top: 3px">
+    } as data"
+      >
+        <div class="row">
+          <div class="card-container">
+            <mat-card class="team-card border">
+              <mat-card-content style="margin-top: 3px">
+                <mat-card-title class="team-name">
+                  {{ data.team?.teamName }}
+                </mat-card-title>
+                <img
+                  src="{{ 'assets/' + data.team?.teamName + '.png' }}"
+                  alt="{{ data.team?.teamName }} Logo"
+                  class="team-logo"
+                />
+                <hr class="divide-line" />
+                <p><strong>Abbreviation:</strong> {{ data.team?.teamAbbr }}</p>
+                <p><strong>Conference:</strong> {{ data.team?.conference }}</p>
+                <p><strong>Division:</strong> {{ data.team?.division }}</p>
+                <p>
+                  <strong>Actual Points:</strong>
+                  {{ data.standings?.actualPoints }}
+                </p>
+                <p>
+                  <strong>Simulated Points:</strong>
+                  {{ data.standings?.simulatedPoints }}
+                </p>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="team-card border">
+              <mat-card-content style="margin-top: 3px">
                 <ng-container *ngIf="forwards">
-                    <mat-card-title class="position-name">
-                      Forwards ({{ forwards.length }})
-                    </mat-card-title>
-                    <ng-container *ngFor="let forward of forwards">
-                      #{{ forward.sweaterNumber}} {{ forward.fullName }} - {{ forward.positionCode }}
-                      <br/>
-                    </ng-container>
+                  <mat-card-title class="position-name">
+                    Forwards ({{ forwards.length }})
+                  </mat-card-title>
+                  <ng-container *ngFor="let forward of forwards">
+                    <a
+                      [routerLink]="['/', forward.playerId, 'year']"
+                      class="plain-link"
+                    >
+                      #{{ forward.sweaterNumber }} {{ forward.fullName }} -
+                      {{ forward.positionCode }}
+                    </a>
+                    <br />
                   </ng-container>
+                </ng-container>
                 <ng-container *ngIf="defense">
-                    <mat-card-title class="position-name">
-                      Defense ({{ defense.length }})
-                    </mat-card-title>
-                    <ng-container *ngFor="let defenseman of defense">
-                        <!-- I don't think I like this -->
-                        #{{ defenseman.sweaterNumber}} {{ defenseman.fullName }} - {{ defenseman.shootsCatches }}{{ defenseman.positionCode }}
-                        <br/>
-                    </ng-container>
+                  <mat-card-title class="position-name">
+                    Defense ({{ defense.length }})
+                  </mat-card-title>
+                  <ng-container *ngFor="let defenseman of defense">
+                    <!-- I don't think I like this -->
+                    <a
+                      [routerLink]="['/', defenseman.playerId, 'year']"
+                      class="plain-link"
+                    >
+                      #{{ defenseman.sweaterNumber }}
+                      {{ defenseman.fullName }} - {{ defenseman.shootsCatches
+                      }}{{ defenseman.positionCode }}
+                    </a>
+                    <br />
                   </ng-container>
+                </ng-container>
                 <ng-container *ngIf="goalies">
                   <mat-card-title class="position-name">
                     Goalies ({{ goalies.length }})
                   </mat-card-title>
                   <ng-container *ngFor="let goalie of goalies">
-                    #{{ goalie.sweaterNumber}} {{ goalie.fullName }} - {{ goalie.shootsCatches }}
-                    <br/>
+                    <a
+                      [routerLink]="['/', goalie.playerId, 'year']"
+                      class="plain-link"
+                    >
+                      #{{ goalie.sweaterNumber }} {{ goalie.fullName }} -
+                      {{ goalie.shootsCatches }}
+                    </a>
+                    <br />
                   </ng-container>
                 </ng-container>
-            </mat-card-content>
-          </mat-card>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
-      </div>
-    </ng-container>
+      </ng-container>
+    </div>
   </div>
-</div>
 </body>

@@ -729,15 +729,15 @@ app.get("/teams/:id", (req, res, next) => {
     res.status(200).json(roster);
   });
 
-  /*
+
 // need to add this to the app.js file once it works
-app.get("/standings/teams/:id", (req, res, next) => {
-    const id = Number(req.query.id);
-    db.get(
+app.get("/teams/standings/:id", (req, res, next) => {
+    const id = Number(req.params.id);
+    standings_db.get(
       `SELECT * FROM standings2
        WHERE team_id = ?
        AND last_updated = (SELECT MAX(last_updated) FROM standings2 WHERE team_id = ?)`,
-      [id],
+      [id, id],
       (err, row) => {
         if (err) {
           res.status(400).json({ error: err.message });
@@ -748,7 +748,7 @@ app.get("/standings/teams/:id", (req, res, next) => {
           const response = {
             teamId: Number(row.team_id),
             teamName: row.team,
-            simulatedPoints: row.simulated_points,
+            simulatedPoints: row.simulation_points,
             actualPoints: row.actual_points,
             division: row.division,
             lastUpdated: row.last_updated,
@@ -758,4 +758,3 @@ app.get("/standings/teams/:id", (req, res, next) => {
       }
     );
   });
-  */

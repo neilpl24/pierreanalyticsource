@@ -1,3 +1,10 @@
+.plain-link {
+  /* make the link look like normal text*/
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .war-stat {
   display: flex;
   flex-direction: column;
