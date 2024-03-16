@@ -3,6 +3,7 @@ import { ScoresService } from '../services/scores.service';
 import { StandingsModel } from 'src/models/standings.model';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-standings',
@@ -12,8 +13,9 @@ import { switchMap } from 'rxjs/operators';
 export class StandingsComponent implements AfterViewInit {
   public standings: StandingsModel[];
   divisions = ['Metropolitan', 'Atlantic', 'Pacific', 'Central'];
+  lastUpdated: string;
 
-  constructor(private scoresService: ScoresService) {}
+  constructor(private scoresService: ScoresService, private datePipe: DatePipe ) {}
 
   ngAfterViewInit(): void {
     this.getStandingsAndGroupByDivision();
@@ -25,17 +27,24 @@ export class StandingsComponent implements AfterViewInit {
       .pipe(
         switchMap((standings) => {
           this.standings = standings;
+          if (this.standings && this.standings.length > 0) {
+            this.lastUpdated = this.formatLastUpdated(standings[0].lastUpdated);
+          }
           return this.groupByDivision(this.divisions[0]);
         })
       )
       .subscribe();
   }
 
+  formatLastUpdated(date: string): string {
+    return this.datePipe.transform(date, 'MM/dd/yy, h:mma') || '';
+  }
+
   groupByDivision(division: string): StandingsModel[] {
     if (this.standings) {
       return this.standings
-        .filter((team) => team.Division === division)
-        .sort((a, b) => b['Actual Points'] - a['Actual Points']);
+        .filter((team) => team.division === division)
+        .sort((a, b) => b.actualPoints - a.actualPoints);
     } else {
       return [];
     }
@@ -53,7 +62,7 @@ export class StandingsComponent implements AfterViewInit {
 
   getActualPointsStyle(actualPoints: number): { [key: string]: string } {
     const percentile = this.calculatePercentile(
-      this.standings.map((team) => team['Actual Points']),
+      this.standings.map((team) => team.actualPoints),
       actualPoints
     );
     const colors = this.getPercentileColor(percentile);

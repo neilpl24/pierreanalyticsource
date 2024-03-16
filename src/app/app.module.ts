@@ -56,6 +56,7 @@ import { GameComponent } from './game/game.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -120,7 +121,7 @@ import { TeamsComponent } from './teams/teams.component';
     MdbTooltipModule,
     MdbValidationModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

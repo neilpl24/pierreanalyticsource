@@ -180,17 +180,29 @@ app.get("/players/name", (req, res, next) => {
 });
 
 app.get("/standings", (req, res, next) => {
-  const params = req.params;
-  const query = `SELECT * FROM STANDINGS`;
-  standings_db.all(query, params, (err, playerRows) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    } else {
-      res.status(200).json(playerRows);
-    }
+    const params = req.params;
+    const query = `SELECT * FROM STANDINGS2 WHERE last_updated = (SELECT MAX(last_updated) FROM standings2);`;
+    standings_db.all(query,
+       params,
+      (err, standingsRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      } else {
+        let rows = standingsRows.map((standingsRow) => ({
+            teamId: Number(standingsRow.team_id),
+            teamName: standingsRow.team,
+            simulatedPoints: standingsRow.simulation_points,
+            actualPoints: Number(standingsRow.actual_points),
+            division: standingsRow.division,
+            lastUpdated: standingsRow.last_updated,
+          }));
+        res.status(200).json(rows);
+        }
+      }
+    );
   });
-});
+
 //Cards
 app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
