@@ -29,7 +29,7 @@ function createDbConnection(filepath) {
       return console.error(error.message);
     }
   });
-  console.log("Connection with SQLite has been established for " + filepath);
+  console.log("Connection with SQLite has been established");
   return db;
 }
 
@@ -378,37 +378,6 @@ app.get("/players/info/:id", (req, res, next) => {
   );
 });
 
-// move this down later
-app.get("/teams/:id", (req, res, next) => {
-  const id = Number(req.query.id);
-
-  db.get(
-    `SELECT * FROM teams
-              WHERE team_id = ?`,
-    [id],
-    (err, row) => {
-      if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-      }
-
-      if (row) {
-        const response = {
-          teamName: row.team_name,
-          teamId: Number(row.team_id),
-          location: row.location,
-          teamAbbr: row.team_abbr,
-          conference: row.conference,
-          division: row.division,
-          primaryColor: row.primary_color,
-          secondaryColor: row.secondary_color,
-        };
-        res.status(200).json(response);
-      }
-    }
-  );
-});
-
 app.get("/players_no_percentile", (req, res, next) => {
   let filters = req.query;
   let { query, params } = getPlayers(filters, "PLAYERS_NO_PERCENTILE");
@@ -656,3 +625,126 @@ app.get("/game/:year/:gamePk", (req, res, next) => {
 app.get("/scores/:year/:gamepk", async (req, res, next) => {
   const gamepk = req.query.gamepk;
 });
+
+app.get("/teams/:id", (req, res, next) => {
+    const id = Number(req.query.id);
+
+    db.get(
+      `SELECT * FROM teams
+                WHERE team_id = ?`,
+      [id],
+      (err, row) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+
+        if (row) {
+          const response = {
+            teamName: row.team_name,
+            teamId: Number(row.team_id),
+            location: row.location,
+            teamAbbr: row.team_abbr,
+            conference: row.conference,
+            division: row.division,
+            primaryColor: row.primary_color,
+            secondaryColor: row.secondary_color,
+          };
+          res.status(200).json(response);
+        }
+      }
+    );
+  });
+
+  app.get("/teams/roster/:id" , async (req, res, next) => {
+    const id = Number(req.params.id);
+    const teamIdsToAbbr = ({
+        1: "ANA", 2: "ARI", 3: "BOS", 4: "BUF", 5: "CGY", 6: "CAR", 7: "CHI", 8: "COL",
+        9: "CBJ", 10: "DAL", 11: "DET", 12: "EDM", 13: "FLA", 14: "LAK", 15: "MIN",
+        16: "MTL", 17: "NSH", 18: "NJD", 19: "NYI", 20: "NYR", 21: "OTT", 22: "PHI",
+        23: "PIT", 24: "SJS", 25: "SEA", 26: "STL", 27: "TBL", 28: "TOR", 29: "VAN",
+        30: "VGK", 31: "WSH", 32: "WPG"});
+    const teamAbbr = teamIdsToAbbr[id];
+    const data = await (
+      await fetch(`https://api-web.nhle.com/v1/roster/${teamAbbr}/current`)
+    ).json();
+    if (!data || !data.forwards || !data.defensemen || !data.goalies) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+
+    let forwards = [];
+    let defense = [];
+    let goalies = [];
+
+    if (data.forwards && data.forwards.length > 0) {
+        forwards = data.forwards.map(forward => ({
+          playerId: forward.id,
+          headshot: forward.headshot,
+          fullName: `${forward.firstName.default} ${forward.lastName.default}`,
+          sweaterNumber: forward.sweaterNumber,
+          positionCode: forward.positionCode,
+          shootsCatches: forward.shootsCatches,
+        }));
+      }
+
+    if (data.goalies && data.goalies.length > 0) {
+        goalies = data.goalies.map(goalie => ({
+          playerId: goalie.id,
+          headshot: goalie.headshot,
+          fullName: `${goalie.firstName.default} ${goalie.lastName.default}`,
+          sweaterNumber: goalie.sweaterNumber,
+          positionCode: goalie.positionCode,
+          shootsCatches: goalie.shootsCatches,
+        }));
+    }
+
+    if (data.defensemen && data.defensemen.length > 0) {
+        defense = data.defensemen.map(defenseman => ({
+          playerId: defenseman.id,
+          headshot: defenseman.headshot,
+          fullName: `${defenseman.firstName.default} ${defenseman.lastName.default}`,
+          sweaterNumber: defenseman.sweaterNumber,
+          positionCode: defenseman.positionCode,
+          shootsCatches: defenseman.shootsCatches,
+        }));
+      }
+
+      const roster = {
+        "goalies": goalies,
+        "forwards": forwards,
+        "defense": defense,
+    };
+
+    res.status(200).json(roster);
+  });
+
+  /*
+// need to add this to the app.js file once it works
+app.get("/standings/teams/:id", (req, res, next) => {
+    const id = Number(req.query.id);
+    db.get(
+      `SELECT * FROM standings2
+       WHERE team_id = ?
+       AND last_updated = (SELECT MAX(last_updated) FROM standings2 WHERE team_id = ?)`,
+      [id],
+      (err, row) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+
+        if (row) {
+          const response = {
+            teamId: Number(row.team_id),
+            teamName: row.team,
+            simulatedPoints: row.simulated_points,
+            actualPoints: row.actual_points,
+            division: row.division,
+            lastUpdated: row.last_updated,
+          };
+          res.status(200).json(response);
+        }
+      }
+    );
+  });
+  */

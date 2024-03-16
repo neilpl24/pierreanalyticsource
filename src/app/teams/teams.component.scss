@@ -17,12 +17,20 @@ td {
   text-align: center;
 }
 
+body { background-color: #DBF9FC; }
+
 .team-name {
   font-size: 30px;
   font-weight: bold;
   margin: 8px 0;
   text-align: center;
 }
+
+.position-name {
+    font-size: 20px;
+    margin: 4px 0;
+    text-align: center;
+  }
 
 .divide-line {
   border: 1px solid #a7a5a5;
