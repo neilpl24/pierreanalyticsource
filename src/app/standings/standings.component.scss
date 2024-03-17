@@ -3,6 +3,11 @@
   justify-content: space-around;
 }
 
+.standings-header {
+  text-align: center;
+  margin-top: 8px;
+}
+
 .division-card {
   width: 300px;
   margin: 16px;
@@ -10,7 +15,7 @@
 
 .last-updated {
   text-align: center;
-  margin: 8px;
+
 }
 
 table {
