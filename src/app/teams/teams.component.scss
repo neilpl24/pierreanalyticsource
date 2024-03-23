@@ -1,25 +1,9 @@
-.teams-container {
-  display: flex;
-  justify-content: space-around;
-}
 
-.division-card {
-  width: 300px;
-  margin: 16px;
-}
 
-table {
-  width: 100%;
-}
 
-td {
-  padding: 8px;
-  text-align: center;
-}
 
-body {
-  background-color: #dbf9fc;
-}
+
+
 
 .plain-link {
   color: inherit; /* Inherit the color from the parent */
@@ -36,9 +20,13 @@ body {
 
 .position-name {
   font-size: 20px;
-  margin: 4px 0;
-  text-align: center;
+  margin-bottom: 2px 0;
 }
+
+.roster-title  {
+    text-align: center;
+    font-size: 20px;
+  }
 
 .divide-line {
   border: 1px solid #a7a5a5;
@@ -46,11 +34,17 @@ body {
   margin: 16px 0;
 }
 
+.divide-line-roster {
+    border: 1px solid #a7a5a5;
+    margin: 8px 0;
+  }
+
 .team-info-title {
   font-size: 15px;
   font-weight: bold;
   margin: 8px 0;
 }
+
 .team-info-value {
   font-size: 15px;
   margin: 8px 0;
@@ -65,66 +59,54 @@ body {
   align-items: center;
 }
 
+.roster-container {
+  font-family: Roboto;
+  width: 645px;
+  display: flex;
+}
+
+.roster-left {
+    flex: 1;
+    width: 300px;
+    align-items: center;
+    margin: 15px;
+}
+
+.roster-right {
+    flex: 1;
+    margin: 15px;
+    width: 300px;
+    align-items: center;
+    justify-content: start;
+}
+
 .team-logo {
   width: 300px;
   height: auto;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  border: 1px solid #ccc;
-  max-width: 100%;
-  overflow-x: auto;
-}
-
-th,
-td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-th {
-  background-color: #f0f0f0;
-}
-
-td img {
-  max-width: 50px;
-}
-
-.table-container {
-  overflow-x: auto;
-}
-
-.table-container table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid #ccc;
-}
-
-.table-container th,
-.table-container td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-.table-container th {
-  background-color: #f0f0f0;
-}
-
-.table-container img {
-  max-width: 50px;
-}
-
-.mat-mdc-card-header {
-  justify-content: center;
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 150vh;
 }
 
 @media only screen and (max-width: 1000px) {
-  .standings-container {
-    display: block;
-    text-align: -webkit-center;
+    .team-logo {
+        width: 200px;
+    }
+
+    .roster-container {
+      flex-direction: column; /* Change flex direction to column for stacking on mobile */
+        width: 100%;
+        text-align: center;
+    }
+
+    .roster-left {
+        width: 100%;
+    }
+
+    .roster-right {
+        width: 100%;
+    }
   }
-}

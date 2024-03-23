@@ -285,7 +285,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     // convert the height (from inches -> feet and inches)
     let inches = parseFloat(height);
     if (isNaN(inches)) {
-        return "Invalid input"; // If input is not a valid number, return an error message
+        return height; // if the height is not a number, just return whatever it was before we tried to convert it
     }
 
     // convert to feet and inches

@@ -3,7 +3,7 @@ import { TeamsService } from '../services/teams.service';
 import { TeamModel } from 'src/models/team.model';
 import { Observable } from 'rxjs';
 import { switchMap, tap, catchError} from 'rxjs/operators';
-import { of, EMPTY, throwError } from 'rxjs';
+import { EMPTY, throwError } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StandingsModel } from 'src/models/standings.model';
 import { RosterModel } from 'src/models/roster.model';
@@ -89,5 +89,13 @@ export class TeamsComponent implements AfterViewInit {
 
         })
       );
+  }
+  // tooltip text with mappings to the column names
+  tooltipMappings: { [key: string]: string } = {
+    roster: 'Live rosters from NHL API. IR/LTIR players are included since they remain on the NHL roster.',
+  };
+
+  getTooltip(key: string): string {
+    return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
   }
 }
