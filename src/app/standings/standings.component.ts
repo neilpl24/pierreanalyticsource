@@ -34,8 +34,8 @@ export class StandingsComponent implements AfterViewInit {
   groupByDivision(division: string): StandingsModel[] {
     if (this.standings) {
       return this.standings
-        .filter((team) => team.Division === division)
-        .sort((a, b) => b['Actual Points'] - a['Actual Points']);
+        .filter((team) => team.division === division)
+        .sort((a, b) => b['actual_points'] - a['actual_points']);
     } else {
       return [];
     }
@@ -53,7 +53,7 @@ export class StandingsComponent implements AfterViewInit {
 
   getActualPointsStyle(actualPoints: number): { [key: string]: string } {
     const percentile = this.calculatePercentile(
-      this.standings.map((team) => team['Actual Points']),
+      this.standings.map((team) => team['actual_points']),
       actualPoints
     );
     const colors = this.getPercentileColor(percentile);
