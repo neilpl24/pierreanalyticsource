@@ -3,10 +3,11 @@
   <div class="container">
     <div class="center">
       <ng-container
-        *ngIf="{ team: team$ | async,
+        *ngIf="{
+             team: team$ | async,
              standings: standings$ | async,
              roster: roster$ | async,
-    } as data"
+            } as data"
       >
         <div class="row">
           <div class="card-container">
