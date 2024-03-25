@@ -22,9 +22,18 @@ mat-form-field {
   background-color: var(--custom-nav-color, inherit);
 }
 
+.normal-button {
+  background-color: black;
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
 @media (max-width: 1000px) {
   .navbar-nav {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .navbar-nav .nav-item {
@@ -34,5 +43,10 @@ mat-form-field {
   .year-select,
   .form-control {
     width: 100%;
+  }
+
+  .mobile-button {
+    background-color: black;
+    color: white;
   }
 }

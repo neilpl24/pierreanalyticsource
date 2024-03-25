@@ -6,58 +6,90 @@
     <a [routerLink]="['']">
       <img src="assets/logo.JPEG" class="main-logo" />
     </a>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
+
+    <!-- Button group for mobile layout -->
+    <div class="d-lg-none">
+      <div class="btn-group">
         <button
           type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
+          class="btn btn-outline-secondary mobile-button"
           [routerLink]="['/about']"
         >
           About
         </button>
-      </li>
-      <!-- <li class="nav-item">
         <button
           type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
+          class="btn btn-outline-secondary mobile-button"
+          [routerLink]="['/leaderboard']"
+        >
+          Leaderboards
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary mobile-button"
+          [routerLink]="['/standings']"
+        >
+          Standings
+        </button>
+        <a
+          href="https://ko-fi.com/pierreanalytics"
+          target="_blank"
+          class="btn btn-outline-secondary mobile-button"
+          >Donate</a
+        >
+      </div>
+    </div>
+
+    <!-- Buttons for desktop layout (FIX THE RIGHT SHIFT OF THE BUTTONS) -->
+    <div class="d-none d-lg-flex">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn-outline-secondary normal-button"
+            [routerLink]="['/about']"
+          >
+            About
+          </button>
+        </li>
+        <!-- <li class="nav-item">
+        <button
+          type="button"
+          class="btn-outline-secondary normal-button"
           [routerLink]="['/dates']"
         >
           Scores
         </button>
       </li> -->
-      <li class="nav-item">
-        <button
-          type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-          [routerLink]="['/leaderboard']"
-        >
-          Leaderboards
-        </button>
-      </li>
-      <li class="nav-item">
-        <button
-          type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-          [routerLink]="['/standings']"
-        >
-          Standings
-        </button>
-      </li>
-      <li class="nav-item">
-        <a
-          href="https://ko-fi.com/pierreanalytics"
-          target="_blank"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-        >
-          Donate
-        </a>
-      </li>
-    </ul>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn-outline-secondary normal-button"
+            [routerLink]="['/leaderboard']"
+          >
+            Leaderboards
+          </button>
+        </li>
+        <li class="nav-item">
+          <button
+            type="button"
+            class="btn-outline-secondary normal-button"
+            [routerLink]="['/standings']"
+          >
+            Standings
+          </button>
+        </li>
+        <li class="nav-item">
+          <a
+            href="https://ko-fi.com/pierreanalytics"
+            target="_blank"
+            class="btn-outline-secondary normal-button"
+          >
+            Donate
+          </a>
+        </li>
+      </ul>
+    </div>
     <div class="position-relative row mt-auto">
       <div class="col-md-4">
         <div class="search-and-select">
