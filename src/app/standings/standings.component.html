@@ -16,15 +16,15 @@
           <tr *ngFor="let team of groupByDivision(division)">
             <td>
               <img
-                src="{{ 'assets/' + team.Team + '.png' }}"
-                alt="{{ team.Team }} Logo"
+                src="{{ 'assets/' + team.team + '.png' }}"
+                alt="{{ team.team }} Logo"
                 class="team-logo"
               />
             </td>
-            <td [ngStyle]="getActualPointsStyle(team['Actual Points'])">
-              {{ team["Actual Points"] | number : "1.0-0" }}
+            <td [ngStyle]="getActualPointsStyle(team['actual_points'])">
+              {{ team["actual_points"] | number : "1.0-0" }}
             </td>
-            <td>{{ team["Simulated Points"] | number : "1.1-2" }}</td>
+            <td>{{ team["simulated_points"] | number : "1.1-2" }}</td>
           </tr>
         </table>
       </div>

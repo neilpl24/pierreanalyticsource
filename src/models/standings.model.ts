@@ -1,6 +1,6 @@
 export interface StandingsModel {
-  Team: string;
-  'Actual Points': number;
-  'Simulated Points': number;
-  Division: string;
+  team: string;
+  actual_points: number;
+  simulated_points: number;
+  division: string;
 }
