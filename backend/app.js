@@ -32,7 +32,9 @@ function createDbConnection(filepath) {
       return console.error(error.message);
     }
   });
-  console.log("Connection with SQLite has been established for database: " + filepath);
+  console.log(
+    "Connection with SQLite has been established for database: " + filepath
+  );
   return db;
 }
 
@@ -181,29 +183,26 @@ app.get("/players/name", (req, res, next) => {
 });
 
 app.get("/standings", (req, res, next) => {
-    const params = req.params;
-    const query = `SELECT * FROM standings
+  const params = req.params;
+  const query = `SELECT * FROM standings
     WHERE last_updated = (SELECT MAX(last_updated) FROM standings);`;
-    standings_db.all(query,
-       params,
-      (err, standingsRows) => {
-      if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-      } else {
-        let rows = standingsRows.map((standingsRow) => ({
-            teamId: Number(standingsRow.team_id),
-            teamName: standingsRow.team,
-            simulatedPoints: standingsRow.simulated_points,
-            actualPoints: Number(standingsRow.actual_points),
-            division: standingsRow.division,
-            lastUpdated: standingsRow.last_updated,
-          }));
-        res.status(200).json(rows);
-        }
-      }
-    );
+  standings_db.all(query, params, (err, standingsRows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    } else {
+      let rows = standingsRows.map((standingsRow) => ({
+        teamId: Number(standingsRow.team_id),
+        teamName: standingsRow.team,
+        simulatedPoints: standingsRow.simulated_points,
+        actualPoints: Number(standingsRow.actual_points),
+        division: standingsRow.division,
+        lastUpdated: standingsRow.last_updated,
+      }));
+      res.status(200).json(rows);
+    }
   });
+});
 
 //Cards
 app.get("/players/card/:id", (req, res, next) => {
@@ -623,174 +622,209 @@ app.get("/players_no_percentile", (req, res, next) => {
 });
 
 app.get("/teams/:id", (req, res, next) => {
-    const id = Number(req.query.id);
+  const id = Number(req.query.id);
 
-    db.get(
-      `SELECT * FROM teams
+  db.get(
+    `SELECT * FROM teams
                 WHERE team_id = ?`,
-      [id],
-      (err, row) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-          return;
-        }
-
-        if (row) {
-          const response = {
-            teamName: row.team_name,
-            teamId: Number(row.team_id),
-            location: row.location,
-            teamAbbr: row.team_abbr,
-            conference: row.conference,
-            division: row.division,
-            primaryColor: row.primary_color,
-            secondaryColor: row.secondary_color,
-          };
-          res.status(200).json(response);
-        }
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
       }
-    );
-  });
 
-  app.get("/teams/roster/:id" , async (req, res, next) => {
-    const id = Number(req.params.id);
-    const teamIdsToAbbr = ({
-        1: "ANA", 2: "ARI", 3: "BOS", 4: "BUF", 5: "CGY", 6: "CAR", 7: "CHI", 8: "COL",
-        9: "CBJ", 10: "DAL", 11: "DET", 12: "EDM", 13: "FLA", 14: "LAK", 15: "MIN",
-        16: "MTL", 17: "NSH", 18: "NJD", 19: "NYI", 20: "NYR", 21: "OTT", 22: "PHI",
-        23: "PIT", 24: "SJS", 25: "SEA", 26: "STL", 27: "TBL", 28: "TOR", 29: "VAN",
-        30: "VGK", 31: "WSH", 32: "WPG" });
-    const teamAbbr = teamIdsToAbbr[id];
-    const data = await (
-      await fetch(`https://api-web.nhle.com/v1/roster/${teamAbbr}/current`)
-    ).json();
-
-    if (!data || !data.forwards || !data.defensemen || !data.goalies) {
-      return res.status(500).json({ error: "Internal Server Error" });
+      if (row) {
+        const response = {
+          teamName: row.team_name,
+          teamId: Number(row.team_id),
+          location: row.location,
+          teamAbbr: row.team_abbr,
+          conference: row.conference,
+          division: row.division,
+          primaryColor: row.primary_color,
+          secondaryColor: row.secondary_color,
+        };
+        res.status(200).json(response);
+      }
     }
+  );
+});
 
-    let forwards = [];
-    let defense = [];
-    let goalies = [];
+app.get("/teams/roster/:id", async (req, res, next) => {
+  const id = Number(req.params.id);
+  const teamIdsToAbbr = {
+    1: "ANA",
+    2: "ARI",
+    3: "BOS",
+    4: "BUF",
+    5: "CGY",
+    6: "CAR",
+    7: "CHI",
+    8: "COL",
+    9: "CBJ",
+    10: "DAL",
+    11: "DET",
+    12: "EDM",
+    13: "FLA",
+    14: "LAK",
+    15: "MIN",
+    16: "MTL",
+    17: "NSH",
+    18: "NJD",
+    19: "NYI",
+    20: "NYR",
+    21: "OTT",
+    22: "PHI",
+    23: "PIT",
+    24: "SJS",
+    25: "SEA",
+    26: "STL",
+    27: "TBL",
+    28: "TOR",
+    29: "VAN",
+    30: "VGK",
+    31: "WSH",
+    32: "WPG",
+  };
+  const teamAbbr = teamIdsToAbbr[id];
+  const data = await (
+    await fetch(`https://api-web.nhle.com/v1/roster/${teamAbbr}/current`)
+  ).json();
 
-    if (data.forwards && data.forwards.length > 0) {
-        forwards = data.forwards.map(forward => ({
-          id: forward.id,
-          headshot: forward.headshot,
-          fullName: `${forward.firstName.default} ${forward.lastName.default}`,
-          sweaterNumber: forward.sweaterNumber,
-          positionCode: forward.positionCode,
-          shootsCatches: forward.shootsCatches,
-        }));
-      }
+  if (!data || !data.forwards || !data.defensemen || !data.goalies) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 
-    if (data.goalies && data.goalies.length > 0) {
-        goalies = data.goalies.map(goalie => ({
-          id: goalie.id,
-          headshot: goalie.headshot,
-          fullName: `${goalie.firstName.default} ${goalie.lastName.default}`,
-          sweaterNumber: goalie.sweaterNumber,
-          positionCode: goalie.positionCode,
-          shootsCatches: goalie.shootsCatches,
-        }));
-    }
+  let forwards = [];
+  let defense = [];
+  let goalies = [];
 
-    if (data.defensemen && data.defensemen.length > 0) {
-        defense = data.defensemen.map(defenseman => ({
-          id: defenseman.id,
-          headshot: defenseman.headshot,
-          fullName: `${defenseman.firstName.default} ${defenseman.lastName.default}`,
-          sweaterNumber: defenseman.sweaterNumber,
-          positionCode: defenseman.positionCode,
-          shootsCatches: defenseman.shootsCatches,
-        }));
-      }
+  if (data.forwards && data.forwards.length > 0) {
+    forwards = data.forwards.map((forward) => ({
+      id: forward.id,
+      headshot: forward.headshot,
+      fullName: `${forward.firstName.default} ${forward.lastName.default}`,
+      sweaterNumber: forward.sweaterNumber,
+      positionCode: forward.positionCode,
+      shootsCatches: forward.shootsCatches,
+    }));
+  }
 
-    const roster = {
-        "goalies": goalies,
-        "forwards": forwards,
-       "defense": defense,
-    };
-    res.status(200).json(roster);
-  });
+  if (data.goalies && data.goalies.length > 0) {
+    goalies = data.goalies.map((goalie) => ({
+      id: goalie.id,
+      headshot: goalie.headshot,
+      fullName: `${goalie.firstName.default} ${goalie.lastName.default}`,
+      sweaterNumber: goalie.sweaterNumber,
+      positionCode: goalie.positionCode,
+      shootsCatches: goalie.shootsCatches,
+    }));
+  }
+
+  if (data.defensemen && data.defensemen.length > 0) {
+    defense = data.defensemen.map((defenseman) => ({
+      id: defenseman.id,
+      headshot: defenseman.headshot,
+      fullName: `${defenseman.firstName.default} ${defenseman.lastName.default}`,
+      sweaterNumber: defenseman.sweaterNumber,
+      positionCode: defenseman.positionCode,
+      shootsCatches: defenseman.shootsCatches,
+    }));
+  }
+
+  const roster = {
+    goalies: goalies,
+    forwards: forwards,
+    defense: defense,
+  };
+  res.status(200).json(roster);
+});
 
 app.get("/teams/standings/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    standings_db.get(
-      `SELECT * FROM standings
+  const id = Number(req.params.id);
+  standings_db.get(
+    `SELECT * FROM standings
        WHERE team_id = ?
        AND last_updated = (SELECT MAX(last_updated) FROM standings WHERE team_id = ?)`,
-      [id, id],
-      (err, row) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-          return;
-        }
-
-        if (row) {
-          const response = {
-            teamId: Number(row.team_id),
-            teamName: row.team,
-            simulatedPoints: row.simulated_points,
-            actualPoints: Number(row.actual_points),
-            division: row.division,
-            lastUpdated: row.last_updated,
-          };
-          res.status(200).json(response);
-        }
+    [id, id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
       }
-    );
-  });
 
-  app.get("/teams/card/:id", (req, res, next) => {
-    const id = Number(req.params.id);
-    const season = 20232024; // need to remove this hardcoding
-    teams_db.get(
-      `SELECT * FROM teams
-       WHERE team_id = ? AND season = ?`,
-      [id, season],
-      (err, row) => {
-        if (err) {
-          res.status(400).json({ error: err.message });
-          return;
-        }
-
-        if (row) {
-          const response = {
-            teamId: Number(row.team_id),
-            teamName: row.team_name,
-            season: row.season,
-            wins: row.wins,
-            losses: row.losses,
-            otl: row.otl,
-            gf: row.gf,
-            ga: row.ga,
-            points: row.points,
-            gamesPlayed: row.games_played,
-            division: row.division,
-            ev_xGF: row.ev_xGF,
-            ev_xGA: row.ev_xGA,
-            xGF: row.xGF,
-            xGA: row.xGA,
-            l10Wins: row.l10Wins,
-            l10Losses: row.l10Losses,
-            l10Otl: row.l10Otl,
-            leagueRank: row.leagueRank,
-            divisionRank: row.divisionRank,
-            pp: row.pp,
-            pk: row.pk,
-            gfNonEmpty: row.gf_non_empty,
-            gaNonEmpty: row.ga_non_empty,
-            finishing: row.finishing,
-            gsax: row.gsax,
-            xGPercentage: row.xGPercentage,
-          };
-          res.status(200).json(response);
-        }
+      if (row) {
+        const response = {
+          teamId: Number(row.team_id),
+          teamName: row.team,
+          simulatedPoints: row.simulated_points,
+          actualPoints: Number(row.actual_points),
+          division: row.division,
+          lastUpdated: row.last_updated,
+        };
+        res.status(200).json(response);
       }
-    );
-  });
+    }
+  );
+});
 
+app.get("/teams/card/:id", (req, res, next) => {
+  const id = Number(req.params.id);
+  const season = 20232024; // need to remove this hardcoding
+  teams_db.get(
+    `SELECT *, max_last_updated
+      FROM teams, last_updated
+      WHERE team_id = ? and season = ?`,
+    [id, season],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (row) {
+        const response = {
+          teamId: Number(row.team_id),
+          teamName: row.team_name,
+          season: row.season,
+          wins: row.wins,
+          losses: row.losses,
+          otl: row.otl,
+          gf: row.gf,
+          ga: row.ga,
+          points: row.points,
+          gamesPlayed: row.games_played,
+          division: row.division,
+          ev_xGF: row.ev_xGF,
+          ev_xGFRank: row.ev_xGF_rank,
+          ev_xGA: row.ev_xGA,
+          ev_xGARank: row.ev_xGA_rank,
+          xGF: row.xGF,
+          xGA: row.xGA,
+          l10Wins: row.l10Wins,
+          l10Losses: row.l10Losses,
+          l10Otl: row.l10Otl,
+          leagueRank: row.leagueRank,
+          divisionRank: row.divisionRank,
+          pp: row.pp,
+          ppRank: row.pp_rank,
+          pk: row.pk,
+          pkRank: row.pk_rank,
+          gfNonEmpty: row.gf_non_empty,
+          gaNonEmpty: row.ga_non_empty,
+          finishing: row.finishing,
+          finishingRank: row.finishing_rank,
+          gsax: row.gsax,
+          gsaxRank: row.gsax_rank,
+          xGPercentage: row.xGPercentage,
+          xGPercentageRank: row.xGPercentage_rank,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "index.html"));

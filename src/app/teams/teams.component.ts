@@ -113,7 +113,7 @@ export class TeamsComponent implements AfterViewInit {
     return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
   }
 
-  getRankPostfix(rank: number | undefined): string {
+  getPostfix(rank: number | undefined): string {
     if (rank === undefined) {
       return '';
     }

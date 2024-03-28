@@ -27,18 +27,29 @@
                   <li>
                     <strong>
                       {{ data.team?.teamAbbr }} -
-                      {{ data.team?.conference }} Conference -
+                      {{ data.team?.conference }} Conf. -
                       {{ data.team?.division }} Division
                     </strong>
                   </li>
                   <li style="text-align: center">
-                    {{ getRankPostfix(data.teamCard?.leagueRank) }} in League |
-                    {{ getRankPostfix(data.teamCard?.divisionRank) }} in
-                    Division
+                    {{ getPostfix(data.teamCard?.leagueRank) }} in League |
+                    {{ getPostfix(data.teamCard?.divisionRank) }} in Division
+                  </li>
+                </ul>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="team-card border">
+              <mat-card-content style="margin-top: 3px">
+                <mat-card-title class="roster-title"
+                  >2024 Team Stats</mat-card-title
+                >
+                <ul>
+                  <li>
+                    <strong>Games Played: </strong>
+                    {{ data.teamCard?.gamesPlayed }}
                   </li>
                   <li>
-                    <strong>GP: </strong>
-                    {{ data.teamCard?.gamesPlayed }} <strong>Record: </strong>
+                    <strong>Record: </strong>
                     {{ data.teamCard?.wins }}-{{ data.teamCard?.losses }}-{{
                       data.teamCard?.otl
                     }}
@@ -51,54 +62,60 @@
                     <strong>Actual Points:</strong>
                     {{ data.standings?.actualPoints }}
                     <strong>Simulated Points:</strong>
-                    {{ data.standings?.simulatedPoints }}
+                    {{ roundNumber(data.standings?.simulatedPoints, 2) }}
                   </li>
-                </ul>
-              </mat-card-content>
-            </mat-card>
-            <mat-card class="team-card border">
-              <mat-card-content style="margin-top: 3px">
-                <mat-card-title class="roster-title">Team Stats</mat-card-title>
-                <ul>
+                  <br />
                   <li>
                     <strong>Goals For: </strong>
                     {{ data.teamCard?.gf }}
-                    <strong>xGF: </strong>
-                    {{ roundNumber(data.teamCard?.xGF, 2) }}
-                    <strong>ΔGF: </strong>
                   </li>
+                  <li>
+                    <strong>EV xGF: </strong>
+                    {{ roundNumber(data.teamCard?.ev_xGF, 2) }}
+                    ({{ getPostfix(data.teamCard?.ev_xGFRank) }} of 32)
+                  </li>
+                  <br />
                   <li>
                     <strong>Goals Against: </strong>
-                    {{ data.teamCard?.ga }} <strong> xGA: </strong>
-                    {{ roundNumber(data.teamCard?.xGA, 2) }}
-                    <strong>ΔGA: </strong>
+                    {{ data.teamCard?.ga }}
                   </li>
                   <li>
-                    <strong>Finishing:</strong>
-                    {{ roundNumber(data.teamCard?.finishing, 2) }}
-                    (getRankPostfix(data.teamCard?.finishingRank) of 32)
+                    <strong>EV xGA: </strong>
+                    {{ roundNumber(data.teamCard?.ev_xGA, 2) }}
+                    ({{ getPostfix(data.teamCard?.ev_xGARank) }} of 32)
+                  </li>
+                  <br />
+                  <li>
+                    <strong>xG Percent:</strong>
+                    {{ percentNumber(data.teamCard?.xGPercentage, 2) }}% ({{
+                      getPostfix(data.teamCard?.xGPercentageRank)
+                    }}
+                    of 32)
                   </li>
                   <li>
                     <strong>GSAx:</strong>
                     {{ roundNumber(data.teamCard?.gsax, 2) }}
+                    ({{ getPostfix(data.teamCard?.gsaxRank) }} of 32)
+                  </li>
+                  <li>
+                    <strong>Finishing:</strong>
+                    {{ roundNumber(data.teamCard?.finishing, 2) }}
+                    ({{ getPostfix(data.teamCard?.finishingRank) }} of 32)
                   </li>
                   <li>
                     <strong>PP Percent:</strong>
-                    {{ percentNumber(data.teamCard?.pp, 2) }}%
+                    {{ percentNumber(data.teamCard?.pp, 2) }}% ({{
+                      getPostfix(data.teamCard?.ppRank)
+                    }}
+                    of 32)
                   </li>
                   <li>
                     <strong>PK Percent:</strong>
-                    {{ percentNumber(data.teamCard?.pk, 2) }}%
+                    {{ percentNumber(data.teamCard?.pk, 2) }}% ({{
+                      getPostfix(data.teamCard?.pkRank)
+                    }}
+                    of 32)
                   </li>
-                  <li>
-                    <strong>xG share:</strong>
-                    {{ percentNumber(data.teamCard?.xGPercentage, 2) }}%
-                  </li>
-                  <img
-                    src="{{ 'assets/' + data.team?.teamName + '1.png' }}"
-                    alt="{{ data.team?.teamName }} Logo"
-                    class="team-logo"
-                  />
                 </ul>
               </mat-card-content>
             </mat-card>
@@ -134,7 +151,7 @@
                   Defense ({{ defense.length }})
                 </mat-card-title>
                 <ng-container *ngFor="let defenseman of defense">
-                  <!-- I don't think I like the position being hand + D -->
+                  <!-- I don't think I like the position being hand + D, see what neil thinks -->
                   <!-- Also, I thought that player pages without a year should default to current but it doesn't -->
                   <a
                     [routerLink]="['/', defenseman.playerId, 'year', 2024]"
