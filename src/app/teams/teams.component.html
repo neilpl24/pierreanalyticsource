@@ -5,6 +5,7 @@
       <ng-container
         *ngIf="{
              team: team$ | async,
+             teamCard: teamCard$ | async,
              standings: standings$ | async,
              roster: roster$ | async,
             } as data"
@@ -22,22 +23,83 @@
                   class="team-logo"
                 />
                 <hr class="divide-line" />
-                <p><strong>Abbreviation:</strong> {{ data.team?.teamAbbr }}</p>
-                <p><strong>Conference:</strong> {{ data.team?.conference }}</p>
-                <p><strong>Division:</strong> {{ data.team?.division }}</p>
-                <p>
-                  <strong>Actual Points:</strong>
-                  {{ data.standings?.actualPoints }}
-                </p>
-                <p>
-                  <strong>Simulated Points:</strong>
-                  {{ data.standings?.simulatedPoints }}
-                </p>
+                <ul>
+                  <li>
+                    <strong>
+                      {{ data.team?.teamAbbr }} -
+                      {{ data.team?.conference }} Conference -
+                      {{ data.team?.division }} Division
+                    </strong>
+                  </li>
+                  <li style="text-align: center">
+                    {{ getRankPostfix(data.teamCard?.leagueRank) }} in League |
+                    {{ getRankPostfix(data.teamCard?.divisionRank) }} in
+                    Division
+                  </li>
+                  <li>
+                    <strong>GP: </strong>
+                    {{ data.teamCard?.gamesPlayed }} <strong>Record: </strong>
+                    {{ data.teamCard?.wins }}-{{ data.teamCard?.losses }}-{{
+                      data.teamCard?.otl
+                    }}
+                    <strong>Last Ten: </strong>
+                    {{ data.teamCard?.l10Wins }}-{{
+                      data.teamCard?.l10Losses
+                    }}-{{ data.teamCard?.l10Otl }}
+                  </li>
+                  <li>
+                    <strong>Actual Points:</strong>
+                    {{ data.standings?.actualPoints }}
+                    <strong>Simulated Points:</strong>
+                    {{ data.standings?.simulatedPoints }}
+                  </li>
+                </ul>
               </mat-card-content>
             </mat-card>
             <mat-card class="team-card border">
               <mat-card-content style="margin-top: 3px">
                 <mat-card-title class="roster-title">Team Stats</mat-card-title>
+                <ul>
+                  <li>
+                    <strong>Goals For: </strong>
+                    {{ data.teamCard?.gf }}
+                    <strong>xGF: </strong>
+                    {{ roundNumber(data.teamCard?.xGF, 2) }}
+                    <strong>ΔGF: </strong>
+                  </li>
+                  <li>
+                    <strong>Goals Against: </strong>
+                    {{ data.teamCard?.ga }} <strong> xGA: </strong>
+                    {{ roundNumber(data.teamCard?.xGA, 2) }}
+                    <strong>ΔGA: </strong>
+                  </li>
+                  <li>
+                    <strong>Finishing:</strong>
+                    {{ roundNumber(data.teamCard?.finishing, 2) }}
+                    (getRankPostfix(data.teamCard?.finishingRank) of 32)
+                  </li>
+                  <li>
+                    <strong>GSAx:</strong>
+                    {{ roundNumber(data.teamCard?.gsax, 2) }}
+                  </li>
+                  <li>
+                    <strong>PP Percent:</strong>
+                    {{ percentNumber(data.teamCard?.pp, 2) }}%
+                  </li>
+                  <li>
+                    <strong>PK Percent:</strong>
+                    {{ percentNumber(data.teamCard?.pk, 2) }}%
+                  </li>
+                  <li>
+                    <strong>xG share:</strong>
+                    {{ percentNumber(data.teamCard?.xGPercentage, 2) }}%
+                  </li>
+                  <img
+                    src="{{ 'assets/' + data.team?.teamName + '1.png' }}"
+                    alt="{{ data.team?.teamName }} Logo"
+                    class="team-logo"
+                  />
+                </ul>
               </mat-card-content>
             </mat-card>
           </div>
@@ -59,7 +121,8 @@
                     [routerLink]="['/', forward.playerId, 'year', '2024']"
                     class="plain-link"
                   >
-                    #{{ forward.sweaterNumber }} {{ forward.fullName }} -
+                    #{{ getSweaterNumber(forward.sweaterNumber) }}
+                    {{ forward.fullName }} -
                     {{ forward.positionCode }}
                   </a>
                 </ng-container>
@@ -77,8 +140,9 @@
                     [routerLink]="['/', defenseman.playerId, 'year', 2024]"
                     class="plain-link"
                   >
-                    #{{ defenseman.sweaterNumber }} {{ defenseman.fullName }} -
-                    {{ defenseman.shootsCatches }}{{ defenseman.positionCode }}
+                    #{{ getSweaterNumber(defenseman.sweaterNumber) }}
+                    {{ defenseman.fullName }} - {{ defenseman.shootsCatches
+                    }}{{ defenseman.positionCode }}
                   </a>
                 </ng-container>
               </ng-container>
@@ -92,7 +156,8 @@
                     [routerLink]="['/', goalie.playerId, 'year', 2024]"
                     class="plain-link"
                   >
-                    #{{ goalie.sweaterNumber }} {{ goalie.fullName }} -
+                    #{{ getSweaterNumber(goalie.sweaterNumber) }}
+                    {{ goalie.fullName }} -
                     {{ goalie.shootsCatches }}
                   </a>
                 </ng-container>

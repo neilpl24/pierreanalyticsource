@@ -23,13 +23,15 @@ app.listen(PORT, () => {
 db = createDbConnection("./player_stats.db");
 standings_db = createDbConnection("./standings.db");
 shots_db = createDbConnection("./shots.db");
+teams_db = createDbConnection("./team_stats.db");
+
 function createDbConnection(filepath) {
   const db = new sqlite3.Database(filepath, (error) => {
     if (error) {
       return console.error(error.message);
     }
   });
-  console.log("Connection with SQLite has been established");
+  console.log("Connection with SQLite has been established for database: " + filepath);
   return db;
 }
 
@@ -47,7 +49,7 @@ function getPlayers(filters, table) {
     }
   }
   let querySegments = [
-    `WITH team_ids AS ( SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
   ];
   let query = [];
   let params = [];
@@ -176,7 +178,8 @@ app.get("/players/name", (req, res, next) => {
 
 app.get("/standings", (req, res, next) => {
     const params = req.params;
-    const query = `SELECT * FROM STANDINGS2 WHERE last_updated = (SELECT MAX(last_updated) FROM standings2);`;
+    const query = `SELECT * FROM standings
+    WHERE last_updated = (SELECT MAX(last_updated) FROM standings);`;
     standings_db.all(query,
        params,
       (err, standingsRows) => {
@@ -187,7 +190,7 @@ app.get("/standings", (req, res, next) => {
         let rows = standingsRows.map((standingsRow) => ({
             teamId: Number(standingsRow.team_id),
             teamName: standingsRow.team,
-            simulatedPoints: standingsRow.simulation_points,
+            simulatedPoints: standingsRow.simulated_points,
             actualPoints: Number(standingsRow.actual_points),
             division: standingsRow.division,
             lastUpdated: standingsRow.last_updated,
@@ -730,11 +733,10 @@ app.get("/teams/:id", (req, res, next) => {
   });
 
 
-// need to add this to the app.js file once it works
 app.get("/teams/standings/:id", (req, res, next) => {
     const id = Number(req.params.id);
     standings_db.get(
-      `SELECT * FROM standings2
+      `SELECT * FROM standings
        WHERE team_id = ?
        AND last_updated = (SELECT MAX(last_updated) FROM standings2 WHERE team_id = ?)`,
       [id, id],
@@ -748,10 +750,59 @@ app.get("/teams/standings/:id", (req, res, next) => {
           const response = {
             teamId: Number(row.team_id),
             teamName: row.team,
-            simulatedPoints: row.simulation_points,
+            simulatedPoints: row.simulated_points,
             actualPoints: row.actual_points,
             division: row.division,
             lastUpdated: row.last_updated,
+          };
+          res.status(200).json(response);
+        }
+      }
+    );
+  });
+
+  app.get("/teams/card/:id", (req, res, next) => {
+    const id = Number(req.params.id);
+    const season = 20232024;
+    teams_db.get(
+      `SELECT * FROM teams
+       WHERE team_id = ? and season = ?`,
+      [id, season],
+      (err, row) => {
+        if (err) {
+          res.status(400).json({ error: err.message });
+          return;
+        }
+
+        if (row) {
+          const response = {
+            teamId: Number(row.team_id),
+            teamName: row.team_name,
+            season: row.season,
+            wins: row.wins,
+            losses: row.losses,
+            otl: row.otl,
+            gf: row.gf,
+            ga: row.ga,
+            points: row.points,
+            gamesPlayed: row.games_played,
+            division: row.division,
+            ev_xGF: row.ev_xGF,
+            ev_xGA: row.ev_xGA,
+            xGF: row.xGF,
+            xGA: row.xGA,
+            l10Wins: row.l10Wins,
+            l10Losses: row.l10Losses,
+            l10Otl: row.l10Otl,
+            leagueRank: row.leagueRank,
+            divisionRank: row.divisionRank,
+            pp: row.pp,
+            pk: row.pk,
+            gfNonEmpty: row.gf_non_empty,
+            gaNonEmpty: row.ga_non_empty,
+            finishing: row.finishing,
+            gsax: row.gsax,
+            xGPercentage: row.xGPercentage,
           };
           res.status(200).json(response);
         }

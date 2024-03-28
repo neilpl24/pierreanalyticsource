@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { TeamModel } from 'src/models/team.model';
 import { StandingsModel } from 'src/models/standings.model';
 import { RosterModel } from 'src/models/roster.model';
+import { TeamCardModel } from 'src/models/team-card.model';
 
 
 @Injectable({
@@ -17,6 +18,7 @@ export class TeamsService {
     public team$: Observable<TeamModel | null>;
     public standings$: Observable<StandingsModel | null>;
     public roster$: Observable<RosterModel | null>;
+    public teamCard$: Observable<TeamCardModel | null>;
 
     public getTeam(
         teamId: number
@@ -62,6 +64,22 @@ export class TeamsService {
 
         return this.http.get<RosterModel[]>(
         `${this.baseUrl}/teams/roster/${teamId}`,
+        { params, headers }
+        );
+    }
+
+    public getTeamCard(
+        teamId: string
+    ): Observable<TeamCardModel> {
+        const headers = new HttpHeaders().set(
+        'Content-Type',
+        'application/json; charset=utf-8'
+        );
+        let params = new HttpParams();
+        params = params.append('teamId', teamId.toString());
+
+        return this.http.get<TeamCardModel>(
+        `${this.baseUrl}/teams/card/${teamId}`,
         { params, headers }
         );
     }

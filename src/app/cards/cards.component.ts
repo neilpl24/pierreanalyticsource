@@ -274,25 +274,26 @@ export class CardsComponent implements AfterViewInit, OnInit {
     return this.getSkaterPercentiles(card);
   }
 
-   convertHeight(height: string): string {
+  convertHeight(height: string): string {
     // NHL API changed heights from feet and inches to inches
     // 75.0 -> 6' 3"
 
     if (height.includes("'")) {
-        return height; // pre-api change, return the height as is
+      return height; // pre-api change, return the height as is
     }
 
     // convert the height (from inches -> feet and inches)
     let inches = parseFloat(height);
     if (isNaN(inches)) {
-        return height; // if the height is not a number, just return whatever it was before we tried to convert it
+      return height; // if the height is not a number, just return whatever it was before we tried to convert it
     }
 
     // convert to feet and inches
     let feet = Math.floor(inches / 12);
     let remainingInches = inches % 12;
-    return feet + "' " + remainingInches + "\"";
-   }
+    console.log(feet, remainingInches);
+    return feet + "' " + remainingInches + '"';
+  }
 
   getSkaterPercentiles(card: CardModel): number[] {
     return [

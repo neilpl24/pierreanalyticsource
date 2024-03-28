@@ -79,6 +79,12 @@
   height: auto;
 }
 
+ul {
+  list-style-type: none; /* removes the bullet points */
+  padding: 0;
+  margin: 0;
+}
+
 @media only screen and (max-width: 1000px) {
   .team-logo {
     width: 200px;

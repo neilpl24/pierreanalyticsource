@@ -1,0 +1,29 @@
+export interface TeamCardModel {
+    teamName: string;
+    teamId: number;
+    season: number;
+    wins: number;
+    losses: number;
+    otl: number;
+    gf: number;
+    ga: number;
+    points: number;
+    gamesPlayed: number;
+    division: string;
+    ev_xGF: number;
+    ev_xGA: number;
+    xGF: number;
+    xGA: number;
+    l10Wins: number;
+    l10Losses: number;
+    l10Otl: number;
+    leagueRank: number;
+    divisionRank: number;
+    pp: number;
+    pk: number;
+    gfNonEmpty: number;
+    gaNonEmpty: number;
+    finishing: number;
+    gsax: number;
+    xGPercentage: number;
+}
