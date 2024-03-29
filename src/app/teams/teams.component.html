@@ -10,178 +10,201 @@
              roster: roster$ | async,
             } as data"
       >
-        <div class="row">
-          <div class="card-container">
-            <mat-card class="team-card border">
-              <mat-card-content style="margin-top: 3px">
-                <mat-card-title class="team-name">
-                  {{ data.team?.teamName }}
-                </mat-card-title>
-                <img
-                  src="{{ 'assets/' + data.team?.teamName + '.png' }}"
-                  alt="{{ data.team?.teamName }} Logo"
-                  class="team-logo"
-                />
-                <hr class="divide-line" />
-                <ul>
-                  <li>
-                    <strong>
-                      {{ data.team?.teamAbbr }} -
-                      {{ data.team?.conference }} Conf. -
-                      {{ data.team?.division }} Division
-                    </strong>
-                  </li>
-                  <li style="text-align: center">
-                    {{ getPostfix(data.teamCard?.leagueRank) }} in League |
-                    {{ getPostfix(data.teamCard?.divisionRank) }} in Division
-                  </li>
-                </ul>
-              </mat-card-content>
-            </mat-card>
-            <mat-card class="team-card border">
-              <mat-card-content style="margin-top: 3px">
-                <mat-card-title class="roster-title"
-                  >2024 Team Stats</mat-card-title
+        <ng-container *ngIf="data.team as team">
+          <ng-container *ngIf="data.teamCard as teamCard">
+            <ng-container *ngIf="data.standings as standings">
+              <div class="row">
+                <div class="card-container">
+                  <mat-card class="team-card border">
+                    <mat-card-content class="team-card-style">
+                      <mat-card-title class="team-name">
+                        {{ team.teamName }}
+                      </mat-card-title>
+                      <img
+                        src="{{ 'assets/' + team.teamName + '.png' }}"
+                        alt="{{ team.teamName }} Logo"
+                        class="team-logo"
+                      />
+                      <hr class="divide-line" />
+                      <ul>
+                        <li>
+                          <strong>
+                            {{ team.teamAbbr }} - {{ team.conference }} Conf. -
+                            {{ team.division }} Division
+                          </strong>
+                        </li>
+                        <li style="text-align: center">
+                          {{ getPostfix(teamCard.leagueRank) }} in League |
+                          {{ getPostfix(teamCard.divisionRank) }} in Division
+                        </li>
+                      </ul>
+                    </mat-card-content>
+                  </mat-card>
+                  <mat-card class="team-card border">
+                    <mat-card-content style="margin-top: 3px">
+                      <mat-card-title class="roster-title"
+                        >{{ hyphenate(teamCard.season) }} Team
+                        Stats</mat-card-title
+                      >
+                      <ul>
+                        <li>
+                          <strong>Games Played: </strong>
+                          {{ teamCard.gamesPlayed }}
+                        </li>
+                        <li>
+                          <strong>Record: </strong>
+                          {{ teamCard.wins }}-{{ teamCard.losses }}-{{
+                            teamCard.otl
+                          }}
+                          <strong>Last Ten: </strong>
+                          {{ teamCard.l10Wins }}-{{ teamCard.l10Losses }}-{{
+                            teamCard.l10Otl
+                          }}
+                        </li>
+                        <li>
+                          <strong>Actual Points:</strong>
+                          {{ standings.actualPoints }}
+                          <strong>Simulated Points:</strong>
+                          {{ roundNumber(standings.simulatedPoints, 2) }}
+                        </li>
+                        <li>
+                          <strong>Actual - Simulated:</strong>
+                          {{
+                            roundNumber(
+                              standings.actualPoints -
+                                standings.simulatedPoints,
+                              2
+                            )
+                          }}
+                        </li>
+                        <br />
+                        <li>
+                          <strong>Goals For: </strong>
+                          {{ teamCard.gf }}
+                        </li>
+                        <li>
+                          <strong>EV xGF: </strong>
+                          {{ roundNumber(teamCard.ev_xGF, 2) }}
+                          ({{ getPostfix(teamCard.ev_xGFRank) }} of 32)
+                        </li>
+                        <br />
+                        <li>
+                          <strong>Goals Against: </strong>
+                          {{ teamCard.ga }}
+                        </li>
+                        <li>
+                          <strong>EV xGA: </strong>
+                          {{ roundNumber(teamCard.ev_xGA, 2) }}
+                          ({{ getPostfix(teamCard.ev_xGARank) }} of 32)
+                        </li>
+                        <br />
+                        <li>
+                          <strong>xG Percent:</strong>
+                          {{ percentNumber(teamCard.xGPercentage, 2) }}% ({{
+                            getPostfix(teamCard.xGPercentageRank)
+                          }}
+                          of 32)
+                        </li>
+                        <li>
+                          <strong>GSAx:</strong>
+                          {{ roundNumber(teamCard.gsax, 2) }}
+                          ({{ getPostfix(teamCard.gsaxRank) }} of 32)
+                        </li>
+                        <li>
+                          <strong>Finishing:</strong>
+                          {{ roundNumber(teamCard.finishing, 2) }}
+                          ({{ getPostfix(teamCard.finishingRank) }} of 32)
+                        </li>
+                        <li>
+                          <strong>PP Percent:</strong>
+                          {{ percentNumber(teamCard.pp, 2) }}% ({{
+                            getPostfix(teamCard.ppRank)
+                          }}
+                          of 32)
+                        </li>
+                        <li>
+                          <strong>PK Percent:</strong>
+                          {{ percentNumber(teamCard.pk, 2) }}% ({{
+                            getPostfix(teamCard.pkRank)
+                          }}
+                          of 32)
+                        </li>
+                      </ul>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+              <mat-card class="border">
+                <mat-card-title
+                  class="roster-title"
+                  [matTooltip]="getTooltip('roster')"
+                  matTooltipPosition="above"
+                  >NHL Roster</mat-card-title
                 >
-                <ul>
-                  <li>
-                    <strong>Games Played: </strong>
-                    {{ data.teamCard?.gamesPlayed }}
-                  </li>
-                  <li>
-                    <strong>Record: </strong>
-                    {{ data.teamCard?.wins }}-{{ data.teamCard?.losses }}-{{
-                      data.teamCard?.otl
-                    }}
-                    <strong>Last Ten: </strong>
-                    {{ data.teamCard?.l10Wins }}-{{
-                      data.teamCard?.l10Losses
-                    }}-{{ data.teamCard?.l10Otl }}
-                  </li>
-                  <li>
-                    <strong>Actual Points:</strong>
-                    {{ data.standings?.actualPoints }}
-                    <strong>Simulated Points:</strong>
-                    {{ roundNumber(data.standings?.simulatedPoints, 2) }}
-                  </li>
-                  <br />
-                  <li>
-                    <strong>Goals For: </strong>
-                    {{ data.teamCard?.gf }}
-                  </li>
-                  <li>
-                    <strong>EV xGF: </strong>
-                    {{ roundNumber(data.teamCard?.ev_xGF, 2) }}
-                    ({{ getPostfix(data.teamCard?.ev_xGFRank) }} of 32)
-                  </li>
-                  <br />
-                  <li>
-                    <strong>Goals Against: </strong>
-                    {{ data.teamCard?.ga }}
-                  </li>
-                  <li>
-                    <strong>EV xGA: </strong>
-                    {{ roundNumber(data.teamCard?.ev_xGA, 2) }}
-                    ({{ getPostfix(data.teamCard?.ev_xGARank) }} of 32)
-                  </li>
-                  <br />
-                  <li>
-                    <strong>xG Percent:</strong>
-                    {{ percentNumber(data.teamCard?.xGPercentage, 2) }}% ({{
-                      getPostfix(data.teamCard?.xGPercentageRank)
-                    }}
-                    of 32)
-                  </li>
-                  <li>
-                    <strong>GSAx:</strong>
-                    {{ roundNumber(data.teamCard?.gsax, 2) }}
-                    ({{ getPostfix(data.teamCard?.gsaxRank) }} of 32)
-                  </li>
-                  <li>
-                    <strong>Finishing:</strong>
-                    {{ roundNumber(data.teamCard?.finishing, 2) }}
-                    ({{ getPostfix(data.teamCard?.finishingRank) }} of 32)
-                  </li>
-                  <li>
-                    <strong>PP Percent:</strong>
-                    {{ percentNumber(data.teamCard?.pp, 2) }}% ({{
-                      getPostfix(data.teamCard?.ppRank)
-                    }}
-                    of 32)
-                  </li>
-                  <li>
-                    <strong>PK Percent:</strong>
-                    {{ percentNumber(data.teamCard?.pk, 2) }}% ({{
-                      getPostfix(data.teamCard?.pkRank)
-                    }}
-                    of 32)
-                  </li>
-                </ul>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-        <mat-card class="border">
-          <mat-card-title
-            class="roster-title"
-            [matTooltip]="getTooltip('roster')"
-            >NHL Roster</mat-card-title
-          >
-          <div class="roster-container">
-            <div class="roster-left row">
-              <ng-container *ngIf="forwards">
-                <mat-card-title class="position-name">
-                  Forwards ({{ forwards.length }})
-                </mat-card-title>
-                <ng-container *ngFor="let forward of forwards">
-                  <a
-                    [routerLink]="['/', forward.playerId, 'year', '2024']"
-                    class="plain-link"
-                  >
-                    #{{ getSweaterNumber(forward.sweaterNumber) }}
-                    {{ forward.fullName }} -
-                    {{ forward.positionCode }}
-                  </a>
-                </ng-container>
-              </ng-container>
-            </div>
-            <div class="roster-right row">
-              <ng-container *ngIf="defense">
-                <mat-card-title class="position-name">
-                  Defense ({{ defense.length }})
-                </mat-card-title>
-                <ng-container *ngFor="let defenseman of defense">
-                  <!-- I don't think I like the position being hand + D, see what neil thinks -->
-                  <!-- Also, I thought that player pages without a year should default to current but it doesn't -->
-                  <a
-                    [routerLink]="['/', defenseman.playerId, 'year', 2024]"
-                    class="plain-link"
-                  >
-                    #{{ getSweaterNumber(defenseman.sweaterNumber) }}
-                    {{ defenseman.fullName }} - {{ defenseman.shootsCatches
-                    }}{{ defenseman.positionCode }}
-                  </a>
-                </ng-container>
-              </ng-container>
-              <hr class="divide-line" />
-              <ng-container *ngIf="goalies">
-                <mat-card-title class="position-name">
-                  Goalies ({{ goalies.length }})
-                </mat-card-title>
-                <ng-container *ngFor="let goalie of goalies">
-                  <a
-                    [routerLink]="['/', goalie.playerId, 'year', 2024]"
-                    class="plain-link"
-                  >
-                    #{{ getSweaterNumber(goalie.sweaterNumber) }}
-                    {{ goalie.fullName }} -
-                    {{ goalie.shootsCatches }}
-                  </a>
-                </ng-container>
-              </ng-container>
-            </div>
-          </div>
-        </mat-card>
+                <div class="roster-container">
+                  <div class="roster-left row">
+                    <ng-container *ngIf="forwards">
+                      <mat-card-title class="position-name">
+                        Forwards ({{ forwards.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let forward of forwards">
+                        <a
+                          [routerLink]="['/', forward.playerId, 'year', '2024']"
+                          class="plain-link"
+                        >
+                          #{{ getSweaterNumber(forward.sweaterNumber) }}
+                          {{ forward.fullName }} -
+                          {{ forward.positionCode }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div class="roster-right row">
+                    <ng-container *ngIf="defense">
+                      <mat-card-title class="position-name">
+                        Defense ({{ defense.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let defenseman of defense">
+                        <!-- I don't think I like the position being hand + D, see what neil thinks -->
+                        <!-- Also, I thought that player pages without a year should default to current but it doesn't -->
+                        <a
+                          [routerLink]="[
+                            '/',
+                            defenseman.playerId,
+                            'year',
+                            2024
+                          ]"
+                          class="plain-link"
+                        >
+                          #{{ getSweaterNumber(defenseman.sweaterNumber) }}
+                          {{ defenseman.fullName }} -
+                          {{ defenseman.shootsCatches
+                          }}{{ defenseman.positionCode }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                    <hr class="divide-line" />
+                    <ng-container *ngIf="goalies">
+                      <mat-card-title class="position-name">
+                        Goalies ({{ goalies.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let goalie of goalies">
+                        <a
+                          [routerLink]="['/', goalie.playerId, 'year', 2024]"
+                          class="plain-link"
+                        >
+                          #{{ getSweaterNumber(goalie.sweaterNumber) }}
+                          {{ goalie.fullName }} -
+                          {{ goalie.shootsCatches }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </mat-card>
+            </ng-container>
+          </ng-container>
+        </ng-container>
       </ng-container>
     </div>
   </div>

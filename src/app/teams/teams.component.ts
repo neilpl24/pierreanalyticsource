@@ -107,6 +107,7 @@ export class TeamsComponent implements AfterViewInit {
   tooltipMappings: { [key: string]: string } = {
     roster:
       'Live rosters from NHL API. IR/LTIR players are included since they remain on the NHL roster.',
+    standings: 'Standings data from NHL API.',
   };
 
   getTooltip(key: string): string {
@@ -156,5 +157,12 @@ export class TeamsComponent implements AfterViewInit {
     }
     const factor = Math.pow(10, decimalPlaces);
     return Math.round(number * 100 * factor) / factor;
+  }
+  hyphenate(season: number): string {
+    const seasonStr = season.toString();
+    // Return the hyphenated season string
+    const year = seasonStr.slice(0, 4);
+    const nextYear = seasonStr.slice(4, 8);
+    return `${year}-${nextYear}`;
   }
 }

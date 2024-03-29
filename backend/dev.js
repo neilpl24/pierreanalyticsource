@@ -789,12 +789,11 @@ app.get("/teams/standings/:id", (req, res, next) => {
 
 app.get("/teams/card/:id", (req, res, next) => {
   const id = Number(req.params.id);
-  const season = 20232024;
   teams_db.get(
     `SELECT *
       FROM teams
-      WHERE team_id = ? and season = ?`,
-    [id, season],
+      WHERE team_id = ? and season = (SELECT MAX(season) FROM teams WHERE team_id = ?)`,
+    [id, id],
     (err, row) => {
       if (err) {
         res.status(400).json({ error: err.message });
