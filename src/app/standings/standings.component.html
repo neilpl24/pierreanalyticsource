@@ -1,6 +1,8 @@
 <nav-bar></nav-bar>
-<h1 class ="standings-header"> Standings </h1>
-<div class="last-updated"><p>Last Updated: {{ lastUpdated }} EST</p></div>
+<h1 class="standings-header">Standings</h1>
+<div class="last-updated">
+  <p>Last Updated: {{ lastUpdated }} EST</p>
+</div>
 <div class="standings-container">
   <mat-card class="division-card score-card" *ngFor="let division of divisions">
     <mat-card-header>
@@ -16,13 +18,13 @@
           </tr>
           <tr *ngFor="let team of groupByDivision(division)">
             <a [routerLink]="['/teams', team.teamId]">
-            <td>
-              <img
-                src="{{ 'assets/' + team.teamName + '.png' }}"
-                alt="{{ team.teamName }} Logo"
-                class="team-logo"
-              />
-            </td>
+              <td>
+                <img
+                  src="{{ 'assets/' + team.teamName + '.png' }}"
+                  alt="{{ team.teamName }} Logo"
+                  class="team-logo"
+                />
+              </td>
             </a>
             <td [ngStyle]="getActualPointsStyle(team.actualPoints)">
               {{ team.actualPoints | number : "1.0-0" }}

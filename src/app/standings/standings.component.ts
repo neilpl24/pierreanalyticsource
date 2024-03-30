@@ -15,7 +15,10 @@ export class StandingsComponent implements AfterViewInit {
   divisions = ['Metropolitan', 'Atlantic', 'Pacific', 'Central'];
   lastUpdated: string;
 
-  constructor(private scoresService: ScoresService, private datePipe: DatePipe ) {}
+  constructor(
+    private scoresService: ScoresService,
+    private datePipe: DatePipe
+  ) {}
 
   ngAfterViewInit(): void {
     this.getStandingsAndGroupByDivision();
