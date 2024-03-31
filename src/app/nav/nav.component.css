@@ -64,7 +64,13 @@ mat-form-field {
   }
 
   .mobile-button {
+    padding: 5px;
     background-color: black;
     color: white;
+    align-items: center;
+  }
+
+  .search-select-height {
+    margin-top: 10px;
   }
 }
