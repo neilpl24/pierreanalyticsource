@@ -35,6 +35,22 @@ export class TeamsComponent implements AfterViewInit {
 
   rankPostfix: string;
 
+  totalTeams = 32; // total number of teams in the NHL
+
+  // array of props to that have rank badges
+  rankProperties = [
+    // title is what is displayed on the badge
+    { colName: 'leagueRank', title: 'Lg.' },
+    { colName: 'divisionRank', title: 'Div.' },
+    { colName: 'xGPercentageRank', title: 'xG%' },
+    { colName: 'ev_xGFRank', title: 'xGF' },
+    { colName: 'ev_xGARank', title: 'xGA' },
+    { colName: 'gsaxRank', title: 'GSAx' },
+    { colName: 'finishingRank', title: 'Finish' },
+    { colName: 'ppRank', title: 'PP' },
+    { colName: 'pkRank', title: 'PK' },
+  ];
+
   ngAfterViewInit(): void {
     this.team$ = this.route.params.pipe(
       switchMap((params) => {
@@ -81,12 +97,24 @@ export class TeamsComponent implements AfterViewInit {
       tap((roster) => {
         if ('goalies' in roster) {
           this.goalies = roster['goalies'] as RosterModel;
+          this.goalies.sort(
+            (a: { sweaterNumber: number }, b: { sweaterNumber: number }) =>
+              a.sweaterNumber - b.sweaterNumber
+          );
         }
         if ('forwards' in roster) {
           this.forwards = roster['forwards'] as RosterModel;
+          this.forwards.sort(
+            (a: { sweaterNumber: number }, b: { sweaterNumber: number }) =>
+              a.sweaterNumber - b.sweaterNumber
+          );
         }
         if ('defense' in roster) {
           this.defense = roster['defense'] as RosterModel;
+          this.defense.sort(
+            (a: { sweaterNumber: number }, b: { sweaterNumber: number }) =>
+              a.sweaterNumber - b.sweaterNumber
+          );
         }
       })
     );
@@ -101,6 +129,73 @@ export class TeamsComponent implements AfterViewInit {
         }
       })
     );
+  }
+
+  getRankList(teamCard: TeamCardModel): { title: string; color: string }[] {
+    const rankList: { title: string; color: string }[] = [];
+
+    /* this might be one of the weirdest bugs I've seen
+      Filter does some sort of optimization to end the code early, and that means
+      that only having 1, 2, 3 in the array will return false, even if the value is 1, 2, or 3
+      it's "fixed" by adding a 4 to the end
+    */
+    const filteredRanks = this.rankProperties.filter((prop) => {
+      return Number(teamCard[prop.colName]) in [1, 2, 3, 4];
+    });
+
+    const rankValues = filteredRanks.map((prop) => ({
+      title: prop.title,
+      color: this.getRankColor(teamCard[prop.colName]),
+    }));
+
+    rankList.push(...rankValues); // Add other ranks (optional)
+    return rankList;
+  }
+
+  getBkgColor(rank: number): { background: string; color: string } {
+    const percentile = 100 - (rank / this.totalTeams) * 100;
+    return this.getPercentileColor(percentile);
+  }
+
+  getPercentileColor(percentile: number): {
+    background: string;
+    color: string;
+  } {
+    // borrowed from neil's standings.component.ts
+    // feels like it'd be better to have a package for color gradients since this is used in multiple places & the text-color changing is a bit hacky
+    if (percentile === 0) {
+      return { background: 'blue', color: 'white' };
+    } else if (percentile === 100) {
+      return { background: 'red', color: 'white' };
+    } else if (percentile <= 50) {
+      const blueValue = Math.round(percentile * 5.1);
+      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
+      if (percentile <= 10) {
+        return { background, color: 'white' };
+      }
+      return { background, color: 'black' };
+    } else {
+      const redValue = Math.round(255 - (percentile - 50) * 5.1);
+      const greyValue = Math.round(255 - (percentile - 50) * 5.1);
+      const background = `rgb(255, ${greyValue}, ${redValue})`;
+      if (percentile >= 90) {
+        return { background, color: 'white' };
+      }
+      return { background, color: 'black' };
+    }
+  }
+
+  getRankColor(rank: number): string {
+    switch (rank) {
+      case 1:
+        return '#ffbf00';
+      case 2:
+        return '#b6b5b8';
+      case 3:
+        return '#cd7f32';
+      default:
+        return 'white';
+    }
   }
 
   // tooltip text with mappings to the column names
@@ -158,6 +253,7 @@ export class TeamsComponent implements AfterViewInit {
     const factor = Math.pow(10, decimalPlaces);
     return Math.round(number * 100 * factor) / factor;
   }
+
   hyphenate(season: number): string {
     const seasonStr = season.toString();
     // Return the hyphenated season string

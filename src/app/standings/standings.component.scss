@@ -13,11 +13,6 @@
   margin: 16px;
 }
 
-.last-updated {
-  text-align: center;
-
-}
-
 table {
   width: 100%;
 }
@@ -43,9 +38,14 @@ mat-card.score-card:hover {
 }
 
 .team-logo {
-  width: 40px;
+  width: 50px;
   height: auto;
-  margin-right: 8px;
+  transition: transform 0.5s ease;
+  padding: 2px;
+}
+
+.team-logo:hover {
+  transform: scale(1.3, 1.3);
 }
 
 table {
@@ -84,8 +84,8 @@ td img {
 .table-container th,
 .table-container td {
   border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+  padding: 4px;
+  text-align: center;
 }
 
 .table-container th {

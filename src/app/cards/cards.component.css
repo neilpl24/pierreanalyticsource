@@ -1,8 +1,11 @@
 .plain-link {
-  /* make the link look like normal text*/
-  color: inherit;
+  color: inherit; /* Inherit the color from the parent when not hovered */
   text-decoration: none;
   cursor: pointer;
+}
+
+.plain-link:hover {
+  color: steelblue;
 }
 
 .war-stat {

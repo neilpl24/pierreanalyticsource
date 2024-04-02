@@ -20,11 +20,13 @@
                       <mat-card-title class="team-name">
                         {{ team.teamName }}
                       </mat-card-title>
-                      <img
-                        src="{{ 'assets/' + team.teamName + '.png' }}"
-                        alt="{{ team.teamName }} Logo"
-                        class="team-logo"
-                      />
+                      <div class="team-logo-container">
+                        <img
+                          src="{{ 'assets/' + team.teamName + '.png' }}"
+                          alt="{{ team.teamName }} Logo"
+                          class="team-logo"
+                        />
+                      </div>
                       <hr class="divide-line" />
                       <ul>
                         <li>
@@ -37,6 +39,18 @@
                           {{ getPostfix(teamCard.leagueRank) }} in League |
                           {{ getPostfix(teamCard.divisionRank) }} in Division
                         </li>
+                        <div class="team-badge-container">
+                          <div *ngFor="let rank of getRankList(teamCard)">
+                            <div
+                              class="team-badge"
+                              [style.background-color]="rank.color"
+                            >
+                              <i class="fa-solid fa-trophy"></i>
+                              <br />
+                              {{ rank.title }}
+                            </div>
+                          </div>
+                        </div>
                       </ul>
                     </mat-card-content>
                   </mat-card>
@@ -83,53 +97,71 @@
                           {{ teamCard.gf }}
                         </li>
                         <li>
-                          <strong>EV xGF: </strong>
-                          {{ roundNumber(teamCard.ev_xGF, 2) }}
-                          ({{ getPostfix(teamCard.ev_xGFRank) }} of 32)
-                        </li>
-                        <br />
-                        <li>
                           <strong>Goals Against: </strong>
                           {{ teamCard.ga }}
                         </li>
-                        <li>
-                          <strong>EV xGA: </strong>
-                          {{ roundNumber(teamCard.ev_xGA, 2) }}
-                          ({{ getPostfix(teamCard.ev_xGARank) }} of 32)
-                        </li>
                         <br />
-                        <li>
-                          <strong>xG Percent:</strong>
-                          {{ percentNumber(teamCard.xGPercentage, 2) }}% ({{
-                            getPostfix(teamCard.xGPercentageRank)
-                          }}
-                          of 32)
-                        </li>
-                        <li>
-                          <strong>GSAx:</strong>
-                          {{ roundNumber(teamCard.gsax, 2) }}
-                          ({{ getPostfix(teamCard.gsaxRank) }} of 32)
-                        </li>
-                        <li>
-                          <strong>Finishing:</strong>
-                          {{ roundNumber(teamCard.finishing, 2) }}
-                          ({{ getPostfix(teamCard.finishingRank) }} of 32)
-                        </li>
-                        <li>
-                          <strong>PP Percent:</strong>
-                          {{ percentNumber(teamCard.pp, 2) }}% ({{
-                            getPostfix(teamCard.ppRank)
-                          }}
-                          of 32)
-                        </li>
-                        <li>
-                          <strong>PK Percent:</strong>
-                          {{ percentNumber(teamCard.pk, 2) }}% ({{
-                            getPostfix(teamCard.pkRank)
-                          }}
-                          of 32)
-                        </li>
                       </ul>
+                      <div class="table-container">
+                        <table>
+                          <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Rank</th>
+                          </tr>
+                          <tr>
+                            <td>EV xGF</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ev_xGFRank)">
+                              {{ roundNumber(teamCard.ev_xGF, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.ev_xGFRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>EV xGA</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ev_xGARank)">
+                              {{ roundNumber(teamCard.ev_xGA, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.ev_xGARank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>xG Percent</td>
+                            <td
+                              [ngStyle]="getBkgColor(teamCard.xGPercentageRank)"
+                            >
+                              {{ percentNumber(teamCard.xGPercentage, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.xGPercentageRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>GSAx</td>
+                            <td [ngStyle]="getBkgColor(teamCard.gsaxRank)">
+                              {{ roundNumber(teamCard.gsax, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.gsaxRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>Finishing</td>
+                            <td [ngStyle]="getBkgColor(teamCard.finishingRank)">
+                              {{ roundNumber(teamCard.finishing, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.finishingRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>PP Percent</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ppRank)">
+                              {{ percentNumber(teamCard.pp, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.ppRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>PK Percent</td>
+                            <td [ngStyle]="getBkgColor(teamCard.pkRank)">
+                              {{ percentNumber(teamCard.pk, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.pkRank) }}</td>
+                          </tr>
+                        </table>
+                      </div>
                     </mat-card-content>
                   </mat-card>
                 </div>
@@ -151,7 +183,14 @@
                         <a
                           [routerLink]="['/', forward.playerId, 'year', '2024']"
                           class="plain-link"
+                          style="color: secondaryColor"
                         >
+                          <img
+                            class="player-headshot"
+                            style="margin-bottom: 2px"
+                            src="{{ forward.headshot }}"
+                            alt="Player Image"
+                          />
                           #{{ getSweaterNumber(forward.sweaterNumber) }}
                           {{ forward.fullName }} -
                           {{ forward.positionCode }}
@@ -176,6 +215,11 @@
                           ]"
                           class="plain-link"
                         >
+                          <img
+                            class="player-headshot"
+                            src="{{ defenseman.headshot }}"
+                            alt="Player Image"
+                          />
                           #{{ getSweaterNumber(defenseman.sweaterNumber) }}
                           {{ defenseman.fullName }} -
                           {{ defenseman.shootsCatches
@@ -193,6 +237,11 @@
                           [routerLink]="['/', goalie.playerId, 'year', 2024]"
                           class="plain-link"
                         >
+                          <img
+                            class="player-headshot"
+                            src="{{ goalie.headshot }}"
+                            alt="Goalie Image"
+                          />
                           #{{ getSweaterNumber(goalie.sweaterNumber) }}
                           {{ goalie.fullName }} -
                           {{ goalie.shootsCatches }}

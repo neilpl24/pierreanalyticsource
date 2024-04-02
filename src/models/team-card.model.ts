@@ -1,4 +1,5 @@
 export interface TeamCardModel {
+  [key: string]: any; // Index signature
   teamName: string;
   teamId: number;
   season: number;

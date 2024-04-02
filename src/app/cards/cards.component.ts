@@ -291,8 +291,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     // convert to feet and inches
     let feet = Math.floor(inches / 12);
     let remainingInches = inches % 12;
-    console.log(feet, remainingInches);
-    return feet + "' " + remainingInches + '"';
+    return `${feet}' ${remainingInches}"`;
   }
 
   getSkaterPercentiles(card: CardModel): number[] {
