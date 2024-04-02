@@ -91,13 +91,10 @@
                             )
                           }}
                         </li>
-                        <br />
                         <li>
                           <strong>Goals For: </strong>
                           {{ teamCard.gf }}
-                        </li>
-                        <li>
-                          <strong>Goals Against: </strong>
+                          <strong> / Goals Against: </strong>
                           {{ teamCard.ga }}
                         </li>
                         <br />
@@ -133,20 +130,6 @@
                             <td>{{ getPostfix(teamCard.xGPercentageRank) }}</td>
                           </tr>
                           <tr>
-                            <td>GSAx</td>
-                            <td [ngStyle]="getBkgColor(teamCard.gsaxRank)">
-                              {{ roundNumber(teamCard.gsax, 2) }}
-                            </td>
-                            <td>{{ getPostfix(teamCard.gsaxRank) }}</td>
-                          </tr>
-                          <tr>
-                            <td>Finishing</td>
-                            <td [ngStyle]="getBkgColor(teamCard.finishingRank)">
-                              {{ roundNumber(teamCard.finishing, 2) }}
-                            </td>
-                            <td>{{ getPostfix(teamCard.finishingRank) }}</td>
-                          </tr>
-                          <tr>
                             <td>PP Percent</td>
                             <td [ngStyle]="getBkgColor(teamCard.ppRank)">
                               {{ percentNumber(teamCard.pp, 2) }}%
@@ -159,6 +142,20 @@
                               {{ percentNumber(teamCard.pk, 2) }}%
                             </td>
                             <td>{{ getPostfix(teamCard.pkRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>Finishing</td>
+                            <td [ngStyle]="getBkgColor(teamCard.finishingRank)">
+                              {{ roundNumber(teamCard.finishing, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.finishingRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>GSAx</td>
+                            <td [ngStyle]="getBkgColor(teamCard.gsaxRank)">
+                              {{ roundNumber(teamCard.gsax, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.gsaxRank) }}</td>
                           </tr>
                         </table>
                       </div>
