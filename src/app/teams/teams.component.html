@@ -1,0 +1,257 @@
+<nav-bar [navColor]="navColor"></nav-bar>
+<body [ngStyle]="{ 'background-color': secondaryColor }">
+  <div class="container">
+    <div class="center">
+      <ng-container
+        *ngIf="{
+             team: team$ | async,
+             teamCard: teamCard$ | async,
+             standings: standings$ | async,
+             roster: roster$ | async,
+            } as data"
+      >
+        <ng-container *ngIf="data.team as team">
+          <ng-container *ngIf="data.teamCard as teamCard">
+            <ng-container *ngIf="data.standings as standings">
+              <div class="row">
+                <div class="card-container">
+                  <mat-card class="team-card border">
+                    <mat-card-content class="team-card-style">
+                      <mat-card-title class="team-name">
+                        {{ team.teamName }}
+                      </mat-card-title>
+                      <div class="team-logo-container">
+                        <img
+                          src="{{ 'assets/' + team.teamName + '.png' }}"
+                          alt="{{ team.teamName }} Logo"
+                          class="team-logo"
+                        />
+                      </div>
+                      <hr class="divide-line" />
+                      <ul>
+                        <li>
+                          <strong>
+                            {{ team.teamAbbr }} - {{ team.conference }} Conf. -
+                            {{ team.division }} Division
+                          </strong>
+                        </li>
+                        <li style="text-align: center">
+                          {{ getPostfix(teamCard.leagueRank) }} in League |
+                          {{ getPostfix(teamCard.divisionRank) }} in Division
+                        </li>
+                        <div class="team-badge-container">
+                          <div *ngFor="let rank of getRankList(teamCard)">
+                            <div
+                              class="team-badge"
+                              [style.background-color]="rank.color"
+                            >
+                              <i class="fa-solid fa-trophy"></i>
+                              <br />
+                              {{ rank.title }}
+                            </div>
+                          </div>
+                        </div>
+                      </ul>
+                    </mat-card-content>
+                  </mat-card>
+                  <mat-card class="team-card border">
+                    <mat-card-content style="margin-top: 3px">
+                      <mat-card-title class="roster-title"
+                        >{{ hyphenate(teamCard.season) }} Team
+                        Stats</mat-card-title
+                      >
+                      <ul>
+                        <li>
+                          <strong>Games Played: </strong>
+                          {{ teamCard.gamesPlayed }}
+                        </li>
+                        <li>
+                          <strong>Record: </strong>
+                          {{ teamCard.wins }}-{{ teamCard.losses }}-{{
+                            teamCard.otl
+                          }}
+                          <strong>Last Ten: </strong>
+                          {{ teamCard.l10Wins }}-{{ teamCard.l10Losses }}-{{
+                            teamCard.l10Otl
+                          }}
+                        </li>
+                        <li>
+                          <strong>Actual Points:</strong>
+                          {{ standings.actualPoints }}
+                          <strong>Simulated Points:</strong>
+                          {{ roundNumber(standings.simulatedPoints, 2) }}
+                        </li>
+                        <li>
+                          <strong>Actual - Simulated:</strong>
+                          {{
+                            roundNumber(
+                              standings.actualPoints -
+                                standings.simulatedPoints,
+                              2
+                            )
+                          }}
+                        </li>
+                        <li>
+                          <strong>Goals For: </strong>
+                          {{ teamCard.gf }}
+                          <strong> / Goals Against: </strong>
+                          {{ teamCard.ga }}
+                        </li>
+                        <br />
+                      </ul>
+                      <div class="table-container">
+                        <table>
+                          <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Rank</th>
+                          </tr>
+                          <tr>
+                            <td>EV xGF</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ev_xGFRank)">
+                              {{ roundNumber(teamCard.ev_xGF, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.ev_xGFRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>EV xGA</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ev_xGARank)">
+                              {{ roundNumber(teamCard.ev_xGA, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.ev_xGARank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>xG Percent</td>
+                            <td
+                              [ngStyle]="getBkgColor(teamCard.xGPercentageRank)"
+                            >
+                              {{ percentNumber(teamCard.xGPercentage, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.xGPercentageRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>PP Percent</td>
+                            <td [ngStyle]="getBkgColor(teamCard.ppRank)">
+                              {{ percentNumber(teamCard.pp, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.ppRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>PK Percent</td>
+                            <td [ngStyle]="getBkgColor(teamCard.pkRank)">
+                              {{ percentNumber(teamCard.pk, 2) }}%
+                            </td>
+                            <td>{{ getPostfix(teamCard.pkRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>Finishing</td>
+                            <td [ngStyle]="getBkgColor(teamCard.finishingRank)">
+                              {{ roundNumber(teamCard.finishing, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.finishingRank) }}</td>
+                          </tr>
+                          <tr>
+                            <td>GSAx</td>
+                            <td [ngStyle]="getBkgColor(teamCard.gsaxRank)">
+                              {{ roundNumber(teamCard.gsax, 2) }}
+                            </td>
+                            <td>{{ getPostfix(teamCard.gsaxRank) }}</td>
+                          </tr>
+                        </table>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+              </div>
+              <mat-card class="border">
+                <mat-card-title
+                  class="roster-title"
+                  [matTooltip]="getTooltip('roster')"
+                  matTooltipPosition="above"
+                  >NHL Roster</mat-card-title
+                >
+                <div class="roster-container">
+                  <div class="roster-left row">
+                    <ng-container *ngIf="forwards">
+                      <mat-card-title class="position-name">
+                        Forwards ({{ forwards.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let forward of forwards">
+                        <a
+                          [routerLink]="['/', forward.playerId, 'year', '2024']"
+                          class="plain-link"
+                          style="color: secondaryColor"
+                        >
+                          <img
+                            class="player-headshot"
+                            style="margin-bottom: 2px"
+                            src="{{ forward.headshot }}"
+                            alt="Player Image"
+                          />
+                          #{{ getSweaterNumber(forward.sweaterNumber) }}
+                          {{ forward.fullName }} -
+                          {{ forward.positionCode }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                  <div class="roster-right row">
+                    <ng-container *ngIf="defense">
+                      <mat-card-title class="position-name">
+                        Defense ({{ defense.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let defenseman of defense">
+                        <!-- I don't think I like the position being hand + D, see what neil thinks -->
+                        <!-- Also, I thought that player pages without a year should default to current but it doesn't -->
+                        <a
+                          [routerLink]="[
+                            '/',
+                            defenseman.playerId,
+                            'year',
+                            2024
+                          ]"
+                          class="plain-link"
+                        >
+                          <img
+                            class="player-headshot"
+                            src="{{ defenseman.headshot }}"
+                            alt="Player Image"
+                          />
+                          #{{ getSweaterNumber(defenseman.sweaterNumber) }}
+                          {{ defenseman.fullName }} -
+                          {{ defenseman.shootsCatches
+                          }}{{ defenseman.positionCode }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                    <hr class="divide-line" />
+                    <ng-container *ngIf="goalies">
+                      <mat-card-title class="position-name">
+                        Goalies ({{ goalies.length }})
+                      </mat-card-title>
+                      <ng-container *ngFor="let goalie of goalies">
+                        <a
+                          [routerLink]="['/', goalie.playerId, 'year', 2024]"
+                          class="plain-link"
+                        >
+                          <img
+                            class="player-headshot"
+                            src="{{ goalie.headshot }}"
+                            alt="Goalie Image"
+                          />
+                          #{{ getSweaterNumber(goalie.sweaterNumber) }}
+                          {{ goalie.fullName }} -
+                          {{ goalie.shootsCatches }}
+                        </a>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </mat-card>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+</body>

@@ -1,0 +1,39 @@
+export interface TeamCardModel {
+  [key: string]: any; // Index signature
+  teamName: string;
+  teamId: number;
+  season: number;
+  wins: number;
+  losses: number;
+  otl: number;
+  gf: number;
+  gfRank: number;
+  ga: number;
+  gaRank: number;
+  points: number;
+  gamesPlayed: number;
+  division: string;
+  ev_xGF: number;
+  ev_xGFRank: number;
+  ev_xGA: number;
+  ev_xGARank: number;
+  xGF: number;
+  xGA: number;
+  l10Wins: number;
+  l10Losses: number;
+  l10Otl: number;
+  leagueRank: number;
+  divisionRank: number;
+  pp: number;
+  ppRank: number;
+  pk: number;
+  pkRank: number;
+  gfNonEmpty: number;
+  gaNonEmpty: number;
+  finishing: number;
+  finishingRank: number;
+  gsax: number;
+  gsaxRank: number;
+  xGPercentage: number;
+  xGPercentageRank: number;
+}

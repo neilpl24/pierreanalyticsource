@@ -40,6 +40,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
   public player$: Observable<PlayerModel | null>;
   public card$: Observable<CardModel | null>;
   public playerID: number;
+  public height: string | undefined;
   private seasonChanged = new Subject<string>();
   public seasonChanged$ = this.seasonChanged.pipe(distinctUntilChanged());
   season: string | undefined = undefined;
@@ -189,6 +190,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
           this.navColor = this.nhlTeamMainColors[player.team];
           let shotsString = player.shots;
           this.playerID = player.playerID;
+          this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
           const assistsString = player.assists;
           // I can't stress how stupid this and how I could easily solve this problem in my scraper, but alas here we are
           if (player.position != 'G' && player.assists != 'nan') {
@@ -272,6 +274,26 @@ export class CardsComponent implements AfterViewInit, OnInit {
     return this.getSkaterPercentiles(card);
   }
 
+  convertHeight(height: string): string {
+    // NHL API changed heights from feet and inches to inches
+    // 75.0 -> 6' 3"
+
+    if (height.includes("'")) {
+      return height; // pre-api change, return the height as is
+    }
+
+    // convert the height (from inches -> feet and inches)
+    let inches = parseFloat(height);
+    if (isNaN(inches)) {
+      return height; // if the height is not a number, just return whatever it was before we tried to convert it
+    }
+
+    // convert to feet and inches
+    let feet = Math.floor(inches / 12);
+    let remainingInches = inches % 12;
+    return `${feet}' ${remainingInches}"`;
+  }
+
   getSkaterPercentiles(card: CardModel): number[] {
     return [
       Math.round(card.xGF * 100),
@@ -317,6 +339,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
           const shotsString = player.shots;
           this.playerID = player.playerID;
           const assistsString = player.assists;
+          this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
           if (player.position !== 'G' && player.assists !== 'nan') {
             console.log(
               shotsString

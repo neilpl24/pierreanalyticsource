@@ -24,6 +24,7 @@ app.use(function (req, res, next) {
 standings_db = createDbConnection("./standings.db");
 db = createDbConnection("./player_stats.db");
 shots_db = createDbConnection("./shots.db");
+teams_db = createDbConnection("./team_stats.db");
 
 function createDbConnection(filepath) {
   const db = new sqlite3.Database(filepath, (error) => {
@@ -31,7 +32,9 @@ function createDbConnection(filepath) {
       return console.error(error.message);
     }
   });
-  console.log("Connection with SQLite has been established");
+  console.log(
+    "Connection with SQLite has been established for database: " + filepath
+  );
   return db;
 }
 
@@ -52,7 +55,9 @@ function getPlayers(filters, table) {
   } else {
     season = "_2024";
   }
-  let querySegments = [`SELECT * FROM ${table}${season}`];
+  let querySegments = [
+    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+  ];
   let query = [];
   let params = [];
 
@@ -111,6 +116,7 @@ app.get("/players/", (req, res, next) => {
       position: row.position,
       height: row.height,
       weight: row.weight,
+      teamId: Number(row.team_id),
       team: row.team,
       handedness: row.handedness,
       shots: row.shots,
@@ -133,6 +139,7 @@ app.get("/players/", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
@@ -177,16 +184,26 @@ app.get("/players/name", (req, res, next) => {
 
 app.get("/standings", (req, res, next) => {
   const params = req.params;
-  const query = `SELECT * FROM STANDINGS`;
-  standings_db.all(query, params, (err, playerRows) => {
+  const query = `SELECT * FROM standings
+    WHERE last_updated = (SELECT MAX(last_updated) FROM standings);`;
+  standings_db.all(query, params, (err, standingsRows) => {
     if (err) {
       res.status(400).json({ error: err.message });
       return;
     } else {
-      res.status(200).json(playerRows);
+      let rows = standingsRows.map((standingsRow) => ({
+        teamId: Number(standingsRow.team_id),
+        teamName: standingsRow.team,
+        simulatedPoints: standingsRow.simulated_points,
+        actualPoints: Number(standingsRow.actual_points),
+        division: standingsRow.division,
+        lastUpdated: standingsRow.last_updated,
+      }));
+      res.status(200).json(rows);
     }
   });
 });
+
 //Cards
 app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
@@ -277,8 +294,16 @@ app.get("/players/info/:id", (req, res, next) => {
   }
 
   db.get(
-    `SELECT * FROM players${season}
-            WHERE player_id = ?`,
+    `WITH team_ids AS(
+        SELECT team_id,
+        CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+        END AS team_name
+        FROM teams
+    )
+    SELECT *
+        FROM players${season} p
+        JOIN team_ids t on p.team = t.team_name
+        WHERE player_id = ?`,
     [id],
     (err, row) => {
       if (err) {
@@ -296,6 +321,7 @@ app.get("/players/info/:id", (req, res, next) => {
           position: row.position,
           height: row.height,
           weight: row.weight,
+          teamId: Number(row.team_id),
           team: row.team,
           handedness: row.handedness,
           shots: row.shots,
@@ -304,9 +330,16 @@ app.get("/players/info/:id", (req, res, next) => {
         res.status(200).json(response);
       } else {
         db.get(
-          `SELECT *
-                  FROM goalies${season}
-                  WHERE player_id = ?`,
+          `WITH team_ids AS(
+            SELECT team_id,
+            CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name
+            END AS team_name
+            FROM teams
+        )
+        SELECT *
+                FROM goalies${season} p
+                JOIN team_ids t on p.team = t.team_name
+                WHERE player_id = ?`,
           [id],
           (err, row) => {
             if (err) {
@@ -324,6 +357,7 @@ app.get("/players/info/:id", (req, res, next) => {
                 position: row.position,
                 height: row.height,
                 weight: row.weight,
+                teamId: Number(row.team_id),
                 team: row.team,
                 handedness: row.handedness,
                 shots: row.shots,
@@ -578,12 +612,217 @@ app.get("/players_no_percentile", (req, res, next) => {
       goals: row.goals_60,
       gsae: row.gsae,
       primaryAssistsEV: row.primary_assists_EV,
+      teamId: Number(row.team_id),
       team: row.team,
       position: row.position,
       nationality: row.nationality,
     }));
     res.status(200).json(rows);
   });
+});
+
+app.get("/teams/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+
+  db.get(
+    `SELECT * FROM teams
+                WHERE team_id = ?`,
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (row) {
+        const response = {
+          teamName: row.team_name,
+          teamId: Number(row.team_id),
+          location: row.location,
+          teamAbbr: row.team_abbr,
+          conference: row.conference,
+          division: row.division,
+          primaryColor: row.primary_color,
+          secondaryColor: row.secondary_color,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
+app.get("/teams/roster/:id", async (req, res, next) => {
+  const id = Number(req.params.id);
+  const teamIdsToAbbr = {
+    1: "ANA",
+    2: "ARI",
+    3: "BOS",
+    4: "BUF",
+    5: "CGY",
+    6: "CAR",
+    7: "CHI",
+    8: "COL",
+    9: "CBJ",
+    10: "DAL",
+    11: "DET",
+    12: "EDM",
+    13: "FLA",
+    14: "LAK",
+    15: "MIN",
+    16: "MTL",
+    17: "NSH",
+    18: "NJD",
+    19: "NYI",
+    20: "NYR",
+    21: "OTT",
+    22: "PHI",
+    23: "PIT",
+    24: "SJS",
+    25: "SEA",
+    26: "STL",
+    27: "TBL",
+    28: "TOR",
+    29: "VAN",
+    30: "VGK",
+    31: "WSH",
+    32: "WPG",
+  };
+  const teamAbbr = teamIdsToAbbr[id];
+  const data = await (
+    await fetch(`https://api-web.nhle.com/v1/roster/${teamAbbr}/current`)
+  ).json();
+
+  if (!data || !data.forwards || !data.defensemen || !data.goalies) {
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+
+  let forwards = [];
+  let defense = [];
+  let goalies = [];
+
+  if (data.forwards && data.forwards.length > 0) {
+    forwards = data.forwards.map((forward) => ({
+      id: forward.id,
+      headshot: forward.headshot,
+      fullName: `${forward.firstName.default} ${forward.lastName.default}`,
+      sweaterNumber: forward.sweaterNumber,
+      positionCode: forward.positionCode,
+      shootsCatches: forward.shootsCatches,
+    }));
+  }
+
+  if (data.goalies && data.goalies.length > 0) {
+    goalies = data.goalies.map((goalie) => ({
+      id: goalie.id,
+      headshot: goalie.headshot,
+      fullName: `${goalie.firstName.default} ${goalie.lastName.default}`,
+      sweaterNumber: goalie.sweaterNumber,
+      positionCode: goalie.positionCode,
+      shootsCatches: goalie.shootsCatches,
+    }));
+  }
+
+  if (data.defensemen && data.defensemen.length > 0) {
+    defense = data.defensemen.map((defenseman) => ({
+      id: defenseman.id,
+      headshot: defenseman.headshot,
+      fullName: `${defenseman.firstName.default} ${defenseman.lastName.default}`,
+      sweaterNumber: defenseman.sweaterNumber,
+      positionCode: defenseman.positionCode,
+      shootsCatches: defenseman.shootsCatches,
+    }));
+  }
+
+  const roster = {
+    goalies: goalies,
+    forwards: forwards,
+    defense: defense,
+  };
+  res.status(200).json(roster);
+});
+
+app.get("/teams/standings/:id", (req, res, next) => {
+  const id = Number(req.params.id);
+  standings_db.get(
+    `SELECT * FROM standings
+       WHERE team_id = ?
+       AND last_updated = (SELECT MAX(last_updated) FROM standings WHERE team_id = ?)`,
+    [id, id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (row) {
+        const response = {
+          teamId: Number(row.team_id),
+          teamName: row.team,
+          simulatedPoints: row.simulated_points,
+          actualPoints: Number(row.actual_points),
+          division: row.division,
+          lastUpdated: row.last_updated,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
+app.get("/teams/card/:id", (req, res, next) => {
+  const id = Number(req.params.id);
+  teams_db.get(
+    `SELECT *, max_last_updated
+      FROM teams, last_updated
+      WHERE team_id = ? and season = (SELECT MAX(season) FROM teams WHERE team_id = ?)`,
+    [id, id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (row) {
+        const response = {
+          teamId: Number(row.team_id),
+          teamName: row.team_name,
+          season: row.season,
+          wins: row.wins,
+          losses: row.losses,
+          otl: row.otl,
+          gf: row.gf,
+          ga: row.ga,
+          points: row.points,
+          gamesPlayed: row.games_played,
+          division: row.division,
+          ev_xGF: row.ev_xGF,
+          ev_xGFRank: row.ev_xGF_rank,
+          ev_xGA: row.ev_xGA,
+          ev_xGARank: row.ev_xGA_rank,
+          xGF: row.xGF,
+          xGA: row.xGA,
+          l10Wins: row.l10Wins,
+          l10Losses: row.l10Losses,
+          l10Otl: row.l10Otl,
+          leagueRank: row.leagueRank,
+          divisionRank: row.divisionRank,
+          pp: row.pp,
+          ppRank: row.pp_rank,
+          pk: row.pk,
+          pkRank: row.pk_rank,
+          gfNonEmpty: row.gf_non_empty,
+          gaNonEmpty: row.ga_non_empty,
+          finishing: row.finishing,
+          finishingRank: row.finishing_rank,
+          gsax: row.gsax,
+          gsaxRank: row.gsax_rank,
+          xGPercentage: row.xGPercentage,
+          xGPercentageRank: row.xGPercentage_rank,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
 });
 
 app.get("*", (req, res) => {

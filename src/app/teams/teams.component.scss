@@ -1,0 +1,184 @@
+.plain-link {
+  color: inherit; /* Inherit the color from the parent when not hovered */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.plain-link:hover {
+  color: steelblue;
+}
+
+.team-name {
+  font-size: 30px;
+  font-weight: bold;
+  margin: 8px 0;
+  text-align: center;
+}
+
+.team-card-style {
+  margin-top: 3px;
+  align-items: center;
+}
+
+.position-name {
+  font-size: 20px;
+  margin-bottom: 2px 0;
+}
+
+.roster-title {
+  text-align: center;
+  font-size: 20px;
+}
+
+.divide-line {
+  border: 1px solid #a7a5a5;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.divide-line-roster {
+  border: 1px solid #a7a5a5;
+  margin: 4px 0;
+  width: 100%;
+}
+
+.team-info-title {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.team-info-value {
+  font-size: 15px;
+  margin: 8px 0;
+}
+
+.team-card {
+  font-family: Roboto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.roster-container {
+  font-family: Roboto;
+  width: 645px;
+  display: flex;
+}
+
+.roster-left {
+  flex: 1;
+  width: 300px;
+  align-items: center;
+  margin: 15px;
+}
+
+.roster-right {
+  flex: 1;
+  margin: 15px;
+  width: 300px;
+  align-items: center;
+  justify-content: start;
+}
+
+.team-logo {
+  width: 300px;
+  height: auto;
+}
+
+.team-logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.player-headshot {
+  width: 50px;
+  height: auto;
+  border: 2px solid black;
+}
+
+ul {
+  list-style-type: none; /* removes the bullet points */
+  padding: 0;
+  margin: 0;
+}
+
+.team-badge-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.team-badge {
+  border: 3px solid black;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+  color: white;
+}
+
+@keyframes wiggle {
+  0%,
+  100% {
+    transform: rotateZ(0deg);
+  }
+  25% {
+    transform: rotateZ(5deg);
+  }
+  75% {
+    transform: rotateZ(-5deg);
+  }
+}
+
+.team-badge:hover {
+  animation: wiggle 0.3s ease-in-out;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.table-container th {
+  background-color: #f0f0f0;
+}
+
+@media only screen and (max-width: 1000px) {
+  .team-logo {
+    width: 200px;
+  }
+
+  .roster-container {
+    flex-direction: column; /* Change flex direction to column for stacking on mobile */
+    width: 100%;
+    padding-left: 30%;
+    text-align: start;
+    justify-content: left;
+  }
+
+  .divide-line-roster {
+    border: 1px solid #a7a5a5;
+    margin: 8px 0;
+    width: 100%;
+  }
+
+  .roster-left {
+    width: 100%;
+  }
+
+  .roster-right {
+    width: 100%;
+  }
+}

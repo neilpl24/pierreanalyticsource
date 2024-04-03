@@ -1,3 +1,13 @@
+.plain-link {
+  color: inherit; /* Inherit the color from the parent when not hovered */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.plain-link:hover {
+  color: steelblue;
+}
+
 .war-stat {
   display: flex;
   flex-direction: column;

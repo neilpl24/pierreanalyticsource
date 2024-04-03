@@ -1,5 +1,8 @@
 <nav-bar></nav-bar>
-<div style="text-align: center"><p>Updated every Sunday</p></div>
+<div class="standings-header">
+  <h2 style="margin-bottom: 0px">Standings</h2>
+  Last Updated: {{ lastUpdated }} EST
+</div>
 <div class="standings-container">
   <mat-card class="division-card score-card" *ngFor="let division of divisions">
     <mat-card-header>
@@ -14,17 +17,19 @@
             <th>Simulated Points</th>
           </tr>
           <tr *ngFor="let team of groupByDivision(division)">
-            <td>
-              <img
-                src="{{ 'assets/' + team.team + '.png' }}"
-                alt="{{ team.team }} Logo"
-                class="team-logo"
-              />
+            <a [routerLink]="['/teams', team.teamId]">
+              <td>
+                <img
+                  src="{{ 'assets/' + team.teamName + '.png' }}"
+                  alt="{{ team.teamName }} Logo"
+                  class="team-logo"
+                />
+              </td>
+            </a>
+            <td [ngStyle]="getActualPointsStyle(team.actualPoints)">
+              {{ team.actualPoints | number : "1.0-0" }}
             </td>
-            <td [ngStyle]="getActualPointsStyle(team['actual_points'])">
-              {{ team["actual_points"] | number : "1.0-0" }}
-            </td>
-            <td>{{ team["simulated_points"] | number : "1.1-2" }}</td>
+            <td>{{ team.simulatedPoints | number : "1.1-2" }}</td>
           </tr>
         </table>
       </div>
