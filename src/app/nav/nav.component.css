@@ -3,10 +3,13 @@
   color: white;
 }
 
-.search-and-select {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.search-spacing {
+  margin-left: 10px;
+}
+
+.search-select-height {
+  /* search and select weren't the same size and it bugged me */
+  height: 40px;
 }
 
 mat-form-field {
@@ -22,9 +25,33 @@ mat-form-field {
   background-color: var(--custom-nav-color, inherit);
 }
 
-@media (max-width: 1000px) {
+.normal-button {
+  background-color: black;
+  display: inline-block;
+  padding: 10px 20px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.container-fluid {
+  padding: 5px;
+  max-width: 100%;
+  align-items: center;
+}
+
+.container {
+  padding: 0px;
+  align-items: center;
+}
+
+@media only screen and (max-width: 1000px) {
+  .container {
+    justify-content: center !important;
+  }
+
   .navbar-nav {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .navbar-nav .nav-item {
@@ -34,5 +61,16 @@ mat-form-field {
   .year-select,
   .form-control {
     width: 100%;
+  }
+
+  .mobile-button {
+    padding: 5px;
+    background-color: black;
+    color: white;
+    align-items: center;
+  }
+
+  .search-select-height {
+    margin-top: 10px;
   }
 }

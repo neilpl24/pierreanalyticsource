@@ -3,81 +3,111 @@
   [style.background-color]="navColor + ' !important'"
 >
   <div class="container-fluid">
-    <a [routerLink]="['']">
-      <img src="assets/logo.JPEG" class="main-logo" />
-    </a>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
+    <!-- Button group for mobile layout -->
+    <div class="container" style="justify-content: flex-start">
+      <a [routerLink]="['']">
+        <img src="assets/logo.JPEG" class="main-logo" />
+      </a>
+      <div class="d-lg-none">
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn btn-outline-secondary mobile-button"
+            [routerLink]="['/about']"
+          >
+            About
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary mobile-button"
+            [routerLink]="['/leaderboard']"
+          >
+            Leaderboards
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-secondary mobile-button"
+            [routerLink]="['/standings']"
+          >
+            Standings
+          </button>
+          <a
+            href="https://ko-fi.com/pierreanalytics"
+            target="_blank"
+            class="btn btn-outline-secondary mobile-button"
+            >Donate</a
+          >
+        </div>
+      </div>
+      <!-- Buttons for desktop layout -->
+      <div class="d-none d-lg-flex me-auto mb-2 mb-lg-0">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button
+              type="button"
+              class="btn-outline-secondary normal-button"
+              [routerLink]="['/about']"
+            >
+              About
+            </button>
+          </li>
+          <!-- <li class="nav-item">
         <button
           type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-          [routerLink]="['/about']"
-        >
-          About
-        </button>
-      </li>
-      <!-- <li class="nav-item">
-        <button
-          type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
+          class="btn-outline-secondary normal-button"
           [routerLink]="['/dates']"
         >
           Scores
         </button>
       </li> -->
-      <li class="nav-item">
-        <button
-          type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-          [routerLink]="['/leaderboard']"
-        >
-          Leaderboards
-        </button>
-      </li>
-      <li class="nav-item">
-        <button
-          type="button"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-          [routerLink]="['/standings']"
-        >
-          Standings
-        </button>
-      </li>
-      <li class="nav-item">
-        <a
-          href="https://ko-fi.com/pierreanalytics"
-          target="_blank"
-          class="btn-nav btn-outline-secondary"
-          style="background-color: black"
-        >
-          Donate
-        </a>
-      </li>
-    </ul>
-    <div class="position-relative row mt-auto">
-      <div class="col-md-4">
-        <div class="search-and-select">
-          <!-- Replace mat-form-field with a regular select element -->
-          <select class="form-select year-select" (change)="selectYear($event)">
-            <option value="null">Year</option>
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
-            <option value="2020">2020</option>
-            <option value="2021">2021</option>
-            <option value="2022">2022</option>
-            <option value="2023">2023</option>
-            <option value="2024">2024</option>
-          </select>
-        </div>
+          <li class="nav-item">
+            <button
+              type="button"
+              class="btn-outline-secondary normal-button"
+              [routerLink]="['/leaderboard']"
+            >
+              Leaderboards
+            </button>
+          </li>
+          <li class="nav-item">
+            <button
+              type="button"
+              class="btn-outline-secondary normal-button"
+              [routerLink]="['/standings']"
+            >
+              Standings
+            </button>
+          </li>
+          <li class="nav-item">
+            <a
+              href="https://ko-fi.com/pierreanalytics"
+              target="_blank"
+              class="btn-outline-secondary normal-button"
+            >
+              Donate
+            </a>
+          </li>
+        </ul>
       </div>
-      <div class="col-md-8">
+    </div>
+    <div class="container" style="justify-content: flex-end">
+      <div class="search-select-height">
+        <!-- Replace mat-form-field with a regular select element -->
+        <select class="form-select year-select" (change)="selectYear($event)">
+          <option value="null">Year</option>
+          <option value="2018">2018</option>
+          <option value="2019">2019</option>
+          <option value="2020">2020</option>
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+        </select>
+      </div>
+      <div class="search-spacing">
         <input
           type="search"
-          class="form-control"
+          class="form-control search-select-height"
           placeholder="Search Player Name"
           [formControl]="searchControl"
           (input)="onSearchInputChange()"
