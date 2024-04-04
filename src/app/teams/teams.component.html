@@ -121,7 +121,7 @@
                             <td>{{ getPostfix(teamCard.ev_xGARank) }}</td>
                           </tr>
                           <tr>
-                            <td>xG Percent</td>
+                            <td>xG%</td>
                             <td
                               [ngStyle]="getBkgColor(teamCard.xGPercentageRank)"
                             >
@@ -130,14 +130,14 @@
                             <td>{{ getPostfix(teamCard.xGPercentageRank) }}</td>
                           </tr>
                           <tr>
-                            <td>PP Percent</td>
+                            <td>PP%</td>
                             <td [ngStyle]="getBkgColor(teamCard.ppRank)">
                               {{ percentNumber(teamCard.pp, 2) }}%
                             </td>
                             <td>{{ getPostfix(teamCard.ppRank) }}</td>
                           </tr>
                           <tr>
-                            <td>PK Percent</td>
+                            <td>PK%</td>
                             <td [ngStyle]="getBkgColor(teamCard.pkRank)">
                               {{ percentNumber(teamCard.pk, 2) }}%
                             </td>
