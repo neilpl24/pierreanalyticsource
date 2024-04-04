@@ -47,11 +47,7 @@ function sanitizeParam(param) {
 function getPlayers(filters, table) {
   let season = "";
   if (filters.season) {
-    if (filters.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + filters.season;
-    }
+    season = "_" + filters.season;
   } else {
     season = "_2024";
   }
@@ -209,11 +205,7 @@ app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    if (req.query.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + req.query.season;
-    }
+    season = "_" + req.query.season;
   } else {
     season = "_2024";
   }
@@ -284,11 +276,7 @@ app.get("/players/info/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    if (req.query.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + req.query.season;
-    }
+    season = "_" + req.query.season;
   } else {
     season = "_2024";
   }
@@ -429,9 +417,6 @@ app.get("/scores/:year/:date", async (req, res, next) => {
         return res.status(500).json({ error: "No games." });
       }
       let season = "_" + shots[0].season.toString().slice(4, 8);
-      if (season == "_2023") {
-        season = "";
-      }
 
       const skatersXGFMap = new Map();
       const skatersXGAMap = new Map();
