@@ -161,9 +161,8 @@ ul {
   .roster-container {
     flex-direction: column; /* Change flex direction to column for stacking on mobile */
     width: 100%;
-    padding-left: 30%;
     text-align: start;
-    justify-content: left;
+    justify-content: flex-start;
   }
 
   .divide-line-roster {
