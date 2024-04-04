@@ -5,7 +5,7 @@ html,
 body {
   min-height: 100%;
   margin: 0;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-family: "Yu Gothic Medium", "Yu Gothic", sans-serif !important;
 }
 
 .nationality-logo {
@@ -69,10 +69,6 @@ body {
 .mat-row:hover {
   background-color: #f2f2f2 !important;
   cursor: pointer;
-}
-
-.table {
-  font-family: "Roboto", sans-serif;
 }
 
 .small-column {
@@ -141,7 +137,6 @@ body {
 }
 
 .player-card {
-  font-family: Roboto;
   justify-content: start;
   width: 300px;
   display: flex;
@@ -154,7 +149,6 @@ body {
 }
 
 .statistics-card {
-  font-family: Roboto;
   width: 400px;
   align-items: center;
 }
@@ -182,7 +176,6 @@ body {
   text-align: center;
   font-size: 13px;
   font-weight: bold;
-  font-family: Roboto;
 }
 
 .shot-markers {
@@ -337,7 +330,6 @@ body {
 
 .btn.btn {
   font-size: 12px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 .btn2 {
