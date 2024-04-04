@@ -44,11 +44,9 @@ function sanitizeParam(param) {
 function getPlayers(filters, table) {
   let season = "";
   if (filters.season) {
-    if (filters.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + filters.season;
-    }
+    season = "_" + filters.season;
+  } else {
+    season = "_2024";
   }
   let querySegments = [
     `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
@@ -229,12 +227,9 @@ app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    if (req.query.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + req.query.season;
-    }
-    console.log(season);
+    season = "_" + req.query.season;
+  } else {
+    season = "_2024";
   }
 
   db.get(
@@ -303,11 +298,9 @@ app.get("/players/info/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    if (req.query.season == "2023") {
-      season = "";
-    } else {
-      season = "_" + req.query.season;
-    }
+    season = "_" + req.query.season;
+  } else {
+    season = "_2024";
   }
 
   db.get(
@@ -476,9 +469,6 @@ app.get("/scores/:year/:date", async (req, res, next) => {
         return res.status(500).json({ error: "No games." });
       }
       let season = "_" + shots[0].season.toString().slice(4, 8);
-      if (season == "_2023") {
-        season = "";
-      }
 
       const skatersXGFMap = new Map();
       const skatersXGAMap = new Map();
