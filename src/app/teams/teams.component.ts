@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StandingsModel } from 'src/models/standings.model';
 import { RosterModel } from 'src/models/roster.model';
 import { TeamCardModel } from 'src/models/team-card.model';
+import * as chroma from 'chroma-js';
 
 @Component({
   selector: 'app-teams',
@@ -153,36 +154,15 @@ export class TeamsComponent implements AfterViewInit {
   }
 
   getBkgColor(rank: number): { background: string; color: string } {
-    const percentile = 100 - (rank / this.totalTeams) * 100;
-    return this.getPercentileColor(percentile);
-  }
+    const gradient = chroma
+      .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
+      .mode('lab')
+      .padding(0.1)
+      .colors(this.totalTeams);
 
-  getPercentileColor(percentile: number): {
-    background: string;
-    color: string;
-  } {
-    // borrowed from neil's standings.component.ts
-    // feels like it'd be better to have a package for color gradients since this is used in multiple places & the text-color changing is a bit hacky
-    if (percentile === 0) {
-      return { background: 'blue', color: 'white' };
-    } else if (percentile === 100) {
-      return { background: 'red', color: 'white' };
-    } else if (percentile <= 50) {
-      const blueValue = Math.round(percentile * 5.1);
-      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
-      if (percentile <= 10) {
-        return { background, color: 'white' };
-      }
-      return { background, color: 'black' };
-    } else {
-      const redValue = Math.round(255 - (percentile - 50) * 5.1);
-      const greyValue = Math.round(255 - (percentile - 50) * 5.1);
-      const background = `rgb(255, ${greyValue}, ${redValue})`;
-      if (percentile >= 90) {
-        return { background, color: 'white' };
-      }
-      return { background, color: 'black' };
-    }
+    var textColor = 'black';
+
+    return { background: gradient[rank - 1], color: textColor };
   }
 
   getRankColor(rank: number): string {

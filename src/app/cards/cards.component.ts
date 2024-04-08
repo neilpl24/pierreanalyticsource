@@ -22,6 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 declare var gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
 import { ShotModel } from 'src/models/shot.model';
+import * as chroma from 'chroma-js';
 
 @Component({
   selector: 'app-cards',

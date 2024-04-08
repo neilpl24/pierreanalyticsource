@@ -4,6 +4,7 @@ import { StandingsModel } from 'src/models/standings.model';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import * as chroma from 'chroma-js';
 
 @Component({
   selector: 'app-standings',
@@ -68,33 +69,20 @@ export class StandingsComponent implements AfterViewInit {
       this.standings.map((team) => team.actualPoints),
       actualPoints
     );
-    const colors = this.getPercentileColor(percentile);
-    return {
-      'background-color': colors.background,
-      color: colors.text,
-    };
+    return this.getBkgColor(percentile);
   }
 
-  getPercentileColor(percentile: number): { background: string; text: string } {
-    if (percentile === 0) {
-      return { background: 'blue', text: 'white' };
-    } else if (percentile === 100) {
-      return { background: 'red', text: 'white' };
-    } else if (percentile <= 50) {
-      const blueValue = Math.round(percentile * 5.1);
-      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
-      if (percentile <= 10) {
-        return { background, text: 'white' };
-      }
-      return { background, text: 'black' };
-    } else {
-      const redValue = Math.round(255 - (percentile - 50) * 5.1);
-      const greyValue = Math.round(255 - (percentile - 50) * 5.1);
-      const background = `rgb(255, ${greyValue}, ${redValue})`;
-      if (percentile >= 90) {
-        return { background, text: 'white' };
-      }
-      return { background, text: 'black' };
-    }
+  getBkgColor(percentile: number): { background: string; color: string } {
+    const gradient = chroma
+      .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
+      .mode('lab')
+      .padding(0.1)
+      .colors(100);
+
+    var textColor = 'black';
+
+    const val = Math.round(percentile);
+
+    return { background: gradient[val], color: textColor };
   }
 }

@@ -62,8 +62,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="getCellColors(player.goals, 'goals').background"
-          [style.color]="getCellColors(player.goals, 'goals').color"
+          [ngStyle]="getCellColors(player.goals, 'goals')"
           class="small-column"
         >
           {{ roundDecimal(player.goals) }}
@@ -82,8 +81,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="getCellColors(player.gsae, 'gsae').background"
-          [style.color]="getCellColors(player.gsae, 'gsae').color"
+          [ngStyle]="getCellColors(player.gsae, 'gsae')"
           class="small-column"
         >
           {{ roundDecimal(player.gsae) }}
@@ -102,13 +100,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="
-            getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')
-              .background
-          "
-          [style.color]="
-            getCellColors(player.primaryAssistsEV, 'primaryAssistsEV').color
-          "
+          [ngStyle]="getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')"
           class="small-column"
         >
           {{ roundDecimal(player.primaryAssistsEV) }}
@@ -127,8 +119,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="getCellColors(player.xGF, 'xGF').background"
-          [style.color]="getCellColors(player.xGF, 'xGF').color"
+          [ngStyle]="getCellColors(player.xGF, 'xGF')"
         >
           {{ roundDecimal(player.xGF) }}
         </td>
@@ -146,8 +137,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="getCellColors(player.xGA, 'xGA').background"
-          [style.color]="getCellColors(player.xGA, 'xGA').color"
+          [ngStyle]="getCellColors(player.xGA, 'xGA')"
         >
           {{ roundDecimal(player.xGA) }}
         </td>
@@ -165,8 +155,7 @@
         <td
           mat-cell
           *matCellDef="let player"
-          [style.background]="getCellColors(player.xG, 'xG').background"
-          [style.color]="getCellColors(player.xG, 'xG').color"
+          [ngStyle]="getCellColors(player.xG, 'xG')"
         >
           {{ player.xG }}
         </td>
