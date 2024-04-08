@@ -126,8 +126,8 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
 
     var textColor = 'black';
 
-    const val = Math.round(percentile);
+    const val = Math.floor(percentile);
 
-    return { background: gradient[val - 1], color: textColor };
+    return { background: gradient[val], color: textColor };
   }
 }

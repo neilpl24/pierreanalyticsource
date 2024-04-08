@@ -81,7 +81,7 @@ export class StandingsComponent implements AfterViewInit {
 
     var textColor = 'black';
 
-    const val = Math.round(percentile);
+    const val = Math.floor(percentile);
 
     return { background: gradient[val], color: textColor };
   }

@@ -19,8 +19,8 @@ export class TimelineComponent {
 
     var textColor = 'black';
 
-    const val = Math.round(this.percentile);
+    const val = Math.floor(this.percentile);
 
-    return { background: gradient[val - 1], color: textColor };
+    return { background: gradient[val], color: textColor };
   }
 }
