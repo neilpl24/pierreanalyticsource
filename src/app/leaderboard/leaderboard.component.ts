@@ -6,6 +6,7 @@ import { filtersDefault, FiltersComponent } from '../filters/filters.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { SeasonService } from '../services/season.service';
+import * as chroma from 'chroma-js';
 
 @Component({
   selector: 'leaderboard',
@@ -66,7 +67,7 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
     if (statName == 'xGA') {
       percentile = 100 - percentile;
     }
-    return this.getCircleColor(percentile, statName);
+    return this.getBkgColor(percentile, statName);
   }
 
   // tooltip text with mappings to the column names
@@ -110,32 +111,23 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
     return percentile(values, value);
   }
 
-  getCircleColor(
+  getBkgColor(
     percentile: number,
     column: string
   ): { background: string; color: string } {
     if (column !== this.sortedColumn) {
       return { background: '', color: '' };
     }
-    if (percentile === 0) {
-      return { background: 'blue', color: 'white' };
-    } else if (percentile === 100) {
-      return { background: 'red', color: 'white' };
-    } else if (percentile <= 50) {
-      const blueValue = Math.round(percentile * 5.1);
-      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
-      if (percentile <= 10) {
-        return { background, color: 'white' };
-      }
-      return { background, color: 'black' };
-    } else {
-      const redValue = Math.round(255 - (percentile - 50) * 5.1);
-      const greyValue = Math.round(255 - (percentile - 50) * 5.1);
-      const background = `rgb(255, ${greyValue}, ${redValue})`;
-      if (percentile >= 90) {
-        return { background, color: 'white' };
-      }
-      return { background, color: 'black' };
-    }
+    const gradient = chroma
+      .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
+      .mode('lab')
+      .padding(0.1)
+      .colors(100);
+
+    var textColor = 'black';
+
+    const val = Math.floor(percentile);
+
+    return { background: gradient[val], color: textColor };
   }
 }
