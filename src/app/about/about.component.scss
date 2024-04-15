@@ -1,0 +1,129 @@
+.table-container th,
+.table-container td {
+  border: 1px solid #ccc;
+  padding: 4px;
+}
+
+.colName {
+  font-weight: bold;
+  text-align: center;
+}
+
+.colDesc {
+  text-align: start;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.table-container th {
+  background-color: #f0f0f0;
+  text-align: center;
+}
+
+.about-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.container-about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 80%;
+  margin-inline: auto;
+}
+.about-header {
+  text-align: center;
+  font-size: 25px;
+  margin: 20px;
+  justify-content: center;
+}
+
+.abt-container {
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+}
+
+.paragraph {
+  margin: 10px;
+  text-align: center;
+  display: flex;
+  justify-self: center;
+}
+
+.github-link {
+  background-color: #92bde1;
+  border: 3px solid black;
+  border-radius: 7px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  max-width: fit-content;
+}
+
+.github-img {
+  height: 100px;
+  width: auto;
+}
+
+.masked-image {
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+  filter: drop-shadow(2px 3px 3px grey);
+}
+
+.masked-image:hover {
+  animation: rotate 3s ease-in-out;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(-360deg); /* Start from -360deg for smoother transition */
+  }
+  to {
+    transform: rotate(360deg); /* Rotate a full circle */
+  }
+}
+
+.text-size {
+  font-size: 17px;
+}
+
+.contact-card-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 50px;
+  margin: 10px;
+}
+.contact-card {
+  transition: transform 0.2s;
+  border: 2px solid #ccc;
+}
+
+.contact-card:hover {
+  transform: translateY(-10px) rotateX(5deg);
+  box-shadow: 0 12px 16px rgba(0, 0, 0, 0.1), 0 20px 32px rgba(0, 0, 0, 0.2);
+}
+
+@media only screen and (max-width: 768px) {
+  .contact-card-container {
+    flex-direction: column;
+  }
+  .abt-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .masked-image {
+    margin-bottom: 10px;
+  }
+}
