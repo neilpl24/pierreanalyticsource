@@ -1,17 +1,33 @@
 <div class="md-form form-fill">
-    <div mdbDropdown class="dropdown">
-        <button class="btn btn-success dropdown-toggle mat-form-field-appearance-fill" type="button"
-            id="dropdownMenuButton" aria-expanded="false" mdbDropdownToggle>
-            Team
-        </button>
-        <ul mdbDropdownMenu class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-            style="max-height:60vh;overflow:auto">
-            <li><a class="dropdown-item" (click)="handleTeamChange(null, $event)">-</a></li>
-            <li *ngFor="let team of teams">
-                <a class="dropdown-item" href="#" (click)="handleTeamChange(team, $event)">
-                    <img src="{{ 'assets/' + team + '.png' }}" class="logo" /> {{ team }}
-                </a>
-            </li>
-        </ul>
-    </div>
+  <div mdbDropdown class="dropdown">
+    <button
+      class="btn btn-success dropdown-toggle mat-form-field-appearance-fill"
+      type="button"
+      id="dropdownMenuButton"
+      aria-expanded="false"
+      mdbDropdownToggle
+    >
+      Team
+    </button>
+    <ul
+      mdbDropdownMenu
+      class="dropdown-menu"
+      aria-labelledby="dropdownMenuButton"
+      style="max-height: 60vh; overflow: auto"
+    >
+      <li>
+        <a class="dropdown-item" (click)="handleTeamChange(null, $event)">-</a>
+      </li>
+      <li *ngFor="let team of teams">
+        <a
+          class="dropdown-item"
+          href="#"
+          (click)="handleTeamChange(team, $event)"
+        >
+          <img src="{{ 'assets/teams/' + team + '.png' }}" class="logo" />
+          {{ team }}
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
