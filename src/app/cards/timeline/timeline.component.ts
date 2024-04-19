@@ -15,7 +15,7 @@ export class TimelineComponent {
       .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
       .mode('lab')
       .padding(0.1)
-      .colors(100);
+      .colors(100.1);
 
     var textColor = 'black';
 
