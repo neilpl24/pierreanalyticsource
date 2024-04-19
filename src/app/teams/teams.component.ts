@@ -155,7 +155,7 @@ export class TeamsComponent implements AfterViewInit {
 
   getBkgColor(rank: number): { background: string; color: string } {
     const gradient = chroma
-      .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
+      .scale(['#007bff', '#7ecef9', '#ffffff', '#ff5722', '#c70039'])
       .mode('lab')
       .padding(0.1)
       .colors(this.totalTeams);
