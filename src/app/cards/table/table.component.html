@@ -54,17 +54,21 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="xG">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="xG" class="left" [matTooltip]="getTooltip('xg')" matTooltipPosition="above">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="xG"
+          class="left"
+          [matTooltip]="getTooltip('xg')"
+          matTooltipPosition="above"
+        >
           xG
         </th>
         <td
           mat-cell
           *matCellDef="let shot"
           class="left"
-          [style.background]="
-            getCircleColor(this.roundValue(shot.xG)).background
-          "
-          [style.color]="getCircleColor(this.roundValue(shot.xG)).color"
+          [ngStyle]="getBkgColor(this.roundValue(shot.xG))"
         >
           {{ this.roundValue(shot.xG) }}
         </td>

@@ -1,20 +1,16 @@
-<h2 class="plot-title-goal text-center">Goals Plot</h2>
-<h5 class="plot-title-goal text-center">Blue dots have no link.</h5>
-<h5 class="plot-title-goal text-center">
-  Links will be blurry for the first 5 or so seconds. Links from 2018 and 2019
-  season are down right now, sorry.
-</h5>
 <div class="rink-container">
-  <canvas #rinkCanvas></canvas>
-  <div class="shot-markers">
-    <div
-      *ngFor="let shot of filterShots(shotsData); let i = index"
-      class="shot-marker"
-      [style.left.px]="getShotImageCoordinates(shot.x, shot.y).x"
-      [style.top.px]="getShotImageCoordinates(shot.x, shot.y).y"
-      [matTooltip]="getTooltipContent(shot)"
-      matTooltipPosition="above"
-      (click)="redirectToLink(shot.Link)"
-    ></div>
+  <div class="shots-and-canvas">
+    <canvas class="canvas" #rinkCanvas></canvas>
+    <div class="shot-markers">
+      <div
+        *ngFor="let shot of filterShots(shotsData); let i = index"
+        class="shot-marker"
+        [style.left.px]="getShotImageCoordinates(shot.x, shot.y).y"
+        [style.top.px]="getShotImageCoordinates(shot.x, shot.y).x"
+        [matTooltip]="getTooltipContent(shot)"
+        matTooltipPosition="above"
+        (click)="redirectToLink(shot.Link)"
+      ></div>
+    </div>
   </div>
 </div>

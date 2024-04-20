@@ -82,20 +82,6 @@ body {
   width: 150px;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: auto;
-  min-width: 100%;
-  margin-top: 0.5rem;
-  transform: translate(0, 0);
-}
-
-.dropdown-menu.show {
-  display: block;
-}
-
 .timeline-bar {
   position: absolute;
   top: 0;
@@ -127,39 +113,6 @@ body {
   align-items: center;
 }
 
-.card-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.player-card {
-  justify-content: start;
-  width: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.player-card p {
-  margin: 4px 0;
-}
-
-.statistics-card {
-  width: 400px;
-  align-items: center;
-}
-
-.timeline-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
-}
-
 .left-timelines {
   display: flex;
   flex-direction: column;
@@ -170,77 +123,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 20px;
-}
-
-.timeline-item h3 {
-  text-align: center;
-  font-size: 13px;
-  font-weight: bold;
-}
-
-.shot-markers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.shot-marker {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  left: -8px;
-  top: -8px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-  transform: scale(1);
-  z-index: 1;
-}
-
-.shot-marker::after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  opacity: 0;
-}
-
-.shot-marker:hover {
-  transform: scale(1.2);
-}
-
-.shot-marker:hover::after {
-  opacity: 0.2;
-}
-
-.rink-container {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.shot-markers {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
-.filter-container {
-  display: flex;
-  margin-bottom: 20px;
-}
-
-.filter {
-  margin-right: 10px;
 }
 
 .card-container {
@@ -261,10 +143,6 @@ body {
   font-size: 18px;
   font-weight: bold;
   text-align: center;
-}
-
-.plot-title-goal {
-  font-weight: bold;
 }
 
 .fill-on-hover {
@@ -351,15 +229,6 @@ body {
 @media only screen and (max-width: 768px) {
   .card-container {
     flex-direction: column;
-  }
-
-  .filter-container {
-    display: block;
-    margin-bottom: 20px;
-  }
-
-  .filter {
-    margin-bottom: 10px;
   }
 
   .player-card,

@@ -241,4 +241,15 @@ export class TeamsComponent implements AfterViewInit {
     const nextYear = seasonStr.slice(4, 8);
     return `${year}-${nextYear}`;
   }
+
+  getPlayerPosition(position: string): string {
+    switch (position) {
+      case 'L':
+        return 'LW';
+      case 'R':
+        return 'RW';
+      default:
+        return position;
+    }
+  }
 }

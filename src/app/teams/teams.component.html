@@ -190,7 +190,7 @@
                           />
                           #{{ getSweaterNumber(forward.sweaterNumber) }}
                           {{ forward.fullName }} -
-                          {{ forward.positionCode }}
+                          {{ getPlayerPosition(forward.positionCode) }}
                         </a>
                       </ng-container>
                     </ng-container>
@@ -220,7 +220,7 @@
                           #{{ getSweaterNumber(defenseman.sweaterNumber) }}
                           {{ defenseman.fullName }} -
                           {{ defenseman.shootsCatches
-                          }}{{ defenseman.positionCode }}
+                          }}{{ getPlayerPosition(defenseman.positionCode) }}
                         </a>
                       </ng-container>
                     </ng-container>

@@ -5,6 +5,7 @@
 
 .search-spacing {
   margin-left: 10px;
+  width: 300px;
 }
 
 .search-select-height {
@@ -42,17 +43,60 @@ mat-form-field {
 
 .container {
   max-width: 100%;
-  padding: 0px;
   align-items: center;
+  padding: 0px;
+}
+
+.dropdown {
+  position: absolute;
+  display: inline-block;
+  z-index: 5;
+  width: inherit;
+  overflow: hidden;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  border: 1px solid #ddd;
+}
+.show {
+  display: block;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  min-width: 100%;
+  margin-top: 0.5rem;
+  transform: translate(0, 0);
+}
+
+.dropdown-item {
+  width: inherit;
+  background-color: #f6f6f6;
+  border-radius: 1px;
+  border-left: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
 }
 
 @media only screen and (max-width: 1000px) {
   .container {
     justify-content: center !important;
+    align-items: center;
+    padding: 0px;
   }
 
   .navbar-nav {
     flex-direction: row;
+  }
+  .search-spacing {
+    width: 200px;
   }
 
   .navbar-nav .nav-item {

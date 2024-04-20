@@ -7,3 +7,18 @@
 .plain-link:hover {
   color: steelblue;
 }
+
+.logo-div {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+}
+.logo {
+  width: 35px;
+  height: 35px;
+}
+
+.table-data {
+  padding: 10px !important;
+}

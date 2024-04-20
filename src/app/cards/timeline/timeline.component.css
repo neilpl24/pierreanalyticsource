@@ -1,8 +1,8 @@
 .circle {
   position: absolute;
   left: calc(var(--percentile) - 9px);
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: 1px;
   border-color: gray;
@@ -23,7 +23,7 @@
 .timeline {
   height: 4px;
   background-color: #e5e5e5;
-  width: 150px;
+  max-width: 150px;
   align-items: center;
 }
 

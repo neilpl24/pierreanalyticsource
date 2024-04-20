@@ -1,0 +1,16 @@
+.filter-container {
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter {
+  align-self: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .btn {
+    padding: 10px;
+  }
+}
