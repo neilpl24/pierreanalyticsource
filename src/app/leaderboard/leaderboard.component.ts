@@ -130,4 +130,15 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
 
     return { background: gradient[val], color: textColor };
   }
+
+  getPlayerPosition(position: string): string {
+    switch (position) {
+      case 'L':
+        return 'LW';
+      case 'R':
+        return 'RW';
+      default:
+        return position;
+    }
+  }
 }
