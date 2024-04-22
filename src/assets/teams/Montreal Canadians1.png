@@ -1,0 +1,555 @@
+
+
+<!doctype html>
+<html class="no-js" dir="ltr" lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Club 1909">
+
+    <title>Club 1909 - The official rewards program of the Montreal Canadiens</title>
+
+  <!-- General SEO data -->
+  <meta name="description" content="Welcome to Club 1909, the innovative program that unites all faithful Montreal Canadiens fans around the world.">
+
+  <!-- Open Graph data -->
+  <meta property="og:title" content="Club 1909 - The official rewards program of the Montreal Canadiens">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.club1909.com">
+  <meta property="og:description" content="Welcome to Club 1909, the innovative program that unites all faithful Montreal Canadiens fans around the world.">
+  <meta property="og:image" content="https://www.club1909.com/assets/build/img/og-image-9d781b97de.png">
+  <meta property="og:site_name" content="Club 1909">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card data -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Club 1909 - The official rewards program of the Montreal Canadiens">
+  <meta property="twitter:image" content="https://www.club1909.com/assets/build/img/og-image-9d781b97de.png">
+  <meta property="twitter:url" content="https://www.club1909.com">
+  <meta property="twitter:description" content="Welcome to Club 1909, the innovative program that unites all faithful Montreal Canadiens fans around the world.">
+  <meta property="twitter:site" content="@"/>
+    <link rel="shortcut icon" href="https://www.club1909.com/assets/img/favicons/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="57x57" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="https://www.club1909.com/assets/img/favicons/apple-touch-icon-152x152.png">
+    <link href='https://fonts.googleapis.com/css?family=Oswald:200,400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css2?family=Raleway:wght@300;900&display=swap' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://www.club1909.com/assets/build/css/style.min-326935f2a4.css">
+  <link rel="stylesheet" href="https://www.club1909.com/assets/build/js/main-82318c6c3b.css">
+    <script src="https://www.club1909.com/assets/build/js/vendor-78433aa613.js"></script>
+
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer', 'GTM-NBZJPX');
+  </script>
+
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SKYS7CD2VW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SKYS7CD2VW');
+  </script>
+    
+  </head>
+  <body class="js-body">
+
+    <noscript>
+    <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NBZJPX"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe>
+  </noscript>
+
+    <div class="modal-app js-modal-app">
+  <div class="modal-app__info">
+      <a
+        href="#"
+        class="js-modal-app-btn"
+      ><img src="https://www.club1909.com/assets/build/img/mirego-app-80655b60f3.png" alt="Club 1909 App"></a>
+    <p>For the best Club 1909 experience, use the Official Montreal Canadiens Mobile App.</p>
+  </div>
+  <div class="modal-app__cta">
+    <a
+      href="#"
+      class="btn btn--secondary btn--sm js-modal-app-btn"
+    >Get the app</a>
+  </div>
+  <a href="#" class="modal-app__close js-modal-app-close">
+    Continue in browser
+  </a>
+</div>
+    <div class="js-mobilenav-page">
+              <div class="header">
+  <div class="container header-container u-clearfix">
+    <a href="https://www.club1909.com"><img src="https://www.club1909.com/assets/build/img/logo-59ca3d770d.svg" alt="Club 1909" class="header-logo"></a>
+
+          <div class="header-nav">
+        <div class="header-nav-left">
+                                                    <a class="header-nav__link " href="/contests-promotions">Contests & Promotions</a>
+                                                                                                        <a class="header-nav__link " href="/points-rewards">Points & Rewards</a>
+                                                                                                        <a class="header-nav__link " href="/member-upgrades">Member Upgrades</a>
+                                                                                                        <a class="header-nav__link " href="/faq">FAQ</a>
+                                                                      </div>
+
+        <div class="header-nav-right">
+                      <span class="header-login"><a href="/login" class="overlay-hover">Login</a> | <a href="/register">Register</a></span>
+          
+                                    <a href="https://www.club1909.com" class="header-lang is-active">EN</a>
+                                                <a href="https://www.club1909.com/fr" class="header-lang ">FR</a>
+                              </div>
+
+      </div>
+        <div class="header-hamburger js-nav">
+      <div class="header-hamburger__lines">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+  </div>
+</div>            <div class="overlay js-nav-overlay">
+  <div class="container overlay-container">
+    <div class="overlay-close js-nav-close">
+      <div class="overlay-close__line"></div>
+      <div class="overlay-close__line"></div>
+    </div>
+    <a href="https://www.club1909.com"><img src="https://www.club1909.com/assets/build/img/logo-59ca3d770d.svg" alt="Club 1909" class="overlay-logo"></a>
+                                        <a class="overlay-link " href="/contests-promotions">• Contests & Promotions •</a>
+                                                                        <a class="overlay-link " href="/points-rewards">• Points & Rewards •</a>
+                                                                        <a class="overlay-link " href="/member-upgrades">• Member Upgrades •</a>
+                                                                        <a class="overlay-link " href="/faq">• FAQ •</a>
+                                                      </div>
+</div>
+        <div class="banner">
+  <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel">
+        <div class="carousel-slide">
+          <div class="container">
+            <div class="banner-spaced-content u-clearfix">
+              <div class="banner-info">
+                <img class="banner-logo-new" src="https://www.club1909.com/assets/build/img/logo-59ca3d770d.svg" alt="Club 1909">
+                <h1>WELCOME TO CLUB 1909!</h1>
+                <p class="u-text-large u-text-narrow u-space-bot-5x">Earn Club 1909 points now. <br> Get Canadiens rewards later!</p>
+                <a href="/register" class="btn btn--primary">Register Now</a>
+              </div>
+              <div class="banner-img">
+                <img src="https://www.club1909.com/assets/img/banner-player3.png" alt="Featured Player">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <div class="wrapper-tilted wrapper-tilted--primary">
+    <div class="container quote-wrapper">
+      <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                <a href="https://twitter.com/Roy33Lepani/status/1312977528257155079" target="_blank" class="quote u-display-block">
+          <div class="row row--space-bot flex-row">
+                          <div class="sm-1-4">
+                <img class="media quote-img" src="https://www.club1909.com/files/quotes/locale_image/listing/0001/212_en_1c31d_185611_ejiigthwkaakgpx.jfif" alt="">
+              </div>
+                        <div class="sm-3-4 u-position-relative">
+              <div class="quote-paragraph">
+                                  <p>Thanks club 1909</p>
+                              </div>
+              <div class="quote-u-wrapper">
+                                  <p class="quote-source title-dim u-text-large">- Gregory Lepani</p>
+                                                  <div class="quote-btn btn--sm btn btn--invert">Twitter</div>
+                              </div>
+            </div>
+          </div>
+        </a>
+              </div>
+    </div>
+  </div>
+    </div>
+    <div class="container">
+      <h1 class="title-invert u-space-top-5x u-text-center">• Featured rewards •</h1>
+      <div class="carousel-position ">
+    </div>
+<div class="row row--space-bot">
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="https://club1909.canadiens.com/rewards/marketplace/details/3397" style="background-image: url('https://www.club1909.com/files/rewards/locale_image/listing/0001/67_en_91066_185503_2yvonfeatured-1.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">REWARD</span>
+                                  </div>
+                <h2 class="card-title"><span>Bobblehead Yvon Lambert</span></h2>
+                                  <h3 class="card-info"><span>Cost:&nbsp;3711&nbsp;Pts</span></h3>
+                                                  <div class="btn btn--tertiary card-btn">GET REWARD</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="http://www.club1909.com/?login" style="background-image: url('https://www.club1909.com/files/rewards/locale_image/listing/0001/64_en_a01f0_185694_thegoaltenders.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">REWARD</span>
+                                  </div>
+                <h2 class="card-title"><span>Book The Goaltenders - Montreal Canadiens</span></h2>
+                                  <h3 class="card-info"><span>Cost:&nbsp;13315&nbsp;Pts</span></h3>
+                                                  <div class="btn btn--tertiary card-btn">Get Reward</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+</div>
+<div class="row row--space-bot">
+  <div class="sm-1-2 md-1-3">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="http://www.club1909.com/?login" style="background-image: url('https://www.club1909.com/files/rewards/locale_image/listing/0001/61_en_98d6d_185696_pins-1.jpg')" class="flex-embed card card--bottom">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">REWARD</span>
+                                  </div>
+                <h2 class="card-title"><span>Retired Jersey Pin</span></h2>
+                                  <h3 class="card-info"><span>Cost:&nbsp;1509&nbsp;Pts</span></h3>
+                                                  <div class="btn btn--tertiary card-btn">Get Reward</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  <div class="sm-1-2 md-1-3">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="http://www.club1909.com/?login" style="background-image: url('https://www.club1909.com/files/rewards/locale_image/listing/0001/8_en_8d481_185698_maurice.jpg')" class="flex-embed card card--bottom">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">Reward</span>
+                                  </div>
+                <h2 class="card-title"><span>Maurice Richard : Reluctant Hero</span></h2>
+                                  <h3 class="card-info"><span>Cost:&nbsp;1750&nbsp;Pts</span></h3>
+                                                  <div class="btn btn--tertiary card-btn">GET REWARD</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  <div class="md-1-3">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="http://www.club1909.com/?login" style="background-image: url('https://www.club1909.com/files/rewards/locale_image/listing/0001/42_en_a7526_185697_alexandghosts.jpg')" class="flex-embed card card--bottom">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">Reward</span>
+                                  </div>
+                <h2 class="card-title"><span>Alex and the Ghosts</span></h2>
+                                  <h3 class="card-info"><span>Cost:&nbsp;950&nbsp;Pts</span></h3>
+                                                  <div class="btn btn--tertiary card-btn">GET REWARD</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+</div>
+    </div>
+  </div>
+
+  
+  <div class="wrapper-tilted">
+    <div class="container">
+      <h1 class="u-text-center">• What is Club 1909? •</h1>
+      <div class="row row--space-bot flex-row">
+        <div class="sm-1-2 md-1-3">
+          <img src="https://www.club1909.com/assets/img/landing-card1-new-en.png" alt="" class="media">
+          <h2>Points</h2>
+          <p>Collecting points is easy: just keep doing what you’re doing as a fan. Everything you do – visiting canadiens.com, watching games, buying merch – will get you points.</p>
+        </div>
+        <div class="sm-1-2 md-1-3">
+          <img src="https://www.club1909.com/assets/img/landing-card2-new2.png" alt="" class="media">
+          <h2>Rewards</h2>
+          <p>Exchanging points for rewards is just like shopping online. Use the Club 1909 portal to exchange your points for items at fixed prices, to participate in contests or to bid on rewards.</p>
+        </div>
+        <div class="sm-1-2 md-1-3">
+          <img src="https://www.club1909.com/assets/img/landing-card3-new2.png" alt="" class="media">
+          <h2>Experiences</h2>
+          <p>Get access to unique and exclusive experiences, like the chance to catch a game from the press gallery or enjoy free food and drinks while watching from the Renaissance Montreal Loft.</p>
+        </div>
+      </div>
+            <div class="u-text-center u-space-bot-7x">
+        <h3 class="membership-title">Register now and <br> get closer to the team than ever before!</h3>
+                  <div class="membership-btn-wrapper">
+            <hr class="membership-btn-sep"></hr>
+            <a href="/register" class="membership-btn">Register Now</a>
+          </div>
+          <div class="membership-login">
+            OR <a class="u-text-bold u-text-underline" href="/login">Login</a>
+          </div>
+              </div>
+            <div class="row flex-row row--space-bot u-text-center">
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/3_en_d652b_1736_membership-double.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none">$49.99 </h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">Double the points on every redeemable action.</p>
+                      <a class="membership-link" href="/member-upgrades#double-your-points">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/27_en_4baf8_185724_3111-produits-numeriques-23-24-02.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$11.99</s> $7.19</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">100 points for every game with 5+ goals scored by Montreal Canadiens</p>
+                      <a class="membership-link" href="/member-upgrades#goal-horn-frenzy">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/7_en_9d2e2_1742_membership-zero-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$7.99</s> $4.79</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">100 points for every Montreal Canadiens shutout.</p>
+                      <a class="membership-link" href="/member-upgrades#the-zero-heroes">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/9_en_f4168_1744_membership-hatters-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$5.99</s> $3.59</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">100 points for every hat trick</p>
+                      <a class="membership-link" href="/member-upgrades#the-mad-hatters">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/6_en_410ea_1741_membership-showstoppers-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$9.99</s> $5.99</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">100 points for every Montreal Canadiens win in an overtime or shootout.</p>
+                      <a class="membership-link" href="/member-upgrades#the-showstoppers">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/19_en_0bac6_185567_2122-produits-numeriques-2022-23-06-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$21.99</s> $13.19</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">25 points for every point registered by Nick Suzuki</p>
+                      <a class="membership-link" href="/member-upgrades#the-playmaker">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/23_en_ab6cb_185573_22-colesgoals-2022-23-04-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$21.99</s> $13.19</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">75 points for every goal scored by Cole Caufield.</p>
+                      <a class="membership-link" href="/member-upgrades#coles-goals">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/25_en_18b6f_185742_3111-produits-numeriques-23-24-newcrew-en.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$17.99</s> $10.79</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">25 points for every point registered by Alex Newhook.</p>
+                      <a class="membership-link" href="/member-upgrades#the-new-crew">+ Learn more</a>
+                  </div>
+              <div class="xs-1-2 sm-1-3">
+          <img class="membership-img" src="https://www.club1909.com/files/products/locale_image/listing/0001/29_en_aef28_185728_3111-produits-numeriques-23-24-04.png" alt="">
+                    <h3 class="title-tertiary u-space-bot-none"><s>$21.99</s> $13.19</h3>
+                    <p class="u-text-capitalize-first u-space-bot-none">One point for every Jake Allen and Sam Montembeault save</p>
+                      <a class="membership-link" href="/member-upgrades#the-wall">+ Learn more</a>
+                  </div>
+            </div>
+    </div>
+  </div>
+  
+  <div class="wrapper-tilted wrapper-tilted--secondary">
+    <div class="container container-large-mobile">
+      <h1 class="u-text-center title-invert">• Points •</h1>
+      <div class="carousel-position ">
+      <div class="carousel-loading">
+  <div class="carousel">
+    <div class="js-carousel" data-carousel-variant="dots">
+      <div class="carousel-slide">
+        <a href="https://www.nhl.com/canadiens/fans/7thplayer" target="_blank" style="background-image: url('https://www.club1909.com/assets/img/card-7th-generic-en.jpg')" class="flex-embed card card--background-bottom card--top card--big-box-left">
+          <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+          <div class="flex-embed__content card__content card__content--7th">
+            <div class="card-type u-clearfix">
+                <span class="card-type__source">7th player</span>
+                <span class="card-type__type">Register</span>
+            </div>
+            <h2 class="card-title"><span>COLLECT POINTS AND PUCKS, PLAY THE GAMES, AND PARTICIPATE IN THE CONTESTS!</span></h2>
+              <div class="btn btn--tertiary card-btn">Register now</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+    </div>
+<div class="row row--space-bot">
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="https://www.nhl.com/canadiens/fans/app" style="background-image: url('https://www.club1909.com/files/earns/locale_image/listing/0001/37_en_886ef_185685_powerupen.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">Mobile App</span>
+                                  </div>
+                <h2 class="card-title"><span>Points Power-Up!</span></h2>
+                                                  <div class="btn btn--tertiary card-btn">DOWNLOAD APP</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="https://www.nhl.com/canadiens/fans/app" style="background-image: url('https://www.club1909.com/files/earns/locale_image/listing/0001/31_en_950dc_185690_weeklycodeen-1.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">Mobile App</span>
+                                  </div>
+                <h2 class="card-title"><span>Weekly code</span></h2>
+                                                  <div class="btn btn--tertiary card-btn">DOWNLOAD APP</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+</div>
+<div class="row row--space-bot">
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="http://www.club1909.com/?login" style="background-image: url('https://www.club1909.com/files/earns/locale_image/listing/0001/36_en_db0e9_185681_produitsnumsfr.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">MEMBERSHIP</span>
+                                  </div>
+                <h2 class="card-title"><span>Get your digital products to earn points!</span></h2>
+                                                  <div class="btn btn--tertiary card-btn">GET YOUR PRODUCTS</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  <div class="sm-1-2">
+    <div class="carousel-loading">
+    <div class="carousel">
+      <div class="js-carousel" data-carousel-variant="dots">
+                  <div class="carousel-slide">
+            <a href="https://www.nhl.com/fr/canadiens/fans/application-mobile" style="background-image: url('https://www.club1909.com/files/earns/locale_image/listing/0001/38_en_85904_185684_dailyquizen.jpg')" class="flex-embed card card--middle">
+              <div class="flex-embed__ratio flex-embed__ratio--2by1"></div>
+              <div class="flex-embed__content card__content">
+                <div class="card-type u-clearfix">
+                                      <span class="card-type__source">Club 1909</span>
+                                                        <span class="card-type__type">Mobile App</span>
+                                  </div>
+                <h2 class="card-title"><span>Daily Quiz</span></h2>
+                                                  <div class="btn btn--tertiary card-btn">DOWNLOAD APP</div>
+                                              </div>
+            </a>
+          </div>
+              </div>
+    </div>
+  </div>
+  </div>
+  </div>
+            <div class="row row--space-bot flex-row">
+
+        
+      </div>
+      <br>
+      <div class="u-text-center">
+        <a href="/points-rewards" class="btn btn--invert">
+          <span class="title-invert h2">Find out how to earn points</span>
+        </a>
+      </div>
+    </div>
+  </div>
+              <div class="footer">
+  <div class="container">
+    <div class="row row--space-bot">
+      <div class="sm-1-3 footer-address">
+        <h2 class="footer-title">Follow us</h2>
+        <div class="footer-icons">
+          <a class="footer-icon" target="_blank" href="https://twitter.com/CanadiensMTL"><i class="icon-twitter"></i></a>
+          <a class="footer-icon" target="_blank" href="https://www.facebook.com/canadiensmtl/"><i class="icon-facebook"></i></a>
+          <a class="footer-icon" target="_blank" href="https://www.instagram.com/canadiensmtl/"><i class="icon-instagram"></i></a>
+          <a class="footer-icon" target="_blank" href="https://www.youtube.com/canadiensmtl"><i class="icon-youtube"></i></a>
+          <span class="footer-account">Canadiensmtl</span>
+        </div>
+        <p>1275, St-Antoine West, <br> Montreal (QC) <br> H3C 5L2</p>
+      </div>
+      <div class="sm-2-3 footer-copyrights">
+        <p>canadiens.com is the official Web site of the Montreal Canadiens. Montreal Canadiens and canadiens.com are trademarks of the Montreal Canadiens. NHL, the NHL Shield, the word mark and image of the Stanley Cup and NHL Conference logos are registered trademarks of the National Hockey League. All NHL logos and marks and NHL team logos and marks as well as all other proprietary materials depicted herein are the property of the NHL and the respective NHL teams and may not be reproduced without the prior written consent of NHL Enterprises, L.P. Copyright © 1999-2016 Montreal Canadiens and the National Hockey League. All Rights Reserved.</p>
+        <p>Read Club 1909’s <a href="/terms-conditions">terms & conditions</a> and <a href="/privacy-policy">privacy policy</a>.</p>
+      </div>
+    </div>
+  </div>
+</div>          </div>
+
+    <script>
+  var APP_GLOBAL = {
+    env: 'production',
+    debug: false,
+    lang: 'en',
+    showLoginOnInit: false,
+    paths: {
+      api: 'https://www.club1909.com/api/',
+      assets: 'https://www.club1909.com/assets/'
+    }
+  };
+  </script>
+  <script src="https://www.club1909.com/assets/build/js/main-d89915f234.js"></script>
+
+  </body>
+</html>

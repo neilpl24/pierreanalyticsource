@@ -34,7 +34,7 @@
                           >
                             {{ player.team }}
                             <img
-                              src="{{ 'assets/' + player.team + '.png' }}"
+                              src="{{ 'assets/teams/' + player.team + '.png' }}"
                               class="logo"
                             />
                           </a>
@@ -65,7 +65,9 @@
                         <td>
                           {{ getPlayerNationality(player.nationality) }}
                           <img
-                            src="{{ 'assets/' + player.nationality + '.png' }}"
+                            src="{{
+                              'assets/flags/' + player.nationality + '.png'
+                            }}"
                             class="nationality-logo"
                           />
                         </td>
@@ -105,7 +107,7 @@
                     60)</mat-card-title
                   >
                   <mat-card-subtitle class="text-center"
-                    >Updated on (04/03/24, 7:00pm EST)</mat-card-subtitle
+                    >Updated on (04/19/24, 12:53pm EST)</mat-card-subtitle
                   >
                 </mat-card-header>
                 <div class="timeline-container">

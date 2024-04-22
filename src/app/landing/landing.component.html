@@ -48,9 +48,10 @@
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="team">Team</th>
         <td mat-cell *matCellDef="let player">
-          <img src="{{ 'assets/' + player.team + '.png' }}" class="logo" />{{
-            player.team
-          }}
+          <img
+            src="{{ 'assets/teams/' + player.team + '.png' }}"
+            class="logo"
+          />{{ player.team }}
         </td>
       </ng-container>
 

@@ -1,89 +1,253 @@
 <nav-bar></nav-bar>
-<div class="d-flex align-items-start bg-white mb-3" style="margin-left: 10%;margin-right:10%;">
-    <div>
-        <h2>About This Website</h2>
-        <p>This website, inspired by BaseballSavant, is a resource for advanced hockey statistics. You can find
-            percentile rankings, live game data, and leaderboard data on this website.</p>
-    </div>
-</div>
-
-<div class="d-flex align-items-start bg-white mb-3" style="margin-left: 10%;margin-right:10%;">
-    <div>
-        <h2>About Me</h2>
-        <p>Hi! My name is Neil Pierre-Louis. I am a Software Developer for the Baseball Research and Development
-            Department of the Boston Red Sox front office. I am also a recent graduate of the University of North
-            Carolina at
-            Chapel-Hill.
-            I studied computer science and minored in statistics and analytics. In my free time, I love to play
-            soccer with
-            my friends, watch hockey, and play jazz trumpet! As you can clearly see, I am a sports merchant. On this
-            website, you can find all of my projects and
-            contact
-            information!</p>
-    </div>
-</div>
-
-<div class="d-flex align-items-start bg-white mb-3" style="margin-left: 10%;margin-right:10%;">
-    <div>
-        <h2>Data</h2>
-        <p>The data presented to you is pulled from the <a href="https://github.com/dword4/nhlapi">NHL's API. </a>All
-            advanced stat calculations are done by me and uploaded to a SQL database that this website pulls from. This
-            website is an Angular frontend with an Express JS backend that pulls from a SQLite3 database. All player
-            card statistics are calculated as a rate (per/60) and are percentile based.</p>
-    </div>
-</div>
-
-<div class="d-flex align-items-start bg-white mb-3" style="margin-left: 10%;margin-right:10%;">
-    <div>
-        <h2>Glossary</h2>
-        <p style="font-weight: bold;">xGF:</p>
-        <p>The amount of expected goals for that a skater is on the ice for.</p>
-
-        <p style="font-weight: bold;">xGA:</p>
-        <p>The amount of expected goals for that a skater is on the ice against.</p>
-
-        <p style="font-weight: bold;">Finishing:</p>
-        <p>I calculated finishing as what is usually referred to as "Goals Scored Above Expected," which is simply the
-            amount of goals a skater has scored subtracted by the amount of expected goals they have generated through
-            shots themselves.</p>
-
-        <p style="font-weight: bold;">Primary Assists:</p>
-        <p>Assists where the skater was the last one on the scorer's team to touch or pass the puck before the scorer
-            obtains possession (assuming no possession loss before this) and scores.</p>
-
-        <p style="font-weight: bold;">EV:</p>
-        <p>Even Strength (5v5, 4v4, 3v3)</p>
-
-        <p style="font-weight: bold;">PP:</p>
-        <p>Powerplay (Skater advantage due to penalty, 5v4 for example)</p>
-
-        <p style="font-weight: bold;">SH:</p>
-        <p>Shorthanded (Skater disadvantage due to penalty, 4v5 for example)</p>
-
-        <p style="font-weight: bold;">TOI:</p>
-        <p>Time On Ice</p>
-
-    </div>
-</div>
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 mx-auto">
-            <div class="card d-flex align-items-center justify-content-center">
-                <div class="card-body text-center">
-                    <img src="assets/me.jpg" class="small card-img-top" alt="Fissure in Sandstone" />
-                    <h2 class="card-title">Contact Me</h2>
-                    <p class="card-text"><i class="fas fa-envelope"></i> neilpierre24@gmail.com</p>
-                    <p class="card-text"><i class="fas fa-phone"></i> 9196185609</p>
-                    <div class="card-text social-icons">
-                        <a href="https://www.linkedin.com/in/neil-pierre-louis/" target="_blank"><i
-                                class="fab fa-linkedin-in"></i></a>
-                        <a href="https://twitter.com/pierreanalytics" target="_blank"><i class="fab fa-twitter"></i></a>
-                        <a href="https://github.com/neilpl24" target="_blank"><i class="fab fa-github"></i></a>
-                    </div>
-                    <a href="assets/Neil_Pierre-Louis_Resume.pdf" download class="btn btn-primary">Download Resume</a>
-                </div>
+<div class="container-about">
+  <div class="center">
+    <div class="d-flex align-items-start bg-white mb-3">
+      <div>
+        <h2 class="about-header">About This Website</h2>
+        <p class="paragraph text-size">
+          PierreAnalytics is a website that provides a variety of advanced NHL
+          statistics, presented in a similar format to tools used by
+          analytically driven major league front offices. It was created by Neil
+          Pierre-Louis as a personal project, and is maintained by Neil and
+          Bennett Summy.
+          <br />
+          <br />
+          We are major advocates of the value of personal projects. If you'd
+          like to build your skills working on this site, let us know!
+        </p>
+        <div style="display: flex; justify-content: center">
+          <a
+            href="https://github.com/neilpl24/pierreanalyticsource"
+            target="_blank"
+          >
+            <div class="github-link">
+              <img class="github-img" src="assets/github.png" alt="github" />
             </div>
+          </a>
         </div>
+      </div>
     </div>
+    <h2 class="about-header">About Us</h2>
+    <div class="about-container">
+      <h2 class="about-header">Neil Pierre-Louis</h2>
+      <div class="abt-container">
+        <img
+          src="assets/neil-alt.png"
+          class="masked-image"
+          alt="Fissure in Sandstone"
+        />
+        <ul class="text-size">
+          <li>
+            I am a Software Developer for the Baseball Research and Development
+            Department of the Boston Red Sox front office.
+          </li>
+          <li>
+            I am also a recent graduate of the University of North Carolina at
+            Chapel-Hill.
+          </li>
+          <li>
+            In my free time, I love to play soccer and explore Boston with my
+            friends, watch hockey, and play guitar and jazz trumpet.
+          </li>
+        </ul>
+      </div>
+      <h2 class="about-header">Bennett Summy</h2>
+      <div class="abt-container">
+        <img
+          src="assets/bennett-alt.jpg"
+          class="masked-image"
+          alt="bennett card mask"
+        />
+        <ul class="text-size">
+          <li>
+            I'm an aspiring full-stack software engineer based out of Chicago,
+            Illinois.
+          </li>
+          <li>
+            I'm currently living in Montreal, Quebec, Canada while I attend
+            McGill University.
+          </li>
+          <li>
+            I've done two internships with the Chicago Blackhawks:
+            <ul>
+              <li>
+                June - August '22: Worked in the Business Strategy and Analytics
+                department to create data pipelines for retail data and for
+                grassroots hockey initiatives.
+              </li>
+              <li>
+                January - August '23: Worked in the Hockey Strategy and
+                Analytics department to develop a baseball-inspired proprietary
+                analytics software.
+              </li>
+            </ul>
+          </li>
+          <li>
+            I'm a big hockey guy, but I'm also known to watch F1 races at all
+            hours, and I love listening to Cubs games on the radio.
+          </li>
+          <li>
+            Outside of sports, I love biking, cooking for others, and books that
+            I can learn from.
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="contact-card-container">
+      <div class="row contact-card">
+        <div class="card d-flex align-items-center justify-content-center">
+          <div class="card-body text-center">
+            <img
+              src="assets/neil.jpg"
+              class="small card-img-top"
+              alt="Fissure in Sandstone"
+            />
+            <h2 class="card-title">Contact Neil</h2>
+            <p class="card-text">
+              <i class="fas fa-envelope"></i> neilpierre24@gmail.com
+            </p>
+            <div class="card-text social-icons">
+              <a
+                href="https://www.linkedin.com/in/neil-pierre-louis/"
+                target="_blank"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="https://twitter.com/pierreanalytics" target="_blank"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://github.com/neilpl24" target="_blank"
+                ><i class="fab fa-github"></i
+              ></a>
+            </div>
+            <a
+              href="assets/resumes/Neil_Pierre-Louis_Resume.pdf"
+              download
+              class="btn btn-primary"
+              >Download Resume</a
+            >
+          </div>
+        </div>
+      </div>
+      <div class="row contact-card">
+        <div class="card d-flex align-items-center justify-content-center">
+          <div class="card-body text-center">
+            <img
+              src="assets/bennett.jpg"
+              class="small card-img-top"
+              alt="Bennett Contact Card"
+            />
+            <h2 class="card-title">Contact Bennett</h2>
+            <p class="card-text">
+              <i class="fas fa-envelope"></i> bennettsummy@gmail.com
+            </p>
+            <div class="card-text social-icons">
+              <a
+                href="https://www.linkedin.com/in/bennett-summy/"
+                target="_blank"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="https://twitter.com/BennettSummy" target="_blank"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://github.com/bsummy" target="_blank"
+                ><i class="fab fa-github"></i
+              ></a>
+            </div>
+            <a
+              href="assets/resumes/Bennett_Summy_Resume.pdf"
+              download
+              class="btn btn-primary"
+              >Download Resume</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-start bg-white mb-3">
+      <div>
+        <h2 class="about-header">Data</h2>
+        <p class="text-size">
+          All data is sourced from the NHL's API. Unofficial API docs can be
+          found
+          <a
+            href="https://github.com/Zmalski/NHL-API-Reference"
+            target="_blank"
+          >
+            here</a
+          >. All advanced stat calculations are performed by Neil and uploaded
+          to a SQL database that this website pulls from. This website is an
+          Angular frontend with an Express JS backend that pulls from a SQLite3
+          database. All player card statistics are calculated as a rate (per/60)
+          and are percentile based.
+        </p>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-start bg-white mb-3">
+      <div>
+        <h2 class="about-header">Glossary</h2>
+        <div class="table-container">
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td class="colName">xG</td>
+              <td class="colDesc">
+                The amount of expected goals for that a skater is on the ice
+                for.
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">xGA</td>
+              <td>
+                The amount of expected goals against that a skater is on the ice
+                for.
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">Finishing</td>
+              <td>
+                Calculated as what is usually referred to as "Goals Scored Above
+                Expected," which is simply the amount of goals a skater has
+                scored subtracted by the amount of expected goals they have
+                generated through shots themselves.
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">Primary Assists</td>
+              <td>
+                Assists where the skater was the last one on the scorer's team
+                to touch or pass the puck before the scorer obtains possession
+                (assuming no possession loss before this) and scores.
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">EV</td>
+              <td>Even Strength (5v5, 4v4, 3v3)</td>
+            </tr>
+            <tr>
+              <td class="colName">PP</td>
+              <td>
+                Powerplay (Skater advantage due to penalty, 5v4 for example)
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">SH</td>
+              <td>
+                Shorthanded (Skater disadvantage due to penalty, 4v5 for
+                example)
+              </td>
+            </tr>
+            <tr>
+              <td class="colName">TOI</td>
+              <td>Time On Ice</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
