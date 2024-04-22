@@ -82,6 +82,12 @@
   margin: 4px 0;
 }
 
+.player-name {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .statistics-card {
   width: 32%;
   align-items: center;
@@ -142,6 +148,17 @@
   align-items: center;
 }
 
+.descriptor-text {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.header {
+  padding: 10px;
+}
+
 @keyframes sparkle {
   0%,
   100% {
@@ -181,5 +198,9 @@
   .card-container {
     flex-direction: column;
     gap: 15px;
+  }
+
+  .descriptor-text {
+    display: none;
   }
 }

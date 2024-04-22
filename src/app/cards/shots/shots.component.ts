@@ -101,9 +101,11 @@ export class ShotsComponent implements AfterViewInit, OnChanges {
     // this is an arbitrary adjustment to make the shot markers cover the center of the circle
     context.arc(x + 10, y + 10, radius, 0, 2 * Math.PI, false);
     if (link == 'No link found.') {
-      context.fillStyle = 'blue';
+      // if there's no link, making the shot marker light grey
+      context.fillStyle = 'lightgrey';
     } else {
-      context.fillStyle = 'red';
+      // the shot markers are light blue if there's a link
+      context.fillStyle = '#529BFD';
     }
     context.fill();
     context.lineWidth = 2;

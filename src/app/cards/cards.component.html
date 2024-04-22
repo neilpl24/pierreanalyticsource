@@ -12,7 +12,7 @@
         <ng-container *ngIf="playerOverall.card as card">
           <div class="card-container">
             <mat-card class="player-card border">
-              <mat-card-content style="margin-top: 3px">
+              <mat-card-content>
                 <mat-card-title class="player-name text-center"
                   >{{ player.firstName }} {{ player.lastName }}</mat-card-title
                 >
@@ -101,15 +101,14 @@
             </mat-card>
             <mat-card class="statistics-card border">
               <mat-card-content>
-                <mat-card-header style="display: inline">
-                  <mat-card-title class="player-name text-center"
-                    >{{ season }} NHL Percentile Statistics (Per
-                    60)</mat-card-title
-                  >
-                  <mat-card-subtitle class="text-center"
-                    >Updated on (04/19/24, 12:53pm EST)</mat-card-subtitle
-                  >
-                </mat-card-header>
+                <mat-card-title class="player-name text-center"
+                  >{{ season }} NHL Percentile Statistics (Per
+                  60)</mat-card-title
+                >
+                <mat-card-subtitle class="text-center"
+                  >Updated on (04/19/24, 12:53pm EST)</mat-card-subtitle
+                >
+
                 <div class="timeline-container">
                   <div class="left-timelines">
                     <div
@@ -148,17 +147,29 @@
                     </div>
                   </div>
                 </div>
+                <div>
+                  <p class="descriptor-text">
+                    All data is provided by the NHL's API and calculated on a
+                    per 60 basis.
+                  </p>
+                  <p class="descriptor-text">
+                    Check out the
+                    <a [routerLink]="['/about']" class="plain-link">
+                      glossary
+                    </a>
+                    located on the about page to learn a bit more about the
+                    statistics above.
+                  </p>
+                </div>
               </mat-card-content>
             </mat-card>
             <mat-card class="shot-card border">
-              <mat-card-header style="display: inline">
-                <mat-card-title class="player-name text-center"
-                  >Goals Plot</mat-card-title
-                >
-                <mat-card-subtitle class="text-center"
-                  >Click the red dots to check out the video!</mat-card-subtitle
-                >
-              </mat-card-header>
+              <mat-card-title class="player-name text-center"
+                >Goals Plot</mat-card-title
+              >
+              <mat-card-subtitle class="text-center"
+                >Click the blue dots to check out the video!</mat-card-subtitle
+              >
               <div class="md-form form-fill">
                 <div mdbDropdown class="dropdown">
                   <button
