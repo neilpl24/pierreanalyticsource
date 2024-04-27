@@ -436,7 +436,6 @@ export class CardsComponent implements AfterViewInit, OnInit {
     var textColor = 'black';
 
     const val = Math.floor(percentile);
-    console.log(val);
 
     return { background: gradient[val], color: textColor };
   }
