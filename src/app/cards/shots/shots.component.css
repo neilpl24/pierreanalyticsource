@@ -1,0 +1,45 @@
+.shot-markers {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  z-index: 2;
+}
+
+.shot-marker {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  transform: scale(1);
+  z-index: 2;
+}
+
+.shot-marker:hover {
+  cursor: pointer;
+}
+
+.shot-marker:hover::after {
+  opacity: 0.2;
+}
+
+.rink-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.shots-and-canvas {
+  /* this is hardcoded to the size of the rink image */
+  width: 292px;
+  height: 292px;
+}
+
+.canvas {
+  position: absolute;
+  width: inherit;
+  height: inherit;
+  z-index: 1;
+}

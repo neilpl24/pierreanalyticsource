@@ -4,7 +4,7 @@
     <filters></filters>
     <table
       mat-table
-      class="table table-hover align-middle mb-0 bg-white table-bordered border-secondary"
+      class="table table-data table-hover align-middle mb-0 bg-white table-bordered border-secondary"
       [dataSource]="dataSource"
       matSort
       (matSortChange)="onSortChange($event)"
@@ -25,28 +25,36 @@
           Name
         </th>
         <td mat-cell *matCellDef="let player" class="left">
-          <img
-            src="{{
-              'https://assets.nhle.com/mugs/nhl/latest/' +
-                player.playerID +
-                '.png'
-            }}"
-            class="logo"
-          />{{ player.firstName }} {{ player.lastName }}
+          <div class="logo-div">
+            <img
+              src="{{
+                'https://assets.nhle.com/mugs/nhl/latest/' +
+                  player.playerID +
+                  '.png'
+              }}"
+              class="logo row"
+            />
+            <div class="row">{{ player.firstName }} {{ player.lastName }}</div>
+          </div>
         </td>
       </ng-container>
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef class="small-column">Position</th>
-        <td mat-cell *matCellDef="let player">{{ player.position }}</td>
+        <td mat-cell *matCellDef="let player">
+          {{ getPlayerPosition(player.position) }}
+        </td>
       </ng-container>
       <ng-container matColumnDef="team">
         <th mat-header-cell *matHeaderCellDef>Team</th>
         <td mat-cell *matCellDef="let player">
           <a [routerLink]="['/teams', player.teamId]" class="plain-link">
-            <img
-              src="{{ 'assets/teams/' + player.team + '.png' }}"
-              class="logo"
-            />{{ player.team }}
+            <div class="logo-div">
+              <img
+                src="{{ 'assets/teams/' + player.team + '.png' }}"
+                class="logo row"
+              />
+              <div class="row">{{ player.team }}</div>
+            </div>
           </a>
         </td>
       </ng-container>

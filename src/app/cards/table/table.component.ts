@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import * as chroma from 'chroma-js';
 
 @Component({
   selector: 'shot-table',
@@ -47,17 +48,25 @@ export class TableComponent implements AfterViewInit, OnChanges {
       });
   }
 
-  getCircleColor(percentile: number): { background: string; color: string } {
+  getBkgColor(percentile: number): { background: string; color: string } {
+    // the most common xG values are between 0 and 0.1, so we're going to make those white
+    // this version will give us 10 colors of blue from there
+
     percentile = percentile * 100;
-    if (percentile >= 15) {
-      return { background: 'red', color: 'white' };
-    } else if (percentile <= 5) {
-      const blueValue = Math.round(percentile * 5.1);
-      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
-      return { background, color: 'white' };
-    } else {
-      return { background: '', color: 'black' };
+    var textColor = 'black';
+
+    if (percentile <= 10) {
+      return { background: '#ffffff', color: textColor };
     }
+
+    const gradient = chroma
+      .scale(['#7ecef9', '#0000ff'])
+      .mode('lab')
+      .colors(10);
+
+    const val = Math.floor(percentile / 10);
+
+    return { background: gradient[val], color: textColor };
   }
 
   redirectToLink(link: string) {
@@ -76,14 +85,14 @@ export class TableComponent implements AfterViewInit, OnChanges {
     return Math.round(xG * 100) / 100;
   }
 
-    // tooltip text with mappings to the column names
-    tooltipMappings: { [key: string]: string } = {
-        xg: 'Expected Goals',
-      };
+  // tooltip text with mappings to the column names
+  tooltipMappings: { [key: string]: string } = {
+    xg: 'Expected Goals',
+  };
 
-      getTooltip(key: string): string {
-        return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
-      }
+  getTooltip(key: string): string {
+    return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
+  }
 
   private updateDataSource(): void {
     this.shotsData = this.filterShots(this.shotsData);

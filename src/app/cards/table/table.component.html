@@ -74,10 +74,7 @@
           mat-cell
           *matCellDef="let shot"
           class="left"
-          [style.background]="
-            getCircleColor(this.roundValue(shot.xG)).background
-          "
-          [style.color]="getCircleColor(this.roundValue(shot.xG)).color"
+          [ngStyle]="getBkgColor(this.roundValue(shot.xG))"
         >
           {{ this.roundValue(shot.xG) }}
         </td>

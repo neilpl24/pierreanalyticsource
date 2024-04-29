@@ -36,12 +36,127 @@
 }
 
 .action {
-  height: 250px;
+  max-width: 90%;
+  height: auto;
   margin-top: 5%;
 }
 
-.mat-mdc-card-content:last-child {
-  padding-bottom: 0px;
+.player-headshot {
+  width: 100%;
+  height: auto;
+}
+
+.player-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.action-container {
+  display: flex;
+  justify-content: center;
+}
+
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.player-card {
+  justify-content: start;
+  width: 32%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+.player-card p {
+  margin: 4px 0;
+}
+
+.player-name {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.statistics-card {
+  width: 32%;
+  align-items: center;
+}
+
+.shot-card {
+  display: flex;
+  flex-direction: column;
+  width: 32%;
+  align-items: center;
+  padding: 16px;
+}
+.plot-title-goal {
+  font-weight: bold;
+}
+
+.shot-card-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.container {
+  max-width: 90%;
+}
+
+.dropdown {
+  margin: 10px;
+}
+
+.table-container th,
+.table-container td {
+  border: 1px solid #ccc;
+  padding: 4px;
+  text-align: center;
+}
+
+.table-container table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timeline-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+}
+
+.timeline-item h3 {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  align-items: center;
+}
+
+.descriptor-text {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.header {
+  padding: 10px;
 }
 
 @keyframes sparkle {
@@ -61,15 +176,31 @@
     display: none;
   }
 
-  .mat-mdc-card-content:last-child {
-    padding-bottom: 10px;
-  }
-
-  shots {
-    display: none;
-  }
-
   .md-form {
     align-self: center;
+  }
+
+  .player-card {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .statistics-card {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .shot-card {
+    width: 100%;
+    padding: 5px;
+  }
+
+  .card-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .descriptor-text {
+    display: none;
   }
 }

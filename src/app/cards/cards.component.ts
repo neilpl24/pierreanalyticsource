@@ -422,27 +422,116 @@ export class CardsComponent implements AfterViewInit, OnInit {
     );
   }
 
-  getPercentileColor(percentile: number): { background: string; text: string } {
+  getPercentileColor(percentile: number): {
+    background: string;
+    color: string;
+  } {
     percentile = percentile * 100;
-    if (percentile === 0) {
-      return { background: 'blue', text: 'white' };
-    } else if (percentile === 100) {
-      return { background: 'red', text: 'white' };
-    } else if (percentile <= 50) {
-      const blueValue = Math.round(percentile * 5.1);
-      const background = `rgb(${blueValue}, ${blueValue}, 255)`;
-      if (percentile <= 10) {
-        return { background, text: 'white' };
-      }
-      return { background, text: 'black' };
-    } else {
-      const redValue = Math.round(255 - (percentile - 50) * 5.1);
-      const greyValue = Math.round(255 - (percentile - 50) * 5.1);
-      const background = `rgb(255, ${greyValue}, ${redValue})`;
-      if (percentile >= 90) {
-        return { background, text: 'white' };
-      }
-      return { background, text: 'black' };
+    const gradient = chroma
+      .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
+      .mode('lab')
+      .padding(0.1)
+      .colors(100);
+
+    var textColor = 'black';
+
+    const val = Math.floor(percentile);
+
+    return { background: gradient[val], color: textColor };
+  }
+
+  getBirthdayData(birthday: string): string {
+    // in age.month format, so a player who has a bday next month is 18.11
+    const date = new Date(birthday);
+    const today = new Date();
+
+    let age = today.getFullYear() - date.getFullYear();
+    let months = today.getMonth() - date.getMonth();
+
+    // Check if birthday has passed this year
+    if (
+      today.getMonth() < date.getMonth() ||
+      (today.getMonth() === date.getMonth() && today.getDate() < date.getDate())
+    ) {
+      age--;
+    }
+
+    if (months < 0 || (months === 0 && today.getDate() < date.getDate())) {
+      months += 12; // Adjust for birthdays not passed in current month
+    }
+
+    return `${date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })} (${age}.${months})`;
+  }
+
+  getPlayerPosition(position: string): string {
+    switch (position) {
+      case 'G':
+        return 'Goalie';
+      case 'D':
+        return 'Defenseman';
+      case 'C':
+        return 'Center';
+      case 'L':
+        return 'Left Wing';
+      case 'R':
+        return 'Right Wing';
+      default:
+        return position;
+    }
+  }
+
+  getPlayerHandedness(hand: string): string {
+    switch (hand) {
+      case 'L':
+        return 'Left';
+      case 'R':
+        return 'Right';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getPlayerNationality(nationality: string): string {
+    // these are just some of the nationalities I could think of
+    switch (nationality) {
+      case 'CAN':
+        return 'Canada';
+      case 'USA':
+        return 'United States';
+      case 'SWE':
+        return 'Sweden';
+      case 'FIN':
+        return 'Finland';
+      case 'RUS':
+        return 'Russia';
+      case 'CZE':
+        return 'Czech Republic';
+      case 'SVK':
+        return 'Slovakia';
+      case 'CHE':
+        return 'Switzerland';
+      case 'GER':
+        return 'Germany';
+      case 'DNK':
+        return 'Denmark';
+      case 'AUT':
+        return 'Austria';
+      case 'NOR':
+        return 'Norway';
+      case 'FRA':
+        return 'France';
+      case 'LVA':
+        return 'Latvia';
+      case 'BLR':
+        return 'Belarus';
+      case 'AUS':
+        return 'Australia';
+      default:
+        return nationality;
     }
   }
 }
