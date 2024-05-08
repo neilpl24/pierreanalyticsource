@@ -43,8 +43,8 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AboutComponent } from './about/about.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { TableComponent } from './cards/table/table.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ScoresComponent } from './scores/scores.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { SeasonComponent } from './filters/season/season.component';
@@ -57,6 +57,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DatePipe } from '@angular/common';
+import { DropdownComponent } from './nav/dropdown/dropdown.component';
+import { SkatersLeaderboard } from './leaderboard/skaters/skaters.component';
+import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
+import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +86,10 @@ import { DatePipe } from '@angular/common';
     DatePickerComponent,
     GameComponent,
     StandingsComponent,
+    DropdownComponent,
+    SkatersLeaderboard,
+    GoaliesLeaderboard,
+    TeamsLeaderboard,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,164 @@
+<table
+  mat-table
+  class="table-data table-hover table-bordered border-secondary"
+  [dataSource]="dataSource"
+  matSort
+  (matSortChange)="onSortChange($event)"
+>
+  <caption>
+    {{
+      season
+    }}
+    NHL Player Leadboards - Hover over the column names for more info.
+  </caption>
+  <ng-container matColumnDef="name">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="lastName"
+      class="left"
+    >
+      Name
+    </th>
+    <td mat-cell *matCellDef="let player" class="left">
+      <div class="logo-div">
+        <img
+          src="{{
+            'https://assets.nhle.com/mugs/nhl/latest/' +
+              player.playerID +
+              '.png'
+          }}"
+          class="logo row"
+        />
+        <div class="row text-size">
+          {{ player.firstName }} {{ player.lastName }}
+        </div>
+      </div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="position">
+    <th mat-header-cell *matHeaderCellDef>Position</th>
+    <td mat-cell *matCellDef="let player" class="small-column">
+      {{ getPlayerPosition(player.position) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="team">
+    <th mat-header-cell *matHeaderCellDef>Team</th>
+    <td mat-cell *matCellDef="let player">
+      <a [routerLink]="['/teams', player.teamId]" class="plain-link">
+        <div class="logo-div">
+          <img
+            src="{{ 'assets/teams/' + player.team + '.png' }}"
+            class="logo row"
+          />
+          <div class="row text-size">{{ player.team }}</div>
+        </div>
+      </a>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="starts">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="starts"
+      [matTooltip]="getTooltip('starts')"
+      matTooltipPosition="above"
+    >
+      starts
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let player"
+      [ngStyle]="getCellColors(player.starts, 'starts')"
+      class="small-column"
+    >
+      {{ roundDecimal(player.starts) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="shootout">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="gsae"
+      [matTooltip]="getTooltip('shootout')"
+      matTooltipPosition="above"
+    >
+      shootout
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let player"
+      [ngStyle]="getCellColors(player.shootout, 'shootout')"
+      class="small-column"
+    >
+      {{ roundDecimal(player.shootout) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="pk">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="pk"
+      [matTooltip]="getTooltip('pk')"
+      matTooltipPosition="above"
+    >
+      PK
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let player"
+      [ngStyle]="getCellColors(player.pk, 'pk')"
+      class="small-column"
+    >
+      {{ roundDecimal(player.pk) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="ev">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="ev"
+      [matTooltip]="getTooltip('ev')"
+      matTooltipPosition="above"
+    >
+      ev
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let player"
+      [ngStyle]="getCellColors(player.ev, 'ev')"
+      class="small-column"
+    >
+      {{ roundDecimal(player.ev) }}
+    </td>
+  </ng-container>
+
+  <tr
+    mat-header-row
+    *matHeaderRowDef="[
+      'name',
+      'position',
+      'team',
+      'starts',
+      'shootout',
+      'pk',
+      'ev'
+    ]"
+  ></tr>
+  <tr
+    mat-row
+    *matRowDef="
+      let player;
+      columns: ['name', 'position', 'team', 'starts', 'shootout', 'pk', 'ev']
+    "
+    [routerLink]="['/', player.playerID, 'year', season]"
+  ></tr>
+</table>
+
+<mat-paginator
+  [pageSize]="25"
+  [pageSizeOptions]="[25, 50, 100, 500]"
+  [length]="dataSource.data.length"
+  showFirstLastButtons
+></mat-paginator>
+<ng-template #emptyState> </ng-template>

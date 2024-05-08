@@ -17,13 +17,37 @@
           >
             About
           </button>
-          <button
-            type="button"
-            class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/leaderboard']"
-          >
-            Leaderboards
-          </button>
+          <div class="dropdown">
+            <button
+              class="btn btn-outline-secondary mobile-button"
+              (click)="toggleDropdown()"
+            >
+              Leaderboards
+            </button>
+            <ul class="dropdown-menu" *ngIf="showDropdown">
+              <li
+                class="dropdown-item"
+                (click)="selectOption('skaters')"
+                [routerLink]="['/leaderboard/skaters']"
+              >
+                Skaters
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="selectOption('goalies')"
+                [routerLink]="['/leaderboard/goalies']"
+              >
+                Goalies
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="selectOption('teams')"
+                [routerLink]="['/leaderboard/teams']"
+              >
+                Teams
+              </li>
+            </ul>
+          </div>
           <button
             type="button"
             class="btn btn-outline-secondary mobile-button"
@@ -61,6 +85,39 @@
         </button>
       </li> -->
           <li class="nav-item">
+            <div class="dropdown">
+              <button
+                class="dropdown-button btn-outline-secondary normal-button"
+                (click)="toggleDropdown()"
+              >
+                Leaderboards
+              </button>
+              <ul class="dropdown-menu" *ngIf="showDropdown">
+                <li
+                  class="dropdown-item"
+                  (click)="selectOption('skaters')"
+                  [routerLink]="['/leaderboard/skaters']"
+                >
+                  Skaters
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="selectOption('goalies')"
+                  [routerLink]="['/leaderboard/goalies']"
+                >
+                  Goalies
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="selectOption('teams')"
+                  [routerLink]="['/leaderboard/teams']"
+                >
+                  Teams
+                </li>
+              </ul>
+            </div>
+          </li>
+          <!-- <li class="nav-item">
             <button
               type="button"
               class="btn-outline-secondary normal-button"
@@ -68,7 +125,7 @@
             >
               Leaderboards
             </button>
-          </li>
+          </li> -->
           <li class="nav-item">
             <button
               type="button"
@@ -113,7 +170,7 @@
           (input)="onSearchInputChange()"
         />
         <div
-          class="dropdown"
+          class="dropdown2"
           aria-labelledby="dropdownMenuButton"
           *ngIf="searchControl.value && filteredPlayers.length > 0"
         >

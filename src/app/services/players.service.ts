@@ -7,6 +7,8 @@ import { Filters } from '../filters/filters.component';
 import { environment } from 'src/environments/environment';
 import { CardModel } from 'src/models/card.model';
 import { WarModel } from 'src/models/war.model';
+import { GoalieModel } from 'src/models/goalie.model';
+import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
 
 @Injectable({
   providedIn: 'root',
@@ -62,55 +64,15 @@ export class PlayersService {
     );
   }
 
-  public getName(
-    filters: Filters,
-    season?: string
-  ): Observable<PlayerModel[] | null> {
+  public getName(filters: Filters, season?: string): Observable<PlayerModel[]> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json; charset=utf-8'
     );
-    let params = new HttpParams();
 
-    if (filters.searchText) {
-      params = params.append('name', filters.searchText);
-    } else {
-      params = params.append('name', '');
-    }
+    const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
 
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
-
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
-
-    if (filters.season) {
-      if (filters.season == '') {
-        filters.season = '2024';
-      }
-      params = params.append('season', filters.season.toString());
-    } else {
-      params = params.append('season', '2024');
-    }
-
-    if (season && season != '') {
-      params = params.append('season', season.toString());
-    }
-
-    params = params.append('sortField', 'LASTNAME');
-    params = params.append('sortDir', 'asc');
+    let params = this.buildFilterParams(filters, sortDefault);
 
     return this.http.get<PlayerModel[]>(`${this.baseUrl}/players/`, {
       params,
@@ -123,44 +85,8 @@ export class PlayersService {
       'Content-Type',
       'application/json; charset=utf-8'
     );
-    let params = new HttpParams();
 
-    if (filters.searchText) {
-      params = params.append('name', filters.searchText);
-    } else {
-      params = params.append('name', '');
-    }
-
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
-
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
-    if (filters.season) {
-      if (filters.season == '') {
-        filters.season = '2024';
-      }
-      params = params.append('season', filters.season.toString());
-    } else {
-      params = params.append('season', '2024');
-    }
-
-    if (sort.active) {
-      params = params.append('sortField', sort.active);
-      params = params.append('sortDir', sort.direction);
-    }
+    let params = this.buildFilterParams(filters, sort);
 
     return this.http.get<PlayerModel[]>(`${this.baseUrl}/players/`, {
       params,
@@ -176,6 +102,19 @@ export class PlayersService {
       'Content-Type',
       'application/json; charset=utf-8'
     );
+
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<PlayerModel[]>(
+      `${this.baseUrl}/players_no_percentile/skaters`,
+      {
+        params,
+        headers,
+      }
+    );
+  }
+
+  public buildFilterParams(filters: Filters, sort: Sort): HttpParams {
     let params = new HttpParams();
 
     if (filters.searchText) {
@@ -215,8 +154,55 @@ export class PlayersService {
       params = params.append('sortField', sort.active);
       params = params.append('sortDir', sort.direction);
     }
-    return this.http.get<PlayerModel[]>(
-      `${this.baseUrl}/players_no_percentile/`,
+    return params;
+  }
+
+  public getSkaterLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<PlayerModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<PlayerModel[]>(`${this.baseUrl}/leaderboard/skaters`, {
+      params,
+      headers,
+    });
+  }
+
+  public getGoalieLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<GoalieModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<GoalieModel[]>(`${this.baseUrl}/leaderboard/goalies`, {
+      params,
+      headers,
+    });
+  }
+
+  // this probably should be in teams service, but all the infrastructure is here
+  public getTeamLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<TeamLeaderboardModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<TeamLeaderboardModel[]>(
+      `${this.baseUrl}/leaderboard/teams`,
       {
         params,
         headers,

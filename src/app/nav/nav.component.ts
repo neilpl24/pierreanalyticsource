@@ -17,6 +17,7 @@ import {
 import { PlayerModel } from 'src/models/player.model';
 import { Subscription } from 'rxjs';
 import { PlayersService } from '../services/players.service';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 export interface Filters {
   searchText: string;
@@ -54,6 +55,17 @@ export class NavComponent implements OnInit, OnDestroy {
     private playersService: PlayersService,
     private renderer: Renderer2
   ) {}
+
+  dropdownToggle: any;
+  showDropdown = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
+
+  selectOption(option: string) {
+    // Handle option selection (e.g., navigate to a specific leaderboard)
+  }
 
   get isSearchInputDisabled(): boolean {
     return this.year === null;

@@ -1,0 +1,12 @@
+<button class="dropdown-button" (click)="toggleDropdown()">
+  {{ label }}
+</button>
+<ul class="dropdown-menu" *ngIf="isOpen">
+  <li
+    class="dropdown-item"
+    *ngFor="let option of options"
+    (click)="selectOption(option)"
+  >
+    {{ option }}
+  </li>
+</ul>

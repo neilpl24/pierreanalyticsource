@@ -47,7 +47,7 @@ mat-form-field {
   padding: 0px;
 }
 
-.dropdown {
+.dropdown2 {
   position: absolute;
   display: inline-block;
   z-index: 5;
@@ -62,6 +62,7 @@ mat-form-field {
   min-width: 230px;
   border: 1px solid #ddd;
 }
+
 .show {
   display: block;
 }
@@ -72,17 +73,39 @@ mat-form-field {
   left: 0;
   right: auto;
   min-width: 100%;
-  margin-top: 0.5rem;
   transform: translate(0, 0);
 }
 
 .dropdown-item {
   width: inherit;
   background-color: #f6f6f6;
-  border-radius: 1px;
   border-left: 2px solid #ccc;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;
+}
+
+.dropdown-container {
+  /* Styles to make it look like your original button */
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer; /* Indicates interactivity */
+}
+
+.dropdown-list {
+  display: none;
+  position: absolute; /* Positions below the button */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  list-style: none; /* Removes default bullet points */
+  padding: 0;
+  /* Other styles for borders, shadows, etc. */
+}
+
+.dropdown-list li {
+  padding: 5px 10px;
+  cursor: pointer; /* Indicates interactivity for options */
+  /* Styles for hover effects, etc. */
 }
 
 @media only screen and (max-width: 1000px) {

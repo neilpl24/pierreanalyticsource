@@ -12,14 +12,14 @@ import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 
 const routes: Routes = [
-  { path: 'leaderboard', component: LeaderboardComponent },
+  { path: 'leaderboard/:type', component: LeaderboardComponent },
   { path: 'about', component: AboutComponent },
   { path: '404', component: PagenotfoundComponent },
   { path: ':playerID/year', component: CardsComponent },
   { path: ':playerID/year/:season', component: CardsComponent },
   { path: 'video/:link', component: VideoPlayerComponent },
   { path: 'standings', component: StandingsComponent },
-  { path: 'teams/:teamID', component: TeamsComponent},
+  { path: 'teams/:teamID', component: TeamsComponent },
   { path: '', component: LandingComponent },
   {
     path: '**',
