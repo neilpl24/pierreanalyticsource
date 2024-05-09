@@ -1,14 +1,12 @@
 <nav-bar></nav-bar>
 <div class="list">
   <div class="table-wrapper">
-    <div *ngIf="type === 'skaters' || type === 'goalies'">
-      <filters></filters>
-      <div *ngIf="type === 'skaters'">
-        <skatersLeaderboard />
-      </div>
-      <div *ngIf="type === 'goalies'">
-        <goaliesLeaderboard />
-      </div>
+    <filters></filters>
+    <div *ngIf="type === 'skaters'">
+      <skatersLeaderboard />
+    </div>
+    <div *ngIf="type === 'goalies'">
+      <goaliesLeaderboard />
     </div>
     <div *ngIf="type === 'teams'">
       <teamsLeaderboard />

@@ -27,6 +27,19 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'goals_60', direction: 'desc' };
 
+  // this is the only thing that matters for col order in the table, not the html order
+  displayedColumns: string[] = [
+    'name',
+    'position',
+    'team',
+    'goals',
+    'finishing',
+    'primaryAssistsEV',
+    'xGPercentage',
+    'xGF',
+    'xGA',
+  ];
+
   constructor(
     private playersService: PlayersService,
     private seasonService: SeasonService
@@ -36,9 +49,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
     // calling the fetchSkaterLeaderboard function to get the data
     this.playersService
       .getSkaterLeaderboard(filtersDefault, this.sortDefault)
-      .subscribe((players) => (this.allPlayers.data = players));
-
-    this.dataSource.data = this.allPlayers.data;
+      .subscribe((players) => (this.dataSource.data = players));
 
     // this is what gives me the paging functionality
     // all the player data gets loaded (obv less than ideal)

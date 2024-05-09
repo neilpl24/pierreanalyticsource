@@ -171,36 +171,10 @@
     </td>
   </ng-container>
 
-  <tr
-    mat-header-row
-    *matHeaderRowDef="[
-      'name',
-      'position',
-      'team',
-      'goals',
-      'finishing',
-      'primaryAssistsEV',
-      'xGPercentage',
-      'xGF',
-      'xGA'
-    ]"
-  ></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
     mat-row
-    *matRowDef="
-      let player;
-      columns: [
-        'name',
-        'position',
-        'team',
-        'goals',
-        'finishing',
-        'primaryAssistsEV',
-        'xGPercentage',
-        'xGF',
-        'xGA'
-      ]
-    "
+    *matRowDef="let player; columns: displayedColumns"
     [routerLink]="['/', player.playerID, 'year', season]"
   ></tr>
 </table>

@@ -25,31 +25,31 @@ import * as chroma from 'chroma-js';
   styleUrls: ['./teams.component.scss'],
 })
 export class TeamsLeaderboard implements OnInit {
-  sortedColumn: string = 'goals';
+  sortedColumn: string = 'points'; // no clue why this doesn't work
   dataSource = new MatTableDataSource();
   allPlayers = new MatTableDataSource();
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(FiltersComponent) filters: FiltersComponent;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  //   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'points', direction: 'desc' };
 
+  // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
     'teamName',
     'season',
+    'gamesPlayed',
+    'points',
     'wins',
     'losses',
     'otl',
-    'points',
-    'gamesPlayed',
     'ev_xGF',
     'ev_xGA',
-
+    'finishing',
+    'xGPercentage',
+    'gsax',
     'pp',
     'pk',
-    'finishing',
-    'gsax',
-    'xGPercentage',
   ];
 
   constructor(
@@ -58,7 +58,6 @@ export class TeamsLeaderboard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // calling the fetchSkaterLeaderboard function to get the data
     this.playersService
       .getTeamLeaderboard(filtersDefault, this.sortDefault)
       .subscribe((teams) => (this.dataSource.data = teams));
@@ -68,7 +67,7 @@ export class TeamsLeaderboard implements OnInit {
     // but the act of flipping through the pages allows it more time to load.
 
     // again, ideally we'd load the data in chunks in sync with the pages, but it'll do for now
-    this.dataSource.paginator = this.paginator;
+    // this.dataSource.paginator = this.paginator;
 
     // don't feel like this is working
     this.dataSource.sort = this.sort;
@@ -107,12 +106,17 @@ export class TeamsLeaderboard implements OnInit {
 
   // tooltip text with mappings to the column names
   tooltipMappings: { [key: string]: string } = {
-    goals: 'Even Strength Goals per 60 Minutes',
-    finishing: 'Finishing Measured in Goals Saved Above Expected (GSAE)',
-    assists: 'Even Strength Primary Assists per 60 Minutes',
+    wins: 'Regulation Wins',
+    losses: 'Regulation Losses',
+    otl: 'Overtime Losses',
+    points: 'Total Points',
+    ev_xGF: 'Expected Goals For per 60 Minutes at Even Strength',
+    ev_xGA: 'Expected Goals Against per 60 Minutes at Even Strength',
     xgPercent: 'Expected Goals Percentage',
-    xgf: 'Expected Goals For per 60 Minutes',
-    xga: 'Expected Goals Against per 60 Minutes',
+    finishing: 'Finishing Measured in Goals Saved Above Expected (GSAE)',
+    gsax: 'Goals Saved Above Expected (GSAE)',
+    pp: 'Power Play Percentage',
+    pk: 'Penalty Kill Percentage',
   };
 
   getTooltip(key: string): string {
@@ -125,6 +129,22 @@ export class TeamsLeaderboard implements OnInit {
 
   roundDecimal(value: number): number {
     return Math.round(value * 100) / 100;
+  }
+
+  percentNumber(number: number | undefined, decimalPlaces: number): number {
+    if (number === undefined) {
+      return 0;
+    }
+    const factor = Math.pow(10, decimalPlaces);
+    return Math.round(number * 100 * factor) / factor;
+  }
+
+  hyphenate(season: number): string {
+    const seasonStr = season.toString();
+    // Return the hyphenated season string
+    const year = seasonStr.slice(0, 4);
+    const nextYear = seasonStr.slice(4, 8);
+    return `${year}-${nextYear}`;
   }
 
   onSortChange(event: Sort) {

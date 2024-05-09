@@ -33,6 +33,17 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'starts', direction: 'desc' };
 
+  // this is the only thing that matters for col order in the table, not the html order
+  displayedColumns: string[] = [
+    'name',
+    'position',
+    'team',
+    'starts',
+    'shootout',
+    'pk',
+    'ev',
+  ];
+
   constructor(
     private playersService: PlayersService,
     private seasonService: SeasonService

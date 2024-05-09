@@ -133,24 +133,10 @@
     </td>
   </ng-container>
 
-  <tr
-    mat-header-row
-    *matHeaderRowDef="[
-      'name',
-      'position',
-      'team',
-      'starts',
-      'shootout',
-      'pk',
-      'ev'
-    ]"
-  ></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
     mat-row
-    *matRowDef="
-      let player;
-      columns: ['name', 'position', 'team', 'starts', 'shootout', 'pk', 'ev']
-    "
+    *matRowDef="let player; columns: displayedColumns"
     [routerLink]="['/', player.playerID, 'year', season]"
   ></tr>
 </table>

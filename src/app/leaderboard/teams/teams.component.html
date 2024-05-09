@@ -9,10 +9,10 @@
     {{
       season
     }}
-    NHL Player Leadboards - Hover over the column names for more info.
+    NHL Team Leadboards - Hover over the column names for more info.
   </caption>
   <ng-container matColumnDef="teamName">
-    <th mat-header-cell *matHeaderCellDef>Team</th>
+    <th mat-header-cell *matHeaderCellDef class="column-header">Team</th>
     <td mat-cell *matCellDef="let team">
       <a [routerLink]="['/teams', team.teamId]" class="plain-link">
         <div class="logo-div">
@@ -26,9 +26,29 @@
     </td>
   </ng-container>
   <ng-container matColumnDef="season">
-    <th mat-header-cell *matHeaderCellDef>Season</th>
+    <th mat-header-cell *matHeaderCellDef class="column-header">Season</th>
     <td mat-cell *matCellDef="let team" class="small-column">
-      {{ team.season }}
+      {{ hyphenate(team.season) }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="gamesPlayed">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      mat-sort-header="gamesPlayed"
+      [matTooltip]="getTooltip('gamesPlayed')"
+      matTooltipPosition="above"
+      class="column-header"
+    >
+      Games Played
+    </th>
+    <td
+      mat-cell
+      *matCellDef="let team"
+      [ngStyle]="getCellColors(team.gamesPlayed, 'gamesPlayed')"
+      class="small-column"
+    >
+      {{ team.gamesPlayed }}
     </td>
   </ng-container>
   <ng-container matColumnDef="wins">
@@ -38,6 +58,7 @@
       mat-sort-header="wins"
       [matTooltip]="getTooltip('wins')"
       matTooltipPosition="above"
+      class="column-header"
     >
       Wins
     </th>
@@ -58,8 +79,9 @@
       mat-sort-header="losses"
       [matTooltip]="getTooltip('losses')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      losses
+      Losses
     </th>
     <td
       mat-cell
@@ -77,8 +99,9 @@
       mat-sort-header="otl"
       [matTooltip]="getTooltip('otl')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      otl
+      OTL
     </th>
     <td
       mat-cell
@@ -96,8 +119,9 @@
       mat-sort-header="points"
       [matTooltip]="getTooltip('points')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      points
+      Points
     </th>
     <td
       mat-cell
@@ -108,25 +132,6 @@
       {{ team.points }}
     </td>
   </ng-container>
-  <ng-container matColumnDef="gamesPlayed">
-    <th
-      mat-header-cell
-      *matHeaderCellDef
-      mat-sort-header="gamesPlayed"
-      [matTooltip]="getTooltip('gamesPlayed')"
-      matTooltipPosition="above"
-    >
-      gamesPlayed
-    </th>
-    <td
-      mat-cell
-      *matCellDef="let team"
-      [ngStyle]="getCellColors(team.gamesPlayed, 'gamesPlayed')"
-      class="small-column"
-    >
-      {{ team.gamesPlayed }}
-    </td>
-  </ng-container>
   <ng-container matColumnDef="finishing">
     <th
       mat-header-cell
@@ -134,6 +139,7 @@
       mat-sort-header="finishing"
       [matTooltip]="getTooltip('finishing')"
       matTooltipPosition="above"
+      class="column-header"
     >
       Finishing
     </th>
@@ -153,8 +159,9 @@
       mat-sort-header="gsax"
       [matTooltip]="getTooltip('gsax')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      gsax
+      GSAx
     </th>
     <td
       mat-cell
@@ -172,8 +179,9 @@
       mat-sort-header="ev_xGF"
       [matTooltip]="getTooltip('ev_xGF')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      Ev xGF
+      xGF (EV)
     </th>
     <td
       mat-cell
@@ -191,8 +199,9 @@
       mat-sort-header="ev_xGA"
       [matTooltip]="getTooltip('ev_xGA')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      Ev xGA
+      xGA (EV)
     </th>
     <td
       mat-cell
@@ -208,10 +217,11 @@
       mat-header-cell
       *matHeaderCellDef
       mat-sort-header="xGPercentage"
-      [matTooltip]="getTooltip('xGPercentage')"
+      [matTooltip]="getTooltip('xgPercent')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      xGPercentage
+      xG Percent
     </th>
     <td
       mat-cell
@@ -219,7 +229,7 @@
       [ngStyle]="getCellColors(team.xGPercentage, 'xGPercentage')"
       class="small-column"
     >
-      {{ roundDecimal(team.xGPercentage) }}
+      {{ percentNumber(team.xGPercentage, 2) }}%
     </td>
   </ng-container>
   <ng-container matColumnDef="pp">
@@ -229,8 +239,9 @@
       mat-sort-header="pp"
       [matTooltip]="getTooltip('pp')"
       matTooltipPosition="above"
+      class="column-header"
     >
-      pp
+      Powerplay
     </th>
     <td
       mat-cell
@@ -238,7 +249,7 @@
       [ngStyle]="getCellColors(team.pp, 'pp')"
       class="small-column"
     >
-      {{ roundDecimal(team.pp) }}
+      {{ percentNumber(team.pp, 2) }}%
     </td>
   </ng-container>
   <ng-container matColumnDef="pk">
@@ -249,7 +260,7 @@
       [matTooltip]="getTooltip('pk')"
       matTooltipkosition="above"
     >
-      pk
+      Penalty Kill
     </th>
     <td
       mat-cell
@@ -257,10 +268,9 @@
       [ngStyle]="getCellColors(team.pk, 'pk')"
       class="small-column"
     >
-      {{ roundDecimal(team.pk) }}
+      {{ percentNumber(team.pk, 2) }}%
     </td>
   </ng-container>
-
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
     mat-row
@@ -269,10 +279,11 @@
   ></tr>
 </table>
 
-<mat-paginator
+<!-- un comment to add back the functionality for 32 teams per page. -->
+<!-- <mat-paginator
   [pageSize]="32"
   [pageSizeOptions]="[32]"
   [length]="dataSource.data.length"
   showFirstLastButtons
-></mat-paginator>
+></mat-paginator> -->
 <ng-template #emptyState> </ng-template>

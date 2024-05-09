@@ -25,9 +25,15 @@
 }
 .small-column {
   // leaderboard columns with numbers
-  width: 100px;
+  width: 115px;
   text-align: center;
   font-size: medium;
+}
+
+.column-header {
+  // leaderboard header columns
+  font-size: 15px;
+  text-align: center;
 }
 
 .text-size {
