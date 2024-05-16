@@ -24,7 +24,7 @@ import * as chroma from 'chroma-js';
   styleUrls: ['./goalies.component.scss'],
 })
 export class GoaliesLeaderboard implements AfterViewInit, OnInit {
-  sortedColumn: string = 'goals';
+  sortedColumn: string = 'starts';
   dataSource = new MatTableDataSource();
   allPlayers = new MatTableDataSource();
   season = '2024';
@@ -79,7 +79,7 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   }
 
   getCellColors(stat: number, statName: string) {
-    const values = (this.allPlayers.data as any[]).map(
+    const values = (this.dataSource.data as any[]).map(
       (data) => data[statName]
     );
     let percentile = this.calculatePercentile(stat, values);

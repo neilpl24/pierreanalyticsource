@@ -17,37 +17,41 @@
           >
             About
           </button>
-          <div class="dropdown">
-            <button
-              class="btn btn-outline-secondary mobile-button"
-              (click)="toggleDropdown()"
+
+          <button
+            class="btn btn-outline-secondary mobile-button"
+            (click)="toggleDropdown()"
+          >
+            Leaderboards
+
+            <ul
+              class="dropdown-menu"
+              style="text-transform: capitalize"
+              *ngIf="showDropdown"
             >
-              Leaderboards
-            </button>
-            <ul class="dropdown-menu" *ngIf="showDropdown">
               <li
                 class="dropdown-item"
-                (click)="selectOption('skaters')"
+                (click)="toggleDropdown()"
                 [routerLink]="['/leaderboard/skaters']"
               >
                 Skaters
               </li>
               <li
                 class="dropdown-item"
-                (click)="selectOption('goalies')"
+                (click)="toggleDropdown()"
                 [routerLink]="['/leaderboard/goalies']"
               >
                 Goalies
               </li>
               <li
                 class="dropdown-item"
-                (click)="selectOption('teams')"
+                (click)="toggleDropdown()"
                 [routerLink]="['/leaderboard/teams']"
               >
                 Teams
               </li>
             </ul>
-          </div>
+          </button>
           <button
             type="button"
             class="btn btn-outline-secondary mobile-button"
@@ -95,21 +99,21 @@
               <ul class="dropdown-menu" *ngIf="showDropdown">
                 <li
                   class="dropdown-item"
-                  (click)="selectOption('skaters')"
+                  (click)="toggleDropdown()"
                   [routerLink]="['/leaderboard/skaters']"
                 >
                   Skaters
                 </li>
                 <li
                   class="dropdown-item"
-                  (click)="selectOption('goalies')"
+                  (click)="toggleDropdown()"
                   [routerLink]="['/leaderboard/goalies']"
                 >
                   Goalies
                 </li>
                 <li
                   class="dropdown-item"
-                  (click)="selectOption('teams')"
+                  (click)="toggleDropdown()"
                   [routerLink]="['/leaderboard/teams']"
                 >
                   Teams

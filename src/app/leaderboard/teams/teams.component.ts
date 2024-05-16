@@ -37,7 +37,7 @@ export class TeamsLeaderboard implements OnInit {
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
     'teamName',
-    'season',
+    // 'season',
     'gamesPlayed',
     'points',
     'wins',
@@ -94,7 +94,7 @@ export class TeamsLeaderboard implements OnInit {
   }
 
   getCellColors(stat: number, statName: string) {
-    const values = (this.allPlayers.data as any[]).map(
+    const values = (this.dataSource.data as any[]).map(
       (data) => data[statName]
     );
     let percentile = this.calculatePercentile(stat, values);

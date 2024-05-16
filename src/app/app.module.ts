@@ -57,7 +57,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DatePipe } from '@angular/common';
-import { DropdownComponent } from './nav/dropdown/dropdown.component';
 import { SkatersLeaderboard } from './leaderboard/skaters/skaters.component';
 import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
 import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
@@ -86,7 +85,6 @@ import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
     DatePickerComponent,
     GameComponent,
     StandingsComponent,
-    DropdownComponent,
     SkatersLeaderboard,
     GoaliesLeaderboard,
     TeamsLeaderboard,

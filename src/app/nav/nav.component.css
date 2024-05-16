@@ -73,7 +73,8 @@ mat-form-field {
   left: 0;
   right: auto;
   min-width: 100%;
-  transform: translate(0, 0);
+  margin: 0px;
+  text-align: center;
 }
 
 .dropdown-item {
@@ -132,10 +133,12 @@ mat-form-field {
   }
 
   .mobile-button {
-    padding: 5px;
+    padding: 8px;
     background-color: black;
     color: white;
     align-items: center;
+    text-transform: capitalize;
+    font-size: 12px;
   }
 
   .search-select-height {

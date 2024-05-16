@@ -5,6 +5,7 @@ import { PlayersService } from '../../services/players.service';
 import {
   filtersDefault,
   FiltersComponent,
+  Filters,
 } from '../../filters/filters.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -27,6 +28,8 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'goals_60', direction: 'desc' };
 
+  currentFilters: Filters = filtersDefault;
+
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
     'name',
@@ -42,10 +45,17 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService
+    private seasonService: SeasonService,
+    private filtersComponent: FiltersComponent
   ) {}
 
   ngOnInit(): void {
+    this.filtersComponent.filtersUpdated.subscribe((filters) => {
+      this.currentFilters = filters;
+      console.log('Received filters:', this.currentFilters);
+      // Use the filters data here (e.g., call an API with filters)
+    });
+
     // calling the fetchSkaterLeaderboard function to get the data
     this.playersService
       .getSkaterLeaderboard(filtersDefault, this.sortDefault)
@@ -83,7 +93,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   }
 
   getCellColors(stat: number, statName: string) {
-    const values = (this.allPlayers.data as any[]).map(
+    const values = (this.dataSource.data as any[]).map(
       (data) => data[statName]
     );
     let percentile = this.calculatePercentile(stat, values);

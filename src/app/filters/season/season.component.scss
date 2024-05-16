@@ -1,3 +1,21 @@
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: auto;
+  min-width: 100%;
+  margin: 0px;
+  text-align: center;
+}
+
+.dropdown-item {
+  width: inherit;
+  background-color: #f6f6f6;
+  border-left: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
+  border-right: 2px solid #ccc;
+}
+
 @media only screen and (max-width: 768px) {
   .btn {
     padding: 10px;

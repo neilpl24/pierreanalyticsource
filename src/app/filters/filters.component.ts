@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SeasonService } from '../services/season.service';
+import { Console } from 'console';
 
 export interface Filters {
   searchText: string;
@@ -20,15 +21,14 @@ export const filtersDefault: Filters = {
 @Component({
   selector: 'filters',
   templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.css']
+  styleUrls: ['./filters.component.css'],
 })
 export class FiltersComponent implements OnInit {
   @Output() filtersUpdated = new EventEmitter<Filters>();
 
   private filters: Filters = filtersDefault;
 
-  constructor(private seasonService: SeasonService) { }
-
+  constructor(private seasonService: SeasonService) {}
 
   handleSearchChange(searchText: string) {
     this.filters = {
@@ -73,9 +73,8 @@ export class FiltersComponent implements OnInit {
 
   emit() {
     this.filtersUpdated.emit(this.filters);
+    console.log(this.filtersUpdated);
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
