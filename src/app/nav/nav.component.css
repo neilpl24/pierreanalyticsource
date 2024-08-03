@@ -109,6 +109,11 @@ mat-form-field {
   /* Styles for hover effects, etc. */
 }
 
+.logo{
+    width: 40px;
+    height: auto;
+}
+
 @media only screen and (max-width: 1000px) {
   .container {
     justify-content: center !important;

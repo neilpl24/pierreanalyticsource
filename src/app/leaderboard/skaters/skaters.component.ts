@@ -10,7 +10,6 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { SeasonService } from '../../services/season.service';
-
 import * as chroma from 'chroma-js';
 
 @Component({
@@ -45,13 +44,13 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService,
-    private filtersComponent: FiltersComponent
+    private seasonService: SeasonService
   ) {}
 
   ngOnInit(): void {
-    this.filtersComponent.filtersUpdated.subscribe((filters) => {
+    this.filters.filtersUpdated.subscribe((filters) => {
       this.currentFilters = filters;
+
       console.log('Received filters:', this.currentFilters);
       // Use the filters data here (e.g., call an API with filters)
     });
@@ -61,11 +60,6 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
       .getSkaterLeaderboard(filtersDefault, this.sortDefault)
       .subscribe((players) => (this.dataSource.data = players));
 
-    // this is what gives me the paging functionality
-    // all the player data gets loaded (obv less than ideal)
-    // but the act of flipping through the pages allows it more time to load.
-
-    // again, ideally we'd load the data in chunks in sync with the pages, but it'll do for now
     this.dataSource.paginator = this.paginator;
 
     // don't feel like this is working

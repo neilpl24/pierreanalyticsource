@@ -15,7 +15,7 @@ export const filtersDefault: Filters = {
   team: null,
   nationality: null,
   position: null,
-  season: '',
+  season: null,
 };
 
 @Component({

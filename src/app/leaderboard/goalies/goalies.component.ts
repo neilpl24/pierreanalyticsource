@@ -1,20 +1,15 @@
 import {
   filtersDefault,
   FiltersComponent,
+  Filters,
 } from '../../filters/filters.component';
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import { combineLatest, startWith, switchMap } from 'rxjs';
+import { startWith } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  Component,
-  AfterViewInit,
-  ViewChild,
-  OnInit,
-  Input,
-} from '@angular/core';
+import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 
 import * as chroma from 'chroma-js';
 
@@ -33,6 +28,8 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'starts', direction: 'desc' };
 
+  currentFilters: Filters = filtersDefault;
+
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
     'name',
@@ -50,6 +47,13 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.filters.filtersUpdated.subscribe((filters) => {
+      //this.currentFilters = filters;
+
+      console.log('Received filters:', filters);
+      // Use the filters data here (e.g., call an API with filters)
+    });
+
     // calling the fetchGoalieLeaderboard function to get the data
     this.playersService
       .getGoalieLeaderboard(filtersDefault, this.sortDefault)
@@ -72,10 +76,6 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     this.seasonService.selectedSeason$.subscribe((season) => {
       this.season = season;
     });
-
-    const filters$ = this.filters?.filtersUpdated.pipe(
-      startWith(filtersDefault)
-    );
   }
 
   getCellColors(stat: number, statName: string) {
