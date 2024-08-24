@@ -173,7 +173,10 @@
               <mat-card-subtitle class="text-center">
                 Click on the blue dots to see goal video!</mat-card-subtitle
               >
-              <div class="md-form form-fill">
+              <div
+                class="md-form form-fill"
+                *ngIf="seasons$ | async as seasons"
+              >
                 <div mdbDropdown class="dropdown">
                   <button
                     class="btn btn-primary dropdown-toggle mat-form-field-appearance-fill"
@@ -200,7 +203,7 @@
                       <a
                         class="dropdown-item"
                         href="#"
-                        (click)="handleSeasonChange(season, $event)"
+                        (click)="handleSeasonChange(season.toString(), $event)"
                       >
                         {{ season }}
                       </a>

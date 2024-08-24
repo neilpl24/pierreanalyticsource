@@ -44,12 +44,12 @@ function sanitizeParam(param) {
 function getPlayers(filters, table) {
   let season = "";
   if (filters.season) {
-    season = "_" + filters.season;
+    season = filters.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
   let querySegments = [
-    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table} AS p JOIN team_ids t on p.team = t.team_name AND season = ${season}`,
   ];
   let query = [];
   let params = [];
@@ -93,7 +93,7 @@ function getPlayers(filters, table) {
 
 app.get("/players/", (req, res, next) => {
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS");
+  let { query, params } = getPlayers(filters, "skaters");
 
   db.all(query, params, (err, playerRows) => {
     if (err) {
@@ -116,7 +116,7 @@ app.get("/players/", (req, res, next) => {
       assists: row.assists,
     }));
 
-    let goalieQuery = getPlayers(filters, "GOALIES");
+    let goalieQuery = getPlayers(filters, "goalie_numbers");
     db.all(goalieQuery.query, goalieQuery.params, (err, goalieRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -147,7 +147,7 @@ app.get("/players/", (req, res, next) => {
 
 app.get("/players/name", (req, res, next) => {
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS");
+  let { query, params } = getPlayers(filters, "skaters");
 
   db.all(query, params, (err, playerRows) => {
     if (err) {
@@ -159,7 +159,7 @@ app.get("/players/name", (req, res, next) => {
       playerID: Number(row.player_id),
     }));
 
-    let goalieQuery = getPlayers(filters, "GOALIES");
+    let goalieQuery = getPlayers(filters, "goalie_numbers");
     db.all(goalieQuery.query, goalieQuery.params, (err, goalieRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -174,6 +174,24 @@ app.get("/players/name", (req, res, next) => {
       res.status(200).json(rows);
     });
   });
+});
+
+app.get("/players/seasons/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  let season = "";
+  season = "_" + req.query.season;
+  db.all(
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
+    [id],
+    (err, playerRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
+      res.status(200).json(playerRows);
+    }
+  );
 });
 
 app.get("/standings", (req, res, next) => {
@@ -227,15 +245,15 @@ app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    season = "_" + req.query.season;
+    season = req.query.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
 
   db.get(
     `SELECT *
-            FROM players${season}
-            WHERE player_id = ?`,
+            FROM skaters
+            WHERE player_id = ? AND season = ${season}`,
     [id],
     (err, playerRow) => {
       if (err) {
@@ -261,8 +279,8 @@ app.get("/players/card/:id", (req, res, next) => {
       } else {
         db.get(
           `SELECT *
-                FROM goalies${season}
-                WHERE player_id = ?`,
+                FROM goalie_numbers
+                WHERE player_id = ? AND season = ${season}`,
           [id],
           (err, goalieRow) => {
             if (err) {
@@ -298,9 +316,9 @@ app.get("/players/info/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    season = "_" + req.query.season;
+    season = req.query.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
 
   db.get(
@@ -311,9 +329,9 @@ app.get("/players/info/:id", (req, res, next) => {
         FROM teams
     )
     SELECT *
-        FROM players${season} p
+        FROM skaters p
         JOIN team_ids t on p.team = t.team_name
-        WHERE player_id = ?`,
+        WHERE player_id = ? AND season = ${season}`,
     [id],
     (err, row) => {
       if (err) {
@@ -347,9 +365,9 @@ app.get("/players/info/:id", (req, res, next) => {
             FROM teams
         )
             SELECT *
-            FROM goalies${season} p
+            FROM goalie_numbers p
             JOIN team_ids t on p.team = t.team_name
-            WHERE player_id = ?`,
+            WHERE player_id = ? AND season = ${season}`,
           [id],
           (err, row) => {
             if (err) {
@@ -386,7 +404,7 @@ app.get("/players/info/:id", (req, res, next) => {
 
 app.get("/players_no_percentile", (req, res, next) => {
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS_NO_PERCENTILE");
+  let { query, params } = getPlayers(filters, "skaters_no_percentile");
 
   db.all(query, params, (err, rows) => {
     if (err) {
@@ -508,8 +526,8 @@ app.get("/scores/:year/:date", async (req, res, next) => {
           const ratio = xGF / (xGA + xGF);
 
           let nameRow = await dbGetAsync(
-            `SELECT * FROM players${season}
-            WHERE player_id = ?`,
+            `SELECT * FROM skaters
+            WHERE player_id = ? AND season = ${season}`,
             skaterID
           );
 
@@ -558,8 +576,8 @@ app.get("/scores/:year/:date", async (req, res, next) => {
       const goalieSumArray = await Promise.all(
         Array.from(goaliesXGSum, async ([goalieID, values]) => {
           let nameRow = await dbGetAsync(
-            `SELECT * FROM goalies${season}
-            WHERE player_id = ?`,
+            `SELECT * FROM goalie_numbers
+            WHERE player_id = ? AND season = ${season}`,
             goalieID
           );
 

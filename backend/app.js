@@ -38,8 +38,6 @@ function createDbConnection(filepath) {
   return db;
 }
 
-const dbGetAsync = util.promisify(db.get).bind(db);
-
 function sanitizeParam(param) {
   return param.replace(/'/g, "''");
 }
@@ -47,12 +45,12 @@ function sanitizeParam(param) {
 function getPlayers(filters, table) {
   let season = "";
   if (filters.season) {
-    season = "_" + filters.season;
+    season = filters.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
   let querySegments = [
-    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table}${season} AS p JOIN team_ids t on p.team = t.team_name`,
+    `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table} AS p JOIN team_ids t on p.team = t.team_name AND season = ${season}`,
   ];
   let query = [];
   let params = [];
@@ -96,7 +94,7 @@ function getPlayers(filters, table) {
 
 app.get("/players/", (req, res, next) => {
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS");
+  let { query, params } = getPlayers(filters, "skaters");
 
   db.all(query, params, (err, playerRows) => {
     if (err) {
@@ -119,7 +117,7 @@ app.get("/players/", (req, res, next) => {
       assists: row.assists,
     }));
 
-    let goalieQuery = getPlayers(filters, "GOALIES");
+    let goalieQuery = getPlayers(filters, "goalie_numbers");
     db.all(goalieQuery.query, goalieQuery.params, (err, goalieRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -142,6 +140,7 @@ app.get("/players/", (req, res, next) => {
           assists: row.assists,
         }))
       );
+
       res.status(200).json(rows);
     });
   });
@@ -149,7 +148,7 @@ app.get("/players/", (req, res, next) => {
 
 app.get("/players/name", (req, res, next) => {
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS");
+  let { query, params } = getPlayers(filters, "skaters");
 
   db.all(query, params, (err, playerRows) => {
     if (err) {
@@ -161,7 +160,7 @@ app.get("/players/name", (req, res, next) => {
       playerID: Number(row.player_id),
     }));
 
-    let goalieQuery = getPlayers(filters, "GOALIES");
+    let goalieQuery = getPlayers(filters, "goalie_numbers");
     db.all(goalieQuery.query, goalieQuery.params, (err, goalieRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -176,6 +175,24 @@ app.get("/players/name", (req, res, next) => {
       res.status(200).json(rows);
     });
   });
+});
+
+app.get("/players/seasons/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  let season = "";
+  season = "_" + req.query.season;
+  db.all(
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
+    [id],
+    (err, playerRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+      playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
+      res.status(200).json(playerRows);
+    }
+  );
 });
 
 app.get("/standings", (req, res, next) => {
@@ -200,20 +217,44 @@ app.get("/standings", (req, res, next) => {
   });
 });
 
-//Cards
+app.get("/players/card/war/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  let season = "";
+  season = "_" + req.query.season;
+  db.get(
+    `SELECT * FROM war${season} WHERE player_id = ?`,
+    [id],
+    (err, playerRow) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (playerRow) {
+        const response = {
+          playerID: playerRow.player_id,
+          war: playerRow.WAR,
+          warPercentile: playerRow.war_percentile,
+        };
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
 app.get("/players/card/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    season = "_" + req.query.season;
+    season = req.query.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
 
   db.get(
     `SELECT *
-            FROM players${season}
-            WHERE player_id = ?`,
+            FROM skaters
+            WHERE player_id = ? AND season = ${season}`,
     [id],
     (err, playerRow) => {
       if (err) {
@@ -239,8 +280,8 @@ app.get("/players/card/:id", (req, res, next) => {
       } else {
         db.get(
           `SELECT *
-                  FROM goalies${season}
-                  WHERE player_id = ?`,
+                FROM goalie_numbers
+                WHERE player_id = ? AND season = ${season}`,
           [id],
           (err, goalieRow) => {
             if (err) {
@@ -276,9 +317,9 @@ app.get("/players/info/:id", (req, res, next) => {
   const id = Number(req.query.id);
   let season = "";
   if (req.query.season) {
-    season = "_" + req.query.season;
+    season = req.query.season;
   } else {
-    season = "_2024";
+    season = "2024";
   }
 
   db.get(
@@ -289,9 +330,9 @@ app.get("/players/info/:id", (req, res, next) => {
         FROM teams
     )
     SELECT *
-        FROM players${season} p
+        FROM skaters p
         JOIN team_ids t on p.team = t.team_name
-        WHERE player_id = ?`,
+        WHERE player_id = ? AND season = ${season}`,
     [id],
     (err, row) => {
       if (err) {
@@ -324,10 +365,10 @@ app.get("/players/info/:id", (req, res, next) => {
             END AS team_name
             FROM teams
         )
-        SELECT *
-                FROM goalies${season} p
-                JOIN team_ids t on p.team = t.team_name
-                WHERE player_id = ?`,
+            SELECT *
+            FROM goalie_numbers p
+            JOIN team_ids t on p.team = t.team_name
+            WHERE player_id = ? AND season = ${season}`,
           [id],
           (err, row) => {
             if (err) {
@@ -360,6 +401,34 @@ app.get("/players/info/:id", (req, res, next) => {
       }
     }
   );
+});
+
+app.get("/players_no_percentile", (req, res, next) => {
+  let filters = req.query;
+  let { query, params } = getPlayers(filters, "skaters_no_percentile");
+
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+    rows = rows.map((row) => ({
+      firstName: row.firstName,
+      lastName: row.lastName,
+      playerID: Number(row.player_id),
+      xG: Math.round((row.xGF / (row.xGF + row.xGA)) * 100),
+      xGF: row.xGF,
+      xGA: row.xGA,
+      goals: row.goals_60,
+      gsae: row.gsae,
+      primaryAssistsEV: row.primary_assists_EV,
+      teamId: Number(row.team_id),
+      team: row.team,
+      position: row.position,
+      nationality: row.nationality,
+    }));
+    res.status(200).json(rows);
+  });
 });
 
 app.get("/scores/:date", async (req, res, next) => {
@@ -395,6 +464,8 @@ app.get("/scores/:date", async (req, res, next) => {
   }));
   res.status(200).json(games);
 });
+
+const dbGetAsync = util.promisify(db.get).bind(db);
 
 app.get("/scores/:year/:date", async (req, res, next) => {
   try {
@@ -456,8 +527,8 @@ app.get("/scores/:year/:date", async (req, res, next) => {
           const ratio = xGF / (xGA + xGF);
 
           let nameRow = await dbGetAsync(
-            `SELECT * FROM players${season}
-            WHERE player_id = ?`,
+            `SELECT * FROM skaters
+            WHERE player_id = ? AND season = ${season}`,
             skaterID
           );
 
@@ -506,11 +577,11 @@ app.get("/scores/:year/:date", async (req, res, next) => {
       const goalieSumArray = await Promise.all(
         Array.from(goaliesXGSum, async ([goalieID, values]) => {
           let nameRow = await dbGetAsync(
-            `SELECT * FROM goalies${season}
-            WHERE player_id = ?`,
+            `SELECT * FROM goalie_numbers
+            WHERE player_id = ? AND season = ${season}`,
             goalieID
           );
-          //What
+
           if (!nameRow) {
             const info = await (
               await fetch(
@@ -550,60 +621,31 @@ app.get("/scores/:year/:date", async (req, res, next) => {
   }
 });
 
-app.get("/players/card/war/:id", (req, res, next) => {
-  const id = Number(req.query.id);
-  let season = "";
-  if (req.query.season == undefined) {
-    req.query.season = "2024";
-  }
-  season = "_" + req.query.season;
-  db.get(
-    `SELECT * FROM war${season} WHERE player_id = ?`,
-    [id],
-    (err, playerRow) => {
-      if (err) {
-        res.status(400).json({ error: err.message });
-        return;
-      }
+app.get("/game/:year/:gamePk", (req, res, next) => {
+  const gamePk = req.params.gamePk;
+  const year = req.params.year;
+  let shots = [];
 
-      if (playerRow) {
-        const response = {
-          playerID: playerRow.player_id,
-          war: playerRow.WAR,
-          warPercentile: playerRow.war_percentile,
-        };
-        res.status(200).json(response);
-      }
-    }
-  );
+  fs.createReadStream(`./seasons/${year}_shots.csv`)
+    .pipe(csvParser())
+    .on("data", (shot) => {
+      shots.push(shot);
+    })
+    .on("end", () => {
+      shots = shots.filter((shot) => {
+        return shot.gameID == gamePk;
+      });
+      res.status(200).json(shots);
+    })
+    .on("error", (err) => {
+      // Handle error if there's any issue reading or parsing the CSV file
+      console.error("Error reading CSV:", err);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
 });
 
-app.get("/players_no_percentile", (req, res, next) => {
-  let filters = req.query;
-  let { query, params } = getPlayers(filters, "PLAYERS_NO_PERCENTILE");
-
-  db.all(query, params, (err, rows) => {
-    if (err) {
-      res.status(400).json({ error: err.message });
-      return;
-    }
-    rows = rows.map((row) => ({
-      firstName: row.firstName,
-      lastName: row.lastName,
-      playerID: Number(row.player_id),
-      xG: Math.round((row.xGF / (row.xGF + row.xGA)) * 100),
-      xGF: row.xGF,
-      xGA: row.xGA,
-      goals: row.goals_60,
-      gsae: row.gsae,
-      primaryAssistsEV: row.primary_assists_EV,
-      teamId: Number(row.team_id),
-      team: row.team,
-      position: row.position,
-      nationality: row.nationality,
-    }));
-    res.status(200).json(rows);
-  });
+app.get("/scores/:year/:gamepk", async (req, res, next) => {
+  const gamepk = req.query.gamepk;
 });
 
 app.get("/teams/:id", (req, res, next) => {
@@ -676,7 +718,6 @@ app.get("/teams/roster/:id", async (req, res, next) => {
   const data = await (
     await fetch(`https://api-web.nhle.com/v1/roster/${teamAbbr}/current`)
   ).json();
-
   if (!data || !data.forwards || !data.defensemen || !data.goalies) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
@@ -687,7 +728,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
 
   if (data.forwards && data.forwards.length > 0) {
     forwards = data.forwards.map((forward) => ({
-      id: forward.id,
+      playerId: forward.id,
       headshot: forward.headshot,
       fullName: `${forward.firstName.default} ${forward.lastName.default}`,
       sweaterNumber: forward.sweaterNumber,
@@ -698,7 +739,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
 
   if (data.goalies && data.goalies.length > 0) {
     goalies = data.goalies.map((goalie) => ({
-      id: goalie.id,
+      playerId: goalie.id,
       headshot: goalie.headshot,
       fullName: `${goalie.firstName.default} ${goalie.lastName.default}`,
       sweaterNumber: goalie.sweaterNumber,
@@ -709,7 +750,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
 
   if (data.defensemen && data.defensemen.length > 0) {
     defense = data.defensemen.map((defenseman) => ({
-      id: defenseman.id,
+      playerId: defenseman.id,
       headshot: defenseman.headshot,
       fullName: `${defenseman.firstName.default} ${defenseman.lastName.default}`,
       sweaterNumber: defenseman.sweaterNumber,
@@ -723,6 +764,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
     forwards: forwards,
     defense: defense,
   };
+
   res.status(200).json(roster);
 });
 
@@ -731,7 +773,7 @@ app.get("/teams/standings/:id", (req, res, next) => {
   standings_db.get(
     `SELECT * FROM standings
        WHERE team_id = ?
-       AND last_updated = (SELECT MAX(last_updated) FROM standings WHERE team_id = ?)`,
+       AND last_updated = (SELECT MAX(last_updated) FROM standings2 WHERE team_id = ?)`,
     [id, id],
     (err, row) => {
       if (err) {
@@ -744,7 +786,7 @@ app.get("/teams/standings/:id", (req, res, next) => {
           teamId: Number(row.team_id),
           teamName: row.team,
           simulatedPoints: row.simulated_points,
-          actualPoints: Number(row.actual_points),
+          actualPoints: row.actual_points,
           division: row.division,
           lastUpdated: row.last_updated,
         };
@@ -757,8 +799,8 @@ app.get("/teams/standings/:id", (req, res, next) => {
 app.get("/teams/card/:id", (req, res, next) => {
   const id = Number(req.params.id);
   teams_db.get(
-    `SELECT *, max_last_updated
-      FROM teams, last_updated
+    `SELECT *
+      FROM teams
       WHERE team_id = ? and season = (SELECT MAX(season) FROM teams WHERE team_id = ?)`,
     [id, id],
     (err, row) => {
@@ -808,8 +850,4 @@ app.get("/teams/card/:id", (req, res, next) => {
       }
     }
   );
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });

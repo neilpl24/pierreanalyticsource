@@ -6,7 +6,7 @@ import { Sort } from '@angular/material/sort';
 import { Filters } from '../filters/filters.component';
 import { environment } from 'src/environments/environment';
 import { CardModel } from 'src/models/card.model';
-import { WarModel } from 'src/models/war.model';
+import { GamescoreModel } from 'src/models/gamescore.model';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +35,43 @@ export class PlayersService {
     }
     return this.http.get<CardModel>(
       `${this.baseUrl}/players/card/${playerId}`,
+      { params, headers }
+    );
+  }
+
+  public getGamescore(
+    playerId: number,
+    season?: string
+  ): Observable<GamescoreModel | null> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+    params = params.append('id', playerId.toString());
+    if (season && season != '') {
+      params = params.append('season', season?.toString());
+    }
+
+    if (season == '') {
+      params = params.append('season', '2024');
+    }
+    return this.http.get<GamescoreModel>(
+      `${this.baseUrl}/players/gamescore/${playerId}`,
+      { params, headers }
+    );
+  }
+
+  public getYearsPlayed(playerId: number): Observable<number[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+    params = params.append('id', playerId.toString());
+
+    return this.http.get<number[]>(
+      `${this.baseUrl}/players/seasons/${playerId}`,
       { params, headers }
     );
   }

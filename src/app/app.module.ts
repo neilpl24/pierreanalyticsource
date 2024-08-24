@@ -57,6 +57,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DatePipe } from '@angular/common';
+import { GamescoreComponent } from './cards/gamescore/gamescore.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { DatePipe } from '@angular/common';
     DatePickerComponent,
     GameComponent,
     StandingsComponent,
+    GamescoreComponent,
   ],
   imports: [
     BrowserModule,
