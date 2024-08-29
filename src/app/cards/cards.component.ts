@@ -48,7 +48,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
 
   nhlTeamMainColors: any = {
     'Anaheim Ducks': '#B9975B',
-    'Arizona Coyotes': '#8C2633',
+    'Utah Hockey Club': '#6CADE5',
     'Boston Bruins': '#FFB81C',
     'Buffalo Sabres': '#002654',
     'Calgary Flames': '#C8102E',
@@ -99,7 +99,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
 
   nhlTeamMap: any = {
     'Anaheim Ducks': 'ANA',
-    'Arizona Coyotes': 'ARI',
+    'Utah Hockey Club': 'UTA',
     'Boston Bruins': 'BOS',
     'Buffalo Sabres': 'BUF',
     'Calgary Flames': 'CGY',
