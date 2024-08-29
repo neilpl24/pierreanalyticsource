@@ -1,5 +1,5 @@
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { combineLatest, first, startWith, switchMap } from 'rxjs';
+import { combineLatest, first, map, startWith, switchMap, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { PlayersService } from '../../services/players.service';
 import {
@@ -11,6 +11,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { SeasonService } from '../../services/season.service';
 import * as chroma from 'chroma-js';
+import { setDefaults } from 'src/models/player.model';
 
 @Component({
   selector: 'skatersLeaderboard',
@@ -23,11 +24,8 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   allPlayers = new MatTableDataSource();
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(FiltersComponent) filters: FiltersComponent;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'goals_60', direction: 'desc' };
-
-  currentFilters: Filters = filtersDefault;
 
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
@@ -44,20 +42,27 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService
+    private seasonService: SeasonService,
+    private filterService: FiltersComponent
   ) {}
 
   ngOnInit(): void {
-    this.filters.filtersUpdated.subscribe((filters) => {
-      this.currentFilters = filters;
+    // this.filters.filtersUpdated.subscribe((filters) => {
+    //   this.currentFilters = filters;
 
-      console.log('Received filters:', this.currentFilters);
-      // Use the filters data here (e.g., call an API with filters)
-    });
+    //   console.log('Received filters:', this.currentFilters);
+    //   // Use the filters data here (e.g., call an API with filters)
+    // });
 
     // calling the fetchSkaterLeaderboard function to get the data
     this.playersService
       .getSkaterLeaderboard(filtersDefault, this.sortDefault)
+      .pipe(
+        map((players) => {
+          return players.map(setDefaults);
+        }),
+        tap(console.warn)
+      )
       .subscribe((players) => (this.dataSource.data = players));
 
     this.dataSource.paginator = this.paginator;
@@ -73,17 +78,18 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
       this.season = season;
     });
 
-    const filters$ = this.filters?.filtersUpdated.pipe(
-      startWith(filtersDefault)
-    );
-
-    combineLatest([filters$])
-      .pipe(
-        switchMap(([filters]) =>
-          this.playersService.getSkaterLeaderboard(filters, this.sortDefault)
-        )
-      )
-      .subscribe((players) => (this.dataSource.data = players));
+    // this.filters?.filtersUpdated.pipe(
+    //   map((filters) =>
+    //     this.playersService
+    //       .getSkaterLeaderboard(filters, this.sortDefault)
+    //       .pipe(
+    //         map((players) => {
+    //           return players.map(setDefaults);
+    //         })
+    //       )
+    //       .subscribe((players) => (this.dataSource.data = players))
+    //   )
+    // );
   }
 
   getCellColors(stat: number, statName: string) {
@@ -109,14 +115,6 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
 
   getTooltip(key: string): string {
     return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
-  }
-
-  roundValue(value: number): number {
-    return Math.round(value);
-  }
-
-  roundDecimal(value: number): number {
-    return Math.round(value * 100) / 100;
   }
 
   onSortChange(event: Sort) {

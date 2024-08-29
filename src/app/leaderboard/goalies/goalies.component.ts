@@ -5,13 +5,21 @@ import {
 } from '../../filters/filters.component';
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import { startWith } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 
 import * as chroma from 'chroma-js';
+import { GoalieModel, setDefaults } from 'src/models/goalie.model';
 
 @Component({
   selector: 'goaliesLeaderboard',
@@ -21,14 +29,15 @@ import * as chroma from 'chroma-js';
 export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   sortedColumn: string = 'starts';
   dataSource = new MatTableDataSource();
-  allPlayers = new MatTableDataSource();
+
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(FiltersComponent) filters: FiltersComponent;
+
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'starts', direction: 'desc' };
 
-  currentFilters: Filters = filtersDefault;
+  allPlayers: Observable<GoalieModel[]>;
+  dataSource2: Observable<GoalieModel[]>;
 
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
@@ -43,27 +52,34 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService
+    private seasonService: SeasonService,
+    private filterService: FiltersComponent
   ) {}
 
   ngOnInit(): void {
-    this.filters.filtersUpdated.subscribe((filters) => {
-      //this.currentFilters = filters;
-
-      console.log('Received filters:', filters);
-      // Use the filters data here (e.g., call an API with filters)
-    });
-
-    // calling the fetchGoalieLeaderboard function to get the data
-    this.playersService
+    this.allPlayers = this.playersService
       .getGoalieLeaderboard(filtersDefault, this.sortDefault)
-      .subscribe((players) => (this.dataSource.data = players));
+      .pipe(
+        map((players) => {
+          return players.map(setDefaults);
+        })
+      );
 
-    // this is what gives me the paging functionality
-    // all the player data gets loaded (obv less than ideal)
-    // but the act of flipping through the pages allows it more time to load.
+    combineLatest([this.allPlayers, this.filterService.filters$]).pipe(
+      map(([players, filters]) => {
+        console.warn(filters);
+        console.warn(players);
+        const filteredPlayers = players.filter((player) => {
+          // Apply your filtering logic here based on the filters
+          // For example, if you have a filter for team, you can do:
+          // return filters.team === player.team;
+          // Replace the above line with your actual filtering logic
+          return true; // Replace this with your actual filtering logic
+        });
+        this.dataSource.data = filteredPlayers;
+      })
+    );
 
-    // again, ideally we'd load the data in chunks in sync with the pages, but it'll do for now
     this.dataSource.paginator = this.paginator;
 
     // don't feel like this is working
@@ -76,6 +92,22 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     this.seasonService.selectedSeason$.subscribe((season) => {
       this.season = season;
     });
+
+    // this.filters.filtersUpdated.subscribe(console.warn);
+
+    // this.dataSource2 = this.filters.filtersUpdated.pipe(
+    //   switchMap(
+    //     (filters) =>
+    //       this.playersService
+    //         .getGoalieLeaderboard(filters, this.sortDefault)
+    //         .pipe(
+    //           map((goalies) => {
+    //             return goalies.map(setDefaults);
+    //           })
+    //         )
+    //     //.subscribe((goalies) => (this.dataSource.data = goalies))
+    //   )
+    // );
   }
 
   getCellColors(stat: number, statName: string) {
@@ -101,14 +133,6 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
 
   getTooltip(key: string): string {
     return this.tooltipMappings[key] || ''; // return the tooltip text if it exists, otherwise return an empty string
-  }
-
-  roundValue(value: number): number {
-    return Math.round(value);
-  }
-
-  roundDecimal(value: number): number {
-    return Math.round(value * 100) / 100;
   }
 
   onSortChange(event: Sort) {

@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { SeasonService } from '../services/season.service';
 import { Console } from 'console';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Filters {
   searchText: string;
@@ -24,7 +25,8 @@ export const filtersDefault: Filters = {
   styleUrls: ['./filters.component.css'],
 })
 export class FiltersComponent implements OnInit {
-  @Output() filtersUpdated = new EventEmitter<Filters>();
+  private filtersSubject = new BehaviorSubject<Filters>(filtersDefault);
+  filters$ = this.filtersSubject.asObservable();
 
   private filters: Filters = filtersDefault;
 
@@ -35,7 +37,7 @@ export class FiltersComponent implements OnInit {
       ...this.filters,
       searchText,
     };
-    this.emit();
+    this.filtersSubject.next(this.filters);
   }
 
   handleTeamChange(team: string) {
@@ -43,7 +45,7 @@ export class FiltersComponent implements OnInit {
       ...this.filters,
       team,
     };
-    this.emit();
+    this.filtersSubject.next(this.filters);
   }
 
   handleSeasonChange(season: string) {
@@ -52,7 +54,7 @@ export class FiltersComponent implements OnInit {
       season,
     };
     this.seasonService.updateSelectedSeason(season);
-    this.emit();
+    this.filtersSubject.next(this.filters);
   }
 
   handleNationalityChange(nationality: string) {
@@ -60,7 +62,7 @@ export class FiltersComponent implements OnInit {
       ...this.filters,
       nationality,
     };
-    this.emit();
+    this.filtersSubject.next(this.filters);
   }
 
   handlePositionChange(position: string) {
@@ -68,12 +70,7 @@ export class FiltersComponent implements OnInit {
       ...this.filters,
       position,
     };
-    this.emit();
-  }
-
-  emit() {
-    this.filtersUpdated.emit(this.filters);
-    console.log(this.filtersUpdated);
+    this.filtersSubject.next(this.filters);
   }
 
   ngOnInit(): void {}

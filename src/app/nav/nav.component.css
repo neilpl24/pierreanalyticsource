@@ -83,14 +83,17 @@ mat-form-field {
   border-left: 2px solid #ccc;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 .dropdown-container {
-  /* Styles to make it look like your original button */
   border: 1px solid #ccc;
   padding: 5px 10px;
   border-radius: 4px;
-  cursor: pointer; /* Indicates interactivity */
+  cursor: pointer;
 }
 
 .dropdown-list {
@@ -109,9 +112,9 @@ mat-form-field {
   /* Styles for hover effects, etc. */
 }
 
-.logo{
-    width: 40px;
-    height: auto;
+.logo {
+  width: 40px;
+  height: auto;
 }
 
 @media only screen and (max-width: 1000px) {

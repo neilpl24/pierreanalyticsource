@@ -22,7 +22,7 @@ import { SeasonService } from '../services/season.service';
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.css'],
 })
-export class LandingComponent implements AfterViewInit, OnInit {
+export class LandingComponent implements OnInit {
   dataSource = new MatTableDataSource();
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
@@ -47,25 +47,25 @@ export class LandingComponent implements AfterViewInit, OnInit {
     });
   }
 
-  ngAfterViewInit(): void {
-    const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
-    const filters$ = this.filters.filtersUpdated.pipe(
-      startWith(filtersDefault)
-    );
-    const sort$ =
-      this.sort?.sortChange.pipe(
-        startWith(sortDefault),
-        filter(
-          (sortEvent: Sort | null): sortEvent is Sort => sortEvent !== null
-        )
-      ) || of(sortDefault);
-    combineLatest([filters$, sort$])
-      .pipe(
-        switchMap(([filters, sort]) => this.playersSvc.search(filters, sort))
-      )
-      .subscribe((players) => (this.dataSource.data = players));
+  //   ngAfterViewInit(): void {
+  //     const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
+  //     const filters$ = this.filters.filtersUpdated.pipe(
+  //       startWith(filtersDefault)
+  //     );
+  //     const sort$ =
+  //       this.sort?.sortChange.pipe(
+  //         startWith(sortDefault),
+  //         filter(
+  //           (sortEvent: Sort | null): sortEvent is Sort => sortEvent !== null
+  //         )
+  //       ) || of(sortDefault);
+  //     combineLatest([filters$, sort$])
+  //       .pipe(
+  //         switchMap(([filters, sort]) => this.playersSvc.search(filters, sort))
+  //       )
+  //       .subscribe((players) => (this.dataSource.data = players));
 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  //     this.dataSource.paginator = this.paginator;
+  //     this.dataSource.sort = this.sort;
+  //   }
 }

@@ -10,7 +10,7 @@
     {{
       season
     }}
-    NHL Player Leadboards - Hover over the column names for more info.
+    NHL Player Leaderboards - Hover over the column names for more info.
   </caption>
   <ng-container matColumnDef="name">
     <th
@@ -40,7 +40,7 @@
   <ng-container matColumnDef="position">
     <th mat-header-cell *matHeaderCellDef>Position</th>
     <td mat-cell *matCellDef="let player" class="small-column">
-      {{ getPlayerPosition(player.position) }}
+      {{ player.position }}
     </td>
   </ng-container>
   <ng-container matColumnDef="team">
@@ -73,7 +73,7 @@
       [ngStyle]="getCellColors(player.goals, 'goals')"
       class="small-column"
     >
-      {{ roundDecimal(player.goals) }}
+      {{ player.goals }}
     </td>
   </ng-container>
   <ng-container matColumnDef="finishing">
@@ -92,7 +92,7 @@
       [ngStyle]="getCellColors(player.gsae, 'gsae')"
       class="small-column"
     >
-      {{ roundDecimal(player.gsae) }}
+      {{ player.gsae }}
     </td>
   </ng-container>
   <ng-container matColumnDef="primaryAssistsEV">
@@ -111,7 +111,7 @@
       [ngStyle]="getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')"
       class="small-column"
     >
-      {{ roundDecimal(player.primaryAssistsEV) }}
+      {{ player.primaryAssistsEV }}
     </td>
   </ng-container>
   <ng-container matColumnDef="xGF">
@@ -130,7 +130,7 @@
       [ngStyle]="getCellColors(player.xGF, 'xGF')"
       class="small-column"
     >
-      {{ roundDecimal(player.xGF) }}
+      {{ player.xGF }}
     </td>
   </ng-container>
   <ng-container matColumnDef="xGA">
@@ -149,7 +149,7 @@
       [ngStyle]="getCellColors(player.xGA, 'xGA')"
       class="small-column"
     >
-      {{ roundDecimal(player.xGA) }}
+      {{ player.xGA }}
     </td>
   </ng-container>
   <ng-container matColumnDef="xGPercentage">

@@ -9,7 +9,7 @@
     {{
       season
     }}
-    NHL Team Leadboards - Hover over the column names for more info.
+    NHL Team Leaderboards - Hover over the column names for more info.
   </caption>
   <ng-container matColumnDef="teamName">
     <th mat-header-cell *matHeaderCellDef class="column-header">Team</th>
@@ -149,7 +149,7 @@
       [ngStyle]="getCellColors(team.finishing, 'finishing')"
       class="small-column"
     >
-      {{ roundDecimal(team.finishing) }}
+      {{ team.finishing }}
     </td>
   </ng-container>
   <ng-container matColumnDef="gsax">
@@ -169,7 +169,7 @@
       [ngStyle]="getCellColors(team.gsax, 'gsax')"
       class="small-column"
     >
-      {{ roundDecimal(team.gsax) }}
+      {{ team.gsax }}
     </td>
   </ng-container>
   <ng-container matColumnDef="ev_xGF">
@@ -189,7 +189,7 @@
       [ngStyle]="getCellColors(team.ev_xGF, 'ev_xGF')"
       class="small-column"
     >
-      {{ roundDecimal(team.ev_xGF) }}
+      {{ team.ev_xGF }}
     </td>
   </ng-container>
   <ng-container matColumnDef="ev_xGA">
@@ -209,7 +209,7 @@
       [ngStyle]="getCellColors(team.ev_xGA, 'ev_xGA')"
       class="small-column"
     >
-      {{ roundDecimal(team.ev_xGA) }}
+      {{ team.ev_xGA }}
     </td>
   </ng-container>
   <ng-container matColumnDef="xGPercentage">

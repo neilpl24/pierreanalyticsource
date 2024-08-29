@@ -4,7 +4,14 @@ import {
 } from '../../filters/filters.component';
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import { combineLatest, startWith, switchMap } from 'rxjs';
+import {
+  Observable,
+  combineLatest,
+  map,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -15,7 +22,10 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
+import {
+  TeamLeaderboardModel,
+  setDefaults,
+} from 'src/models/team-leaderboard.model';
 
 import * as chroma from 'chroma-js';
 
@@ -60,6 +70,11 @@ export class TeamsLeaderboard implements OnInit {
   ngOnInit(): void {
     this.playersService
       .getTeamLeaderboard(filtersDefault, this.sortDefault)
+      .pipe(
+        map((teams) => {
+          return teams.map(setDefaults);
+        })
+      )
       .subscribe((teams) => (this.dataSource.data = teams));
 
     // this is what gives me the paging functionality
@@ -80,17 +95,18 @@ export class TeamsLeaderboard implements OnInit {
       this.season = season;
     });
 
-    const filters$ = this.filters?.filtersUpdated.pipe(
-      startWith(filtersDefault)
-    );
-
-    combineLatest([filters$])
-      .pipe(
-        switchMap(([filters]) =>
-          this.playersService.getSkaterLeaderboard(filters, this.sortDefault)
-        )
-      )
-      .subscribe((players) => (this.dataSource.data = players));
+    // this.filters.filtersUpdated.pipe(
+    //   map((teams) =>
+    //     this.playersService
+    //       .getTeamLeaderboard(filtersDefault, this.sortDefault)
+    //       .pipe(
+    //         map((teams) => {
+    //           return teams.map(setDefaults);
+    //         })
+    //       )
+    //       .subscribe((teams) => (this.dataSource.data = teams))
+    //   )
+    // );
   }
 
   getCellColors(stat: number, statName: string) {
