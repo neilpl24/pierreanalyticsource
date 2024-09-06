@@ -18,21 +18,7 @@ import { PlayerModel } from 'src/models/player.model';
 import { Subscription } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 
-export interface Filters {
-  searchText: string;
-  team: string | null;
-  nationality: string | null;
-  position: string | null;
-  season: string | null;
-}
-
-export const filtersDefault: Filters = {
-  searchText: '',
-  team: null,
-  nationality: null,
-  position: null,
-  season: '',
-};
+import { Filters, filtersDefault } from '../services/leaderboard.service';
 
 @Component({
   selector: 'nav-bar',

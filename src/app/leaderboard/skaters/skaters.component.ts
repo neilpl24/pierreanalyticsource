@@ -1,17 +1,25 @@
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import { combineLatest, first, map, startWith, switchMap, tap } from 'rxjs';
+import {
+  combineLatest,
+  first,
+  map,
+  Observable,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { PlayersService } from '../../services/players.service';
-import {
-  filtersDefault,
-  FiltersComponent,
-  Filters,
-} from '../../filters/filters.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { SeasonService } from '../../services/season.service';
 import * as chroma from 'chroma-js';
-import { setDefaults } from 'src/models/player.model';
+import { PlayerModel, setDefaults } from 'src/models/player.model';
+import { MatSidenav } from '@angular/material/sidenav';
+import {
+  LeaderboardService,
+  filtersDefault,
+} from 'src/app/services/leaderboard.service';
 
 @Component({
   selector: 'skatersLeaderboard',
@@ -21,11 +29,12 @@ import { setDefaults } from 'src/models/player.model';
 export class SkatersLeaderboard implements OnInit, AfterViewInit {
   sortedColumn: string = 'goals';
   dataSource = new MatTableDataSource();
-  allPlayers = new MatTableDataSource();
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'goals_60', direction: 'desc' };
+
+  allPlayers: Observable<PlayerModel[]>;
 
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
@@ -43,31 +52,21 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   constructor(
     private playersService: PlayersService,
     private seasonService: SeasonService,
-    private filterService: FiltersComponent
+    private leaderboardService: LeaderboardService
   ) {}
 
   ngOnInit(): void {
-    // this.filters.filtersUpdated.subscribe((filters) => {
-    //   this.currentFilters = filters;
-
-    //   console.log('Received filters:', this.currentFilters);
-    //   // Use the filters data here (e.g., call an API with filters)
-    // });
-
-    // calling the fetchSkaterLeaderboard function to get the data
-    this.playersService
+    this.allPlayers = this.playersService
       .getSkaterLeaderboard(filtersDefault, this.sortDefault)
       .pipe(
         map((players) => {
-          return players.map(setDefaults);
-        }),
-        tap(console.warn)
-      )
-      .subscribe((players) => (this.dataSource.data = players));
+          const processedPlayers = players.map(setDefaults);
+          this.generateFilterOptions(processedPlayers);
+          return processedPlayers;
+        })
+      );
 
     this.dataSource.paginator = this.paginator;
-
-    // don't feel like this is working
     this.dataSource.sort = this.sort;
   }
 
@@ -78,18 +77,61 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
       this.season = season;
     });
 
-    // this.filters?.filtersUpdated.pipe(
-    //   map((filters) =>
-    //     this.playersService
-    //       .getSkaterLeaderboard(filters, this.sortDefault)
-    //       .pipe(
-    //         map((players) => {
-    //           return players.map(setDefaults);
-    //         })
-    //       )
-    //       .subscribe((players) => (this.dataSource.data = players))
-    //   )
-    // );
+    combineLatest([this.allPlayers, this.leaderboardService.filters$])
+      .pipe(
+        map(([players, filters]) => {
+          const filteredPlayers = players.filter((player) => {
+            // Apply filtering logic based on the filters
+            if (
+              filters.nationality.length > 0 &&
+              !filters.nationality.includes(player.nationality)
+            ) {
+              return false;
+            }
+            if (
+              filters.position.length > 0 &&
+              !filters.position.includes(player.position)
+            ) {
+              return false;
+            }
+            if (
+              filters.searchText &&
+              !player.firstName
+                .toLowerCase()
+                .includes(filters.searchText.toLowerCase()) &&
+              !player.lastName
+                .toLowerCase()
+                .includes(filters.searchText.toLowerCase())
+            ) {
+              return false;
+            }
+
+            if (
+              filters.team.length > 0 &&
+              !filters.team.includes(player.team)
+            ) {
+              return false;
+            }
+            return true;
+          });
+          this.dataSource.data = filteredPlayers;
+        })
+      )
+      .subscribe();
+  }
+
+  generateFilterOptions(players: PlayerModel[]) {
+    const positions = [...new Set(players.map((player) => player.position))];
+    const nationalities = [
+      ...new Set(players.map((player) => player.nationality)),
+    ];
+    const teams = [...new Set(players.map((player) => player.team))];
+
+    this.leaderboardService.setAvailableFilters(
+      positions,
+      nationalities,
+      teams
+    );
   }
 
   getCellColors(stat: number, statName: string) {

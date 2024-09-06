@@ -1,11 +1,99 @@
 <nav-bar></nav-bar>
 <div class="list">
   <div class="table-wrapper">
-    <div *ngIf="type === 'skaters'">
-      <skatersLeaderboard />
-    </div>
-    <div *ngIf="type === 'goalies'">
-      <goaliesLeaderboard />
+    <!-- if the type is skaters or goalies, then show the sidenav for filters -->
+    <div *ngIf="type === 'skaters' || type === 'goalies'">
+      <mat-sidenav-container>
+        <mat-sidenav
+          #filterSidenav
+          position="end"
+          mode="over"
+          class="filter-sidenav"
+        >
+          <div class="header">
+            <div class="header-title">Filters</div>
+            <button mat-icon-button (click)="closeSidenav()">
+              <mat-icon style="color: lightcoral">close</mat-icon>
+            </button>
+          </div>
+
+          <div *ngIf="filters$ | async as filters">
+            <div
+              class="filters-container"
+              *ngIf="availableFilters | async as availableFilters"
+            >
+              <mat-form-field appearance="fill">
+                <mat-label>Position</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.position"
+                  (selectionChange)="updateFilters('position', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let position of availableFilters.positions"
+                    [value]="position"
+                  >
+                    {{ position }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Team</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.team"
+                  (selectionChange)="updateFilters('team', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let team of availableFilters.teams"
+                    [value]="team"
+                  >
+                    <img
+                      [src]="'assets/teams/' + team + '.png'"
+                      onError="this.src = 'assets/teams/default.png'"
+                      alt="{{ team }}"
+                      class="team-logo"
+                    />
+                    {{ team }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Nationality</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.nationality"
+                  (selectionChange)="updateFilters('nationality', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let nationality of availableFilters.nationalities"
+                    [value]="nationality"
+                  >
+                    <img
+                      [src]="'assets/flags/' + nationality + '.png'"
+                      onError="this.src = 'assets/flags/default.png'"
+                      alt="{{ nationality }}"
+                      class="flag-icon"
+                    />
+                    {{ nationality }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <filters></filters>
+          <ng-container *ngIf="type === 'skaters'">
+            <skatersLeaderboard />
+          </ng-container>
+          <ng-container *ngIf="type === 'goalies'">
+            <goaliesLeaderboard />
+          </ng-container>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
     </div>
     <div *ngIf="type === 'teams'">
       <teamsLeaderboard />

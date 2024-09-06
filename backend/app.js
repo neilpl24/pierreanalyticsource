@@ -57,18 +57,6 @@ function getPlayers(filters, table) {
   let query = [];
   let params = [];
 
-  if (filters.team !== "") {
-    query.push("TEAM = ?");
-    params.push(sanitizeParam(filters.team));
-  }
-  if (filters.nationality !== "") {
-    query.push("NATIONALITY = ?");
-    params.push(sanitizeParam(filters.nationality));
-  }
-  if (filters.position !== "0") {
-    query.push("POSITION = ?");
-    params.push(sanitizeParam(filters.position));
-  }
   if (filters.name !== "") {
     let name = sanitizeParam(filters.name.toLowerCase());
     query.push(

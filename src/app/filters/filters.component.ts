@@ -1,77 +1,39 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Injectable,
+  ViewChild,
+} from '@angular/core';
 import { SeasonService } from '../services/season.service';
 import { Console } from 'console';
 import { BehaviorSubject } from 'rxjs';
+import { MatSidenav } from '@angular/material/sidenav';
+import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { LeaderboardService } from '../services/leaderboard.service';
 
-export interface Filters {
-  searchText: string;
-  team: string | null;
-  nationality: string | null;
-  position: string | null;
-  season: string | null;
-}
+// Eventually, we'll want to add combinations of filters, like all players who played for the Canes or Blackhawks.
 
-export const filtersDefault: Filters = {
-  searchText: '',
-  team: null,
-  nationality: null,
-  position: null,
-  season: null,
-};
-
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css'],
 })
-export class FiltersComponent implements OnInit {
-  private filtersSubject = new BehaviorSubject<Filters>(filtersDefault);
-  filters$ = this.filtersSubject.asObservable();
+export class FiltersComponent {
+  constructor(
+    private seasonService: SeasonService,
+    private leaderboardService: LeaderboardService
+  ) {}
 
-  private filters: Filters = filtersDefault;
-
-  constructor(private seasonService: SeasonService) {}
-
-  handleSearchChange(searchText: string) {
-    this.filters = {
-      ...this.filters,
-      searchText,
-    };
-    this.filtersSubject.next(this.filters);
+  openFilterMenu() {
+    this.leaderboardService.openFilterSidenav();
   }
 
-  handleTeamChange(team: string) {
-    this.filters = {
-      ...this.filters,
-      team,
-    };
-    this.filtersSubject.next(this.filters);
+  clearFilters() {
+    this.leaderboardService.clearFilters();
   }
-
-  handleSeasonChange(season: string) {
-    this.filters = {
-      ...this.filters,
-      season,
-    };
-    this.seasonService.updateSelectedSeason(season);
-    this.filtersSubject.next(this.filters);
-  }
-
-  handleNationalityChange(nationality: string) {
-    this.filters = {
-      ...this.filters,
-      nationality,
-    };
-    this.filtersSubject.next(this.filters);
-  }
-
-  handlePositionChange(position: string) {
-    this.filters = {
-      ...this.filters,
-      position,
-    };
-    this.filtersSubject.next(this.filters);
-  }
-
-  ngOnInit(): void {}
 }

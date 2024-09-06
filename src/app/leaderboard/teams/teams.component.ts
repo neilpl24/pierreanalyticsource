@@ -1,33 +1,20 @@
-import {
-  filtersDefault,
-  FiltersComponent,
-} from '../../filters/filters.component';
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import {
-  Observable,
-  combineLatest,
-  map,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  Component,
-  AfterViewInit,
-  ViewChild,
-  OnInit,
-  Input,
-} from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import {
   TeamLeaderboardModel,
   setDefaults,
 } from 'src/models/team-leaderboard.model';
 
 import * as chroma from 'chroma-js';
+import {
+  LeaderboardService,
+  filtersDefault,
+} from 'src/app/services/leaderboard.service';
 
 @Component({
   selector: 'teamsLeaderboard',
@@ -37,11 +24,12 @@ import * as chroma from 'chroma-js';
 export class TeamsLeaderboard implements OnInit {
   sortedColumn: string = 'points'; // no clue why this doesn't work
   dataSource = new MatTableDataSource();
-  allPlayers = new MatTableDataSource();
+
+  allTeams: Observable<TeamLeaderboardModel[]>;
+
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(FiltersComponent) filters: FiltersComponent;
-  //   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'points', direction: 'desc' };
 
   // this is the only thing that matters for col order in the table, not the html order
@@ -64,49 +52,31 @@ export class TeamsLeaderboard implements OnInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService
+    private seasonService: SeasonService,
+    private leaderboardService: LeaderboardService
   ) {}
 
   ngOnInit(): void {
     this.playersService
       .getTeamLeaderboard(filtersDefault, this.sortDefault)
       .pipe(
-        map((teams) => {
+        tap((teams) => {
           return teams.map(setDefaults);
         })
       )
-      .subscribe((teams) => (this.dataSource.data = teams));
+      .subscribe((teams) => {
+        this.dataSource.data = teams;
+      });
 
-    // this is what gives me the paging functionality
-    // all the player data gets loaded (obv less than ideal)
-    // but the act of flipping through the pages allows it more time to load.
-
-    // again, ideally we'd load the data in chunks in sync with the pages, but it'll do for now
-    // this.dataSource.paginator = this.paginator;
-
-    // don't feel like this is working
+    this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
 
-    this.seasonService.selectedSeason$.subscribe((season) => {
-      this.season = season;
-    });
-
-    // this.filters.filtersUpdated.pipe(
-    //   map((teams) =>
-    //     this.playersService
-    //       .getTeamLeaderboard(filtersDefault, this.sortDefault)
-    //       .pipe(
-    //         map((teams) => {
-    //           return teams.map(setDefaults);
-    //         })
-    //       )
-    //       .subscribe((teams) => (this.dataSource.data = teams))
-    //   )
-    // );
+    // teams doesn't have filters, so it doesn't need anything here.
+    // if we want to add filters, it'll follow the same pattern as skaters/goalies
   }
 
   getCellColors(stat: number, statName: string) {

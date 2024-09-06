@@ -3,12 +3,12 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlayerModel } from 'src/models/player.model';
 import { Sort } from '@angular/material/sort';
-import { Filters } from '../filters/filters.component';
 import { environment } from 'src/environments/environment';
 import { CardModel } from 'src/models/card.model';
 import { WarModel } from 'src/models/war.model';
 import { GoalieModel } from 'src/models/goalie.model';
 import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
+import { Filters } from '../services/leaderboard.service';
 
 @Injectable({
   providedIn: 'root',
@@ -122,24 +122,12 @@ export class PlayersService {
     } else {
       params = params.append('name', '');
     }
+    // from legacy code which did filtering on the backend
+    params = params.append('team', '');
 
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
+    params = params.append('position', '');
 
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
+    params = params.append('nationality', '');
 
     if (filters.season) {
       if (filters.season == '') {
@@ -154,6 +142,8 @@ export class PlayersService {
       params = params.append('sortField', sort.active);
       params = params.append('sortDir', sort.direction);
     }
+
+    console.log(params);
     return params;
   }
 

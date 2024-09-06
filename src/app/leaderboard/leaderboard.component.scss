@@ -1,0 +1,37 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 10px;
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 500;
+  }
+}
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.filter-sidenav {
+  width: 35%;
+}
+
+.team-logo,
+.flag-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-sidenav {
+    width: 80%;
+  }
+}

@@ -1,25 +1,16 @@
-import {
-  filtersDefault,
-  FiltersComponent,
-  Filters,
-} from '../../filters/filters.component';
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import {
-  combineLatest,
-  map,
-  Observable,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { combineLatest, map, Observable, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-
 import * as chroma from 'chroma-js';
 import { GoalieModel, setDefaults } from 'src/models/goalie.model';
+import {
+  filtersDefault,
+  LeaderboardService,
+} from 'src/app/services/leaderboard.service';
 
 @Component({
   selector: 'goaliesLeaderboard',
@@ -32,12 +23,11 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
 
   season = '2024';
   @ViewChild(MatSort) sort: MatSort;
-
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+
   sortDefault: Sort = { active: 'starts', direction: 'desc' };
 
   allPlayers: Observable<GoalieModel[]>;
-  dataSource2: Observable<GoalieModel[]>;
 
   // this is the only thing that matters for col order in the table, not the html order
   displayedColumns: string[] = [
@@ -53,7 +43,7 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   constructor(
     private playersService: PlayersService,
     private seasonService: SeasonService,
-    private filterService: FiltersComponent
+    private leaderboardService: LeaderboardService
   ) {}
 
   ngOnInit(): void {
@@ -61,28 +51,13 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
       .getGoalieLeaderboard(filtersDefault, this.sortDefault)
       .pipe(
         map((players) => {
-          return players.map(setDefaults);
+          const processedPlayers = players.map(setDefaults);
+          this.generateFilterOptions(processedPlayers);
+          return processedPlayers;
         })
       );
 
-    combineLatest([this.allPlayers, this.filterService.filters$]).pipe(
-      map(([players, filters]) => {
-        console.warn(filters);
-        console.warn(players);
-        const filteredPlayers = players.filter((player) => {
-          // Apply your filtering logic here based on the filters
-          // For example, if you have a filter for team, you can do:
-          // return filters.team === player.team;
-          // Replace the above line with your actual filtering logic
-          return true; // Replace this with your actual filtering logic
-        });
-        this.dataSource.data = filteredPlayers;
-      })
-    );
-
     this.dataSource.paginator = this.paginator;
-
-    // don't feel like this is working
     this.dataSource.sort = this.sort;
   }
 
@@ -93,21 +68,62 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
       this.season = season;
     });
 
-    // this.filters.filtersUpdated.subscribe(console.warn);
+    combineLatest([this.allPlayers, this.leaderboardService.filters$])
+      .pipe(
+        map(([players, filters]) => {
+          console.log(filters);
+          const filteredPlayers = players.filter((player) => {
+            // Apply filtering logic based on the filters
+            if (
+              filters.nationality.length > 0 &&
+              !filters.nationality.includes(player.nationality)
+            ) {
+              return false;
+            }
+            if (
+              filters.position.length > 0 &&
+              !filters.position.includes(player.position)
+            ) {
+              return false;
+            }
+            if (
+              filters.searchText &&
+              !player.firstName
+                .toLowerCase()
+                .includes(filters.searchText.toLowerCase()) &&
+              !player.lastName
+                .toLowerCase()
+                .includes(filters.searchText.toLowerCase())
+            ) {
+              return false;
+            }
 
-    // this.dataSource2 = this.filters.filtersUpdated.pipe(
-    //   switchMap(
-    //     (filters) =>
-    //       this.playersService
-    //         .getGoalieLeaderboard(filters, this.sortDefault)
-    //         .pipe(
-    //           map((goalies) => {
-    //             return goalies.map(setDefaults);
-    //           })
-    //         )
-    //     //.subscribe((goalies) => (this.dataSource.data = goalies))
-    //   )
-    // );
+            if (
+              filters.team.length > 0 &&
+              !filters.team.includes(player.team)
+            ) {
+              return false;
+            }
+            return true;
+          });
+          this.dataSource.data = filteredPlayers;
+        })
+      )
+      .subscribe();
+  }
+
+  generateFilterOptions(players: GoalieModel[]) {
+    const positions = [...new Set(players.map((player) => player.position))];
+    const nationalities = [
+      ...new Set(players.map((player) => player.nationality)),
+    ];
+    const teams = [...new Set(players.map((player) => player.team))];
+
+    this.leaderboardService.setAvailableFilters(
+      positions,
+      nationalities,
+      teams
+    );
   }
 
   getCellColors(stat: number, statName: string) {

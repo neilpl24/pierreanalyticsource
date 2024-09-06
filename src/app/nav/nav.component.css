@@ -86,7 +86,7 @@ mat-form-field {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-evenly;
+  gap: 10px;
 }
 
 .dropdown-container {

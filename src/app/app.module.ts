@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { CardsComponent } from './cards/cards.component';
 import { LandingComponent } from './landing/landing.component';
 import { FiltersComponent } from './filters/filters.component';
@@ -13,9 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from './filters/search/search.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { TeamComponent } from './filters/team/team.component';
-import { NationalityComponent } from './filters/nationality/nationality.component';
-import { PositionComponent } from './filters/position/position.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -69,10 +67,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     LandingComponent,
     FiltersComponent,
     SearchComponent,
-    TeamComponent,
     TeamsComponent,
-    NationalityComponent,
-    PositionComponent,
     TimelineComponent,
     ShotsComponent,
     NavComponent,
@@ -99,6 +94,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     MatFormFieldModule,
     MatIconModule,
     MatNativeDateModule,
+    MatSidenavModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,
