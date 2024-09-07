@@ -23,6 +23,7 @@ declare var gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
 import { ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
+import { countryCodeMap } from '../utils';
 
 @Component({
   selector: 'app-cards',
@@ -159,6 +160,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     'High Danger Freq',
     'PK',
   ];
+  countryCodeMap: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -170,6 +172,8 @@ export class CardsComponent implements AfterViewInit, OnInit {
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
+
+    this.countryCodeMap = countryCodeMap;
   }
 
   ngAfterViewInit(): void {

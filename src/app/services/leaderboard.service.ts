@@ -6,7 +6,7 @@ export interface Filters {
   team: string[];
   nationality: string[];
   position: string[];
-  season: string | null;
+  season: string;
 }
 
 export const filtersDefault: Filters = {
@@ -14,11 +14,11 @@ export const filtersDefault: Filters = {
   team: [],
   nationality: [],
   position: [],
-  season: null,
+  season: '2024', // have to be restrained to one season for now
 };
 
 /*
-A service class that manages the state of the leaderboards. This is seperation of concerns from the components that manage the UI of the leaderboards.
+A service class that manages the state of the leaderboards. This is separation of concerns from the components that manage the UI of the leaderboards.
 Components:
 - Filters Sidebar (open/close state)
 - Filters Values (what filters are applied)
@@ -64,6 +64,7 @@ export class LeaderboardService {
   ) {
     // set the team filter in a predicatable order
     teams = teams.sort();
+    nationalities = nationalities.sort();
 
     this.availableFiltersSubject.next({
       positions,
@@ -86,7 +87,7 @@ export class LeaderboardService {
       team: [],
       nationality: [],
       position: [],
-      season: null,
+      season: '2024',
     });
   }
 }

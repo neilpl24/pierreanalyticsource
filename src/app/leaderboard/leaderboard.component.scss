@@ -15,7 +15,7 @@
 .filters-container {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   padding: 10px;
 }
 
@@ -28,6 +28,18 @@
   width: 30px;
   height: auto;
   margin-right: 5px;
+}
+
+.season {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
 }
 
 @media screen and (max-width: 768px) {

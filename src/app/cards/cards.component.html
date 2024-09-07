@@ -64,12 +64,11 @@
                         <td>Nationality</td>
                         <td>
                           {{ getPlayerNationality(player.nationality) }}
-                          <img
-                            src="{{
-                              'assets/flags/' + player.nationality + '.png'
+                          <span
+                            class="fi fi-{{
+                              countryCodeMap[player.nationality]
                             }}"
-                            class="nationality-logo"
-                          />
+                          ></span>
                         </td>
                       </tr>
                     </table>

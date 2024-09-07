@@ -1,13 +1,5 @@
 import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import {
-  combineLatest,
-  first,
-  map,
-  Observable,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { PlayersService } from '../../services/players.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,8 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SeasonService } from '../../services/season.service';
 import * as chroma from 'chroma-js';
 import { PlayerModel, setDefaults } from 'src/models/player.model';
-import { MatSidenav } from '@angular/material/sidenav';
 import {
+  Filters,
   LeaderboardService,
   filtersDefault,
 } from 'src/app/services/leaderboard.service';
@@ -56,15 +48,19 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.allPlayers = this.playersService
-      .getSkaterLeaderboard(filtersDefault, this.sortDefault)
-      .pipe(
-        map((players) => {
-          const processedPlayers = players.map(setDefaults);
-          this.generateFilterOptions(processedPlayers);
-          return processedPlayers;
-        })
-      );
+    this.allPlayers = this.leaderboardService.filters$.pipe(
+      switchMap((filters: Filters) => {
+        return this.playersService
+          .getSkaterLeaderboard(filters, this.sortDefault)
+          .pipe(
+            map((players) => {
+              const processedPlayers = players.map(setDefaults);
+              this.generateFilterOptions(processedPlayers);
+              return processedPlayers;
+            })
+          );
+      })
+    );
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

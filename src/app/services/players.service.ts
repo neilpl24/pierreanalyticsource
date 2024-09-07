@@ -8,7 +8,7 @@ import { CardModel } from 'src/models/card.model';
 import { WarModel } from 'src/models/war.model';
 import { GoalieModel } from 'src/models/goalie.model';
 import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
-import { Filters } from '../services/leaderboard.service';
+import { Filters } from './leaderboard.service';
 
 @Injectable({
   providedIn: 'root',

@@ -41,31 +41,9 @@ export class LandingComponent implements OnInit {
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
-    this.seasonService.selectedSeason$.subscribe((season) => {
-      this.season = season;
-      filtersDefault.season = season;
-    });
+    // this.seasonService.selectedSeason$.subscribe((season) => {
+    //   this.season = season;
+    //   filtersDefault.season = season;
+    // });
   }
-
-  //   ngAfterViewInit(): void {
-  //     const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
-  //     const filters$ = this.filters.filtersUpdated.pipe(
-  //       startWith(filtersDefault)
-  //     );
-  //     const sort$ =
-  //       this.sort?.sortChange.pipe(
-  //         startWith(sortDefault),
-  //         filter(
-  //           (sortEvent: Sort | null): sortEvent is Sort => sortEvent !== null
-  //         )
-  //       ) || of(sortDefault);
-  //     combineLatest([filters$, sort$])
-  //       .pipe(
-  //         switchMap(([filters, sort]) => this.playersSvc.search(filters, sort))
-  //       )
-  //       .subscribe((players) => (this.dataSource.data = players));
-
-  //     this.dataSource.paginator = this.paginator;
-  //     this.dataSource.sort = this.sort;
-  //   }
 }

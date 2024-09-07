@@ -374,7 +374,9 @@ app.get("/players/info/:id", (req, res, next) => {
 
 app.get("/leaderboard/skaters", (req, res, next) => {
   console.log("leaderboard/skaters");
+
   let filters = req.query;
+  console.log(filters);
   let { query, params } = getPlayers(filters, "PLAYERS_NO_PERCENTILE");
   db.all(query, params, (err, rows) => {
     if (err) {

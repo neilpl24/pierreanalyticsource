@@ -22,7 +22,31 @@
               class="filters-container"
               *ngIf="availableFilters | async as availableFilters"
             >
-              <mat-form-field appearance="fill">
+              <div class="season">
+                <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                  <mat-label>Season</mat-label>
+                  <mat-select
+                    [(ngModel)]="filters.season"
+                    #seasonSelect="ngModel"
+                  >
+                    <mat-option
+                      *ngFor="let season of availableSeasons"
+                      [value]="season"
+                    >
+                      {{ season }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="updateFilters('season', seasonSelect.value)"
+                >
+                  Apply
+                </button>
+              </div>
+
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
                 <mat-label>Position</mat-label>
                 <mat-select
                   multiple
@@ -38,7 +62,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
                 <mat-label>Team</mat-label>
                 <mat-select
                   multiple
@@ -60,7 +84,7 @@
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
                 <mat-label>Nationality</mat-label>
                 <mat-select
                   multiple
@@ -71,12 +95,9 @@
                     *ngFor="let nationality of availableFilters.nationalities"
                     [value]="nationality"
                   >
-                    <img
-                      [src]="'assets/flags/' + nationality + '.png'"
-                      onError="this.src = 'assets/flags/default.png'"
-                      alt="{{ nationality }}"
-                      class="flag-icon"
-                    />
+                    <span
+                      class="fi fi-{{ countryCodeMap[nationality] }}"
+                    ></span>
                     {{ nationality }}
                   </mat-option>
                 </mat-select>

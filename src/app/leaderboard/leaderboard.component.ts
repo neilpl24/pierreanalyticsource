@@ -1,17 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
-import {
-  Component,
-  AfterViewInit,
-  OnInit,
-  Input,
-  ViewChild,
-  Injectable,
-} from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { FiltersComponent } from '../filters/filters.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Filters, LeaderboardService } from '../services/leaderboard.service';
-
+import { availableSeasons, countryCodeMap } from '../utils';
 enum LeaderboardType {
   Skaters = 'skaters',
   Goalies = 'goalies',
@@ -26,6 +18,7 @@ enum LeaderboardType {
 export class LeaderboardComponent implements OnInit {
   @Input() type: LeaderboardType = LeaderboardType.Skaters; // the default type is skater
   routeType: string;
+  availableSeasons: string[];
   @ViewChild('filterSidenav') filterSidenav!: MatSidenav;
 
   filters$: Observable<Filters>;
@@ -34,6 +27,7 @@ export class LeaderboardComponent implements OnInit {
     nationalities: string[];
     teams: string[];
   }>;
+  countryCodeMap: { [key: string]: string };
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -48,6 +42,8 @@ export class LeaderboardComponent implements OnInit {
       }
     });
 
+    this.countryCodeMap = countryCodeMap;
+    this.availableSeasons = availableSeasons.reverse();
     this.availableFilters = this.leaderboardService.availableFilters$;
     this.filters$ = this.leaderboardService.filters$;
   }
