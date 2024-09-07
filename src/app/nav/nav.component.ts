@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 
 import { Filters, filtersDefault } from '../services/leaderboard.service';
+import { availableSeasons } from '../utils';
 
 @Component({
   selector: 'nav-bar',
@@ -35,6 +36,8 @@ export class NavComponent implements OnInit, OnDestroy {
   @Output() searchChanged = new EventEmitter<string>();
 
   public filteredPlayers: PlayerModel[] = [];
+
+  public availableSeasons: string[];
 
   constructor(
     private playersService: PlayersService,
@@ -75,6 +78,8 @@ export class NavComponent implements OnInit, OnDestroy {
           this.filteredPlayers = players;
         }
       });
+
+    this.availableSeasons = availableSeasons;
   }
 
   clearSearchInput() {

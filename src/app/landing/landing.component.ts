@@ -41,9 +41,5 @@ export class LandingComponent implements OnInit {
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
-    // this.seasonService.selectedSeason$.subscribe((season) => {
-    //   this.season = season;
-    //   filtersDefault.season = season;
-    // });
   }
 }

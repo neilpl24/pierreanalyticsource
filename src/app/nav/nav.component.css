@@ -47,7 +47,7 @@ mat-form-field {
   padding: 0px;
 }
 
-.dropdown2 {
+.dropdown-search {
   position: absolute;
   display: inline-block;
   z-index: 5;

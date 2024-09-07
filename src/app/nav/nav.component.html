@@ -127,15 +127,6 @@
               </ul>
             </div>
           </li>
-          <!-- <li class="nav-item">
-            <button
-              type="button"
-              class="btn-outline-secondary normal-button"
-              [routerLink]="['/leaderboard']"
-            >
-              Leaderboards
-            </button>
-          </li> -->
           <li class="nav-item">
             <button
               type="button"
@@ -159,16 +150,11 @@
     </div>
     <div class="container" style="justify-content: flex-end">
       <div class="search-select-height">
-        <!-- Replace mat-form-field with a regular select element -->
         <select class="form-select year-select" (change)="selectYear($event)">
           <option value="null">Year</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
+          <option *ngFor="let season of availableSeasons" [value]="season">
+            {{ season }}
+          </option>
         </select>
       </div>
       <div class="search-spacing">
@@ -180,7 +166,7 @@
           (input)="onSearchInputChange()"
         />
         <div
-          class="dropdown2"
+          class="dropdown-search"
           aria-labelledby="dropdownMenuButton"
           *ngIf="searchControl.value && filteredPlayers.length > 0"
         >

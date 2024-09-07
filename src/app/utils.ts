@@ -19,13 +19,13 @@ export function roundDecimal(value: number): number {
 
 // keeping track of what seasons of data we have centralized here
 export const availableSeasons = [
-  '2018',
-  '2019',
-  '2020',
-  '2021',
-  '2022',
-  '2023',
   '2024',
+  '2023',
+  '2022',
+  '2021',
+  '2020',
+  '2019',
+  '2018',
 ];
 
 // going to give this a shot

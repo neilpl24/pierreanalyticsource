@@ -568,7 +568,6 @@ app.get("/players/card/war/:id", (req, res, next) => {
 
 app.get("/leaderboard/skaters", (req, res, next) => {
   let filters = req.query;
-  console.log(filters);
   let { query, params } = getPlayers(filters, "PLAYERS_NO_PERCENTILE");
   db.all(query, params, (err, rows) => {
     if (err) {
@@ -685,7 +684,6 @@ app.get("/leaderboard/teams", (req, res, next) => {
       xGPercentageRank: row.xGPercentage_rank,
     }));
 
-    console.log(rows);
     res.status(200).json(rows);
   });
 });

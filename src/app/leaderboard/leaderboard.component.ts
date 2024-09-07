@@ -43,7 +43,7 @@ export class LeaderboardComponent implements OnInit {
     });
 
     this.countryCodeMap = countryCodeMap;
-    this.availableSeasons = availableSeasons.reverse();
+    this.availableSeasons = availableSeasons;
     this.availableFilters = this.leaderboardService.availableFilters$;
     this.filters$ = this.leaderboardService.filters$;
   }

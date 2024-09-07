@@ -69,10 +69,6 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
 
-    this.seasonService.selectedSeason$.subscribe((season) => {
-      this.season = season;
-    });
-
     combineLatest([this.allPlayers, this.leaderboardService.filters$])
       .pipe(
         map(([players, filters]) => {
