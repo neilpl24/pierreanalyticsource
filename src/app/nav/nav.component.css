@@ -75,6 +75,7 @@ mat-form-field {
   min-width: 100%;
   margin: 0px;
   text-align: center;
+  z-index: 10; /* Higher than navbar */
 }
 
 .dropdown-item {
@@ -87,6 +88,8 @@ mat-form-field {
   align-items: center;
   flex-direction: row;
   gap: 10px;
+  position: relative;
+  z-index: 15; /* Higher than dropdown-menu */
 }
 
 .dropdown-container {
@@ -115,6 +118,11 @@ mat-form-field {
 .logo {
   width: 40px;
   height: auto;
+}
+
+.navbar {
+  position: relative;
+  z-index: 5; /* Ensure navbar is above other content */
 }
 
 @media only screen and (max-width: 1000px) {
@@ -147,9 +155,24 @@ mat-form-field {
     align-items: center;
     text-transform: capitalize;
     font-size: 12px;
+    position: relative;
+    z-index: 20; /* Ensure buttons are above dropdown */
   }
 
   .search-select-height {
     margin-top: 10px;
+  }
+
+  .btn-group {
+    position: relative;
+    z-index: 20; /* Ensure button group is above other elements */
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 80; /* Highest z-index for mobile dropdown */
   }
 }

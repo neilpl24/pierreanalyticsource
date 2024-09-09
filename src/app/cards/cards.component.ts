@@ -83,7 +83,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
   };
 
   navColor: string;
-  seasons = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
+  seasons$: Observable<number[]>;
 
   seasonMap: any = {
     undefined: '20232024',
@@ -182,6 +182,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
         const playerID = params['playerID'];
         const year = params['season'];
         this.season = year;
+        this.seasons$ = this.playersSvc.getYearsPlayed(playerID);
         return this.playersSvc.getInfo(playerID, year).pipe(
           mergeMap(() => this.playersSvc.getInfo(playerID, year)),
           catchError(() => {
@@ -346,13 +347,6 @@ export class CardsComponent implements AfterViewInit, OnInit {
           const assistsString = player.assists;
           this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
           if (player.position !== 'G' && player.assists !== 'nan') {
-            console.log(
-              shotsString
-                .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                .replaceAll(/Ã\\x83/g, 'é')
-                .replaceAll('Ã\\x83Â¼', 'u')
-            );
             this.assistsData = assistsString
               ? JSON.parse(
                   assistsString
@@ -413,6 +407,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
         .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
         .replaceAll('Ã\\x83Â¼', 'u')
     );
+    this.seasons$ = this.playersSvc.getYearsPlayed(this.playerID);
   }
 
   onAssistsDataChange(event: Event): void {

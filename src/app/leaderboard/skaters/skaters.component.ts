@@ -10,7 +10,6 @@ import { PlayerModel, setDefaults } from 'src/models/player.model';
 import {
   Filters,
   LeaderboardService,
-  filtersDefault,
 } from 'src/app/services/leaderboard.service';
 
 @Component({
@@ -43,7 +42,6 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService,
     private leaderboardService: LeaderboardService
   ) {}
 

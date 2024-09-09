@@ -1,6 +1,6 @@
 import { PlayersService } from '../../services/players.service';
 import { SeasonService } from '../../services/season.service';
-import { combineLatest, map, Observable, tap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,6 +8,7 @@ import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
 import * as chroma from 'chroma-js';
 import { GoalieModel, setDefaults } from 'src/models/goalie.model';
 import {
+  Filters,
   filtersDefault,
   LeaderboardService,
 } from 'src/app/services/leaderboard.service';
@@ -47,15 +48,19 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.allPlayers = this.playersService
-      .getGoalieLeaderboard(filtersDefault, this.sortDefault)
-      .pipe(
-        map((players) => {
-          const processedPlayers = players.map(setDefaults);
-          this.generateFilterOptions(processedPlayers);
-          return processedPlayers;
-        })
-      );
+    this.allPlayers = this.leaderboardService.filters$.pipe(
+      switchMap((filters: Filters) => {
+        return this.playersService
+          .getGoalieLeaderboard(filters, this.sortDefault)
+          .pipe(
+            map((players) => {
+              const processedPlayers = players.map(setDefaults);
+              this.generateFilterOptions(processedPlayers);
+              return processedPlayers;
+            })
+          );
+      })
+    );
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
@@ -67,7 +72,6 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     combineLatest([this.allPlayers, this.leaderboardService.filters$])
       .pipe(
         map(([players, filters]) => {
-          console.log(filters);
           const filteredPlayers = players.filter((player) => {
             // Apply filtering logic based on the filters
             if (

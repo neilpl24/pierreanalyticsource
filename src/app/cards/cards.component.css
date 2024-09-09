@@ -75,7 +75,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 16px;
 }
 
 .player-card p {
@@ -202,5 +201,13 @@
 
   .descriptor-text {
     display: none;
+  }
+}
+
+@media only screen and (min-width: 1800px) {
+  .action {
+    max-width: 50%;
+    height: auto;
+    margin-top: 5%;
   }
 }

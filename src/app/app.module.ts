@@ -44,7 +44,6 @@ import { AboutComponent } from './about/about.component';
 import { TableComponent } from './cards/table/table.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ScoresComponent } from './scores/scores.component';
-
 import { SeasonComponent } from './filters/season/season.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
@@ -59,6 +58,7 @@ import { SkatersLeaderboard } from './leaderboard/skaters/skaters.component';
 import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
 import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { GamescoreComponent } from './cards/gamescore/gamescore.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +84,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     SkatersLeaderboard,
     GoaliesLeaderboard,
     TeamsLeaderboard,
+    GamescoreComponent,
   ],
   imports: [
     BrowserModule,
