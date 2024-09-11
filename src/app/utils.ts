@@ -223,10 +223,12 @@ export const countryCodeMap: { [key: string]: string } = {
   YEM: 'ye',
   ZMB: 'zm',
   ZWE: 'zw',
+  // below are the ones I added, others are from Claude
   GER: 'de',
   NED: 'nl',
-  DEN: 'de',
+  DEN: 'dk',
   SUI: 'ch',
   SLO: 'si',
   LAT: 'lv',
+  BUL: 'bg',
 };
