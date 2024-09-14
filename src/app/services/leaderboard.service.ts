@@ -1,21 +1,14 @@
 import { Injectable, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { availableSeasons } from '../utils';
 
-export interface Filters {
-  searchText: string;
-  team: string[];
-  nationality: string[];
-  position: string[];
-  season: string;
+export class Filters {
+  searchText: string = '';
+  team: string[] = [];
+  nationality: string[] = [];
+  position: string[] = [];
+  season: string = availableSeasons[0];
 }
-
-export const filtersDefault: Filters = {
-  searchText: '',
-  team: [],
-  nationality: [],
-  position: [],
-  season: '2024', // have to be restrained to one season for now
-};
 
 /*
 A service class that manages the state of the leaderboards. This is separation of concerns from the components that manage the UI of the leaderboards.
@@ -29,7 +22,7 @@ Components:
 })
 export class LeaderboardService {
   // Filters Values (what filters are applied)
-  private filtersSubject = new BehaviorSubject<Filters>(filtersDefault);
+  private filtersSubject = new BehaviorSubject<Filters>(new Filters());
   @Output() public filters$ = this.filtersSubject.asObservable();
 
   // Filters Sidebar (open/close state)
@@ -82,12 +75,6 @@ export class LeaderboardService {
 
   clearFilters() {
     // reset the filters to the default
-    this.filtersSubject.next({
-      searchText: '',
-      team: [],
-      nationality: [],
-      position: [],
-      season: '2024',
-    });
+    this.filtersSubject.next(new Filters());
   }
 }

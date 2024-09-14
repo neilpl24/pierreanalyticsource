@@ -18,7 +18,7 @@ import { PlayerModel } from 'src/models/player.model';
 import { Subscription } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 
-import { Filters, filtersDefault } from '../services/leaderboard.service';
+import { Filters } from '../services/leaderboard.service';
 import { availableSeasons } from '../utils';
 
 @Component({
@@ -29,7 +29,7 @@ import { availableSeasons } from '../utils';
 export class NavComponent implements OnInit, OnDestroy {
   public searchControl = new FormControl({ value: '', disabled: true });
   private subscription: Subscription;
-  private filters: Filters = filtersDefault;
+  private filters: Filters = new Filters();
   year: string | null = null;
 
   @Input() navColor: string;

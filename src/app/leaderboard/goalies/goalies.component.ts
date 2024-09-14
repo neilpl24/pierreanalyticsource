@@ -9,7 +9,6 @@ import * as chroma from 'chroma-js';
 import { GoalieModel, setDefaults } from 'src/models/goalie.model';
 import {
   Filters,
-  filtersDefault,
   LeaderboardService,
 } from 'src/app/services/leaderboard.service';
 

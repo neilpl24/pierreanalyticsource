@@ -12,8 +12,8 @@ import {
 
 import * as chroma from 'chroma-js';
 import {
+  Filters,
   LeaderboardService,
-  filtersDefault,
 } from 'src/app/services/leaderboard.service';
 
 @Component({
@@ -58,15 +58,15 @@ export class TeamsLeaderboard implements OnInit {
 
   ngOnInit(): void {
     this.playersService
-      .getTeamLeaderboard(filtersDefault, this.sortDefault)
+      .getTeamLeaderboard(new Filters(), this.sortDefault)
       .pipe(
         tap((teams) => {
-          return teams.map(setDefaults);
+          this.dataSource.data = teams.map(setDefaults);
         })
       )
-      .subscribe((teams) => {
-        this.dataSource.data = teams;
-      });
+      .subscribe();
+
+    this.dataSource.paginator = this.paginator;
 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;

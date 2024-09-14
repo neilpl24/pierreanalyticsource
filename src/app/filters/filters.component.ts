@@ -1,16 +1,5 @@
-import {
-  Component,
-  OnInit,
-  EventEmitter,
-  Output,
-  Injectable,
-  ViewChild,
-} from '@angular/core';
-import { SeasonService } from '../services/season.service';
-import { Console } from 'console';
-import { BehaviorSubject } from 'rxjs';
-import { MatSidenav } from '@angular/material/sidenav';
-import { LeaderboardComponent } from '../leaderboard/leaderboard.component';
+import { Component } from '@angular/core';
+
 import { LeaderboardService } from '../services/leaderboard.service';
 
 @Component({

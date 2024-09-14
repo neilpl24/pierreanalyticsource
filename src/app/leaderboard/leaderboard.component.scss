@@ -15,7 +15,7 @@
 .filters-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
   padding: 10px;
 }
 
@@ -28,6 +28,10 @@
   width: 30px;
   height: auto;
   margin-right: 5px;
+}
+
+.close-icon {
+  color: coral;
 }
 
 .season {

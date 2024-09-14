@@ -20,6 +20,7 @@ export interface PlayerModel {
   xGF: number;
   xGA: number;
   gsae: number;
+  xG: number;
 }
 
 export function setDefaults(model: PlayerModel) {
