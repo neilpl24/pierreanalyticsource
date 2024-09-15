@@ -179,17 +179,15 @@ app.get("/players/name", (req, res, next) => {
 
 app.get("/players/seasons/:id", (req, res, next) => {
   const id = Number(req.query.id);
-  let season = "";
-  season = "_" + req.query.season;
   db.all(
-    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ? UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
     [id],
     (err, playerRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
       }
-      playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
+      rows = playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
       res.status(200).json(playerRows);
     }
   );
@@ -215,6 +213,62 @@ app.get("/standings", (req, res, next) => {
       res.status(200).json(rows);
     }
   });
+});
+
+app.get("/players/gamescore/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.all(
+    `SELECT * FROM gamescore WHERE PlayerId = ? AND season = ${season - 1}`,
+    [id],
+    (err, playerRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (playerRows) {
+        let response = [];
+        for (let row of playerRows) {
+          response.push({
+            playerId: row.PlayerId,
+            name: row.Name,
+            date: row.Date,
+            gamescore: row.Gamescore,
+          });
+        }
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
+app.get("/players/gamescore/averages/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.get(
+    `SELECT * FROM gamescore_percentiles WHERE PlayerId = ? AND season = ${
+      season - 1
+    }`,
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      let response;
+      if (row) {
+        response = {
+          playerId: row.PlayerId,
+          average: row.average_gamescore,
+          percentile: row.percentile,
+          zScore: row.z_score,
+        };
+      }
+      res.status(200).json(response);
+    }
+  );
 });
 
 app.get("/players/card/war/:id", (req, res, next) => {
