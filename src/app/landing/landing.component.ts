@@ -1,21 +1,8 @@
-import { Component, AfterViewInit, ViewChild, OnInit } from '@angular/core';
-import {
-  combineLatest,
-  Observable,
-  of,
-  startWith,
-  switchMap,
-  filter,
-} from 'rxjs';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { TeamsService } from '../services/teams.service';
+import { ReleaseNoteModel } from 'src/models/release-note.model';
+import { Observable, tap } from 'rxjs';
 declare var gtag: Function; // Declare the gtag function
-import { PlayersService } from '../services/players.service';
-import { Router } from '@angular/router';
-import { filtersDefault, FiltersComponent } from '../filters/filters.component';
-import { PlayerModel } from 'src/models/player.model';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { SeasonService } from '../services/season.service';
 
 @Component({
   selector: 'app-landing',
@@ -23,49 +10,22 @@ import { SeasonService } from '../services/season.service';
   styleUrls: ['./landing.component.css'],
 })
 export class LandingComponent implements AfterViewInit, OnInit {
-  dataSource = new MatTableDataSource();
-  season = '2024';
-  @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(FiltersComponent) filters: FiltersComponent;
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  public releaseNotes$: Observable<ReleaseNoteModel[]>;
+  public imageMap: { [key: string]: string } = {
+    'Bennett Summy': 'bennett-alt.jpg',
+    'Neil Pierre-Louis': 'neil-alt.png',
+  };
 
-  public players$: Observable<PlayerModel[]>;
-
-  constructor(
-    private playersSvc: PlayersService,
-    private readonly router: Router,
-    private seasonService: SeasonService
-  ) {}
+  constructor(private teamSvc: TeamsService) {}
 
   ngOnInit(): void {
+    // what does this do?
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
-    this.seasonService.selectedSeason$.subscribe((season) => {
-      this.season = season;
-      filtersDefault.season = season;
-    });
+
+    this.releaseNotes$ = this.teamSvc.getReleaseNotes().pipe(tap(console.log));
   }
 
-  ngAfterViewInit(): void {
-    const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
-    const filters$ = this.filters.filtersUpdated.pipe(
-      startWith(filtersDefault)
-    );
-    const sort$ =
-      this.sort?.sortChange.pipe(
-        startWith(sortDefault),
-        filter(
-          (sortEvent: Sort | null): sortEvent is Sort => sortEvent !== null
-        )
-      ) || of(sortDefault);
-    combineLatest([filters$, sort$])
-      .pipe(
-        switchMap(([filters, sort]) => this.playersSvc.search(filters, sort))
-      )
-      .subscribe((players) => (this.dataSource.data = players));
-
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+  ngAfterViewInit(): void {}
 }

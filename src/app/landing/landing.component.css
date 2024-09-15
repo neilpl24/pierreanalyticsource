@@ -1,0 +1,49 @@
+.notes-table {
+  width: 60%;
+  height: auto;
+}
+
+.release-notes {
+  background-color: lightgrey;
+  border: 1px solid grey;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.masked-image {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: 1px solid black;
+}
+
+.github-mark {
+  font-size: 50px;
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.note-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.note-description {
+  font-size: 14px;
+}
+
+.note-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.note-body {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: space-evenly;
+}

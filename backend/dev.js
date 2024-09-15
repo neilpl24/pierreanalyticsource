@@ -850,3 +850,26 @@ app.get("/teams/card/:id", (req, res, next) => {
     }
   );
 });
+
+app.get("/landing/release_notes", (req, res, next) => {
+  teams_db.all(
+    "SELECT title, date, author, note, github_link FROM release_notes ORDER BY date DESC LIMIT 3",
+    (err, rows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (rows) {
+        const response = rows.map((row) => ({
+          title: row.title,
+          date: row.date,
+          author: row.author,
+          note: row.note,
+          githubLink: row.github_link,
+        }));
+        res.status(200).json(response);
+      }
+    }
+  );
+});

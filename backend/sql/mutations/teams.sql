@@ -32,3 +32,10 @@ VALUES
 ('Vegas Golden Knights', 'Paradise', 'Golden Knights', 'VGK', 'Pacific', 'Western', '#B4975A', '#333F42'),
 ('Washington Capitals', 'Washington', 'Capitals', 'WSH', 'Metropolitan', 'Eastern', '#041E42', '#C8102E'),
 ('Winnipeg Jets', 'Winnipeg', 'Jets', 'WPG', 'Central', 'Western', '#041E42', '#004C97');
+
+
+INSERT INTO release_notes (title, date, author, note, github_link)
+VALUES
+('Leaderboard Updates', '2024-09-15 20:06:07', 'Bennett Summy', 'Updated leaderboard tab to include goalie and team data. Reduced data requests by performing filtering on the frontend.', 'https://github.com/neilpl24/pierreanalyticsource/pull/44'),
+('Landing Page', '2024-09-16 14:12:59', 'Bennett Summy', 'Created the new landing page to welcome everyone to the site and explain how it works', 'https://github.com/neilpl24/pierreanalyticsource/pull/44'),
+('Database Upgrades', '2024-09-17 09:08:00', 'Neil Pierre-Louis', 'Cleaned the database code to prepare for 2025 and gamescore upgrades', 'https://github.com/neilpl24/pierreanalyticsource/pull/44');
