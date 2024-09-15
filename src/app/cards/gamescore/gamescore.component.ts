@@ -157,6 +157,7 @@ export class GamescoreComponent implements OnChanges {
       .selectAll('text')
       .style('text-anchor', 'end')
       .style('font-size', '8px')
+      .style('overflow', 'visible')
       .attr('transform', 'rotate(-45)')
       .attr('dx', '-0.8em')
       .attr('dy', '-0.5em');
