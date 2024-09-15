@@ -1,1 +1,10 @@
-<p>gamescore works!</p>
+<div class="gs-container">
+  <div class="header">
+    <div class="stats-box" [ngStyle]="getPercentileColor(average.percentile)">
+      <p>Average Gamescore: {{ average.average | number : "1.2-2" }}</p>
+      <p>Percentile: {{ average.percentile * 100 | number : "1.2-2" }}%</p>
+      <p>Z-Score: {{ average.zScore | number : "1.2-2" }}</p>
+    </div>
+  </div>
+  <div #chart class="chart-container"></div>
+</div>

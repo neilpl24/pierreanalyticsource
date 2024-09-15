@@ -235,6 +235,26 @@
   </div>
 </div>
 
+<ng-container *ngIf="gamescoreAverage$ | async as gamescoreAverage">
+  <ng-container *ngIf="gamescore$ | async as gamescore">
+    <div class="gs-container">
+      <div class="gamescore">
+        <gamescore
+          [data]="gamescore"
+          [showRollingAverage]="showRollingAverage"
+          [average]="gamescoreAverage"
+        ></gamescore>
+      </div>
+      <div class="rolling-average-checkbox">
+        <label>
+          <input type="checkbox" [(ngModel)]="showRollingAverage" />
+          5-Game Rolling Average
+        </label>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>
+
 <div class="gtables d-flex justify-content-center">
   <ng-container *ngIf="player$ | async as player">
     <div class="goals-table">

@@ -23,6 +23,8 @@ declare var gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
 import { ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
+import { GamescoreModel } from 'src/models/gamescore.model';
+import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
 
 @Component({
   selector: 'app-cards',
@@ -38,6 +40,9 @@ export class CardsComponent implements AfterViewInit, OnInit {
   >();
   shotsData: ShotModel[] = [];
   assistsData: ShotModel[] = [];
+  gamescore$: Observable<GamescoreModel[]>;
+  gamescoreAverage$: Observable<GamescoreAverageModel>;
+  showRollingAverage: boolean = false;
   public player$: Observable<PlayerModel | null>;
   public card$: Observable<CardModel | null>;
   public playerID: number;
@@ -175,12 +180,11 @@ export class CardsComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.player$ = this.route.params.pipe(
       switchMap((params) => {
-        const playerID = params['playerID'];
-        const year = params['season'];
-        this.season = year;
-        this.seasons$ = this.playersSvc.getYearsPlayed(playerID);
-        return this.playersSvc.getInfo(playerID, year).pipe(
-          mergeMap(() => this.playersSvc.getInfo(playerID, year)),
+        this.playerID = params['playerID'];
+        this.season = params['season'];
+        this.seasons$ = this.playersSvc.getYearsPlayed(this.playerID);
+        return this.playersSvc.getInfo(this.playerID, this.season).pipe(
+          mergeMap(() => this.playersSvc.getInfo(this.playerID, this.season)),
           catchError(() => {
             this.router.navigate(['/404']);
             return of(null);
@@ -189,6 +193,16 @@ export class CardsComponent implements AfterViewInit, OnInit {
       }),
       tap((player) => {
         if (player) {
+          if (player.position != 'G') {
+            this.gamescore$ = this.playersSvc.getGamescore(
+              this.playerID,
+              this.season
+            );
+            this.gamescoreAverage$ = this.playersSvc.getGamescoreAverage(
+              this.playerID,
+              this.season
+            );
+          }
           this.navColor = this.nhlTeamMainColors[player.team];
           let shotsString = player.shots;
           this.playerID = player.playerID;
@@ -372,8 +386,16 @@ export class CardsComponent implements AfterViewInit, OnInit {
           this.shotsData = [];
           this.assistsData = [];
         }
+
         this.shotsDataChange.emit([...this.shotsData]);
         this.assistsDataChange.emit([...this.assistsData]);
+        if (player && player.position != 'G') {
+          this.gamescore$ = this.playersSvc.getGamescore(this.playerID, season);
+          this.gamescoreAverage$ = this.playersSvc.getGamescoreAverage(
+            this.playerID,
+            season
+          );
+        }
       })
     );
 
@@ -433,6 +455,11 @@ export class CardsComponent implements AfterViewInit, OnInit {
     const val = Math.floor(percentile);
 
     return { background: gradient[val], color: textColor };
+  }
+
+  onRollingAverageToggle(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.showRollingAverage = checkbox.checked;
   }
 
   getBirthdayData(birthday: string): string {
