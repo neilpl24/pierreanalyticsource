@@ -39,6 +39,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     ShotModel[]
   >();
   shotsData: ShotModel[] = [];
+  goalieMode: boolean;
   assistsData: ShotModel[] = [];
   gamescore$: Observable<GamescoreModel[]>;
   gamescoreAverage$: Observable<GamescoreAverageModel>;
@@ -202,6 +203,9 @@ export class CardsComponent implements AfterViewInit, OnInit {
               this.playerID,
               this.season
             );
+            this.goalieMode = false;
+          } else {
+            this.goalieMode = true;
           }
           this.navColor = this.nhlTeamMainColors[player.team];
           let shotsString = player.shots;
@@ -210,6 +214,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
           const assistsString = player.assists;
           // I can't stress how stupid this and how I could easily solve this problem in my scraper, but alas here we are
           if (player.position != 'G' && player.assists != 'nan') {
+            this.goalieMode = false;
             this.assistsData = assistsString
               ? JSON.parse(
                   assistsString
@@ -221,6 +226,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
               : [];
           } else {
             this.assistsData = [];
+            this.goalieMode = true;
           }
           if (player.shots != 'nan') {
             this.shotsData = shotsString
@@ -339,81 +345,6 @@ export class CardsComponent implements AfterViewInit, OnInit {
       Math.round(card.high_danger_freq * 100),
       Math.round(card.pk * 100),
     ];
-  }
-
-  seasonChangedHandler(season: string): void {
-    this.seasonChanged.next(season);
-    this.player$ = this.route.params.pipe(
-      map((params) => params['playerID']),
-      switchMap((id) => this.playersSvc.getInfo(id, season)),
-      catchError(() => {
-        this.router.navigate(['/404']);
-        return of(null);
-      }),
-      tap((player) => {
-        if (player) {
-          const shotsString = player.shots;
-          this.playerID = player.playerID;
-          const assistsString = player.assists;
-          this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
-          if (player.position !== 'G' && player.assists !== 'nan') {
-            this.assistsData = assistsString
-              ? JSON.parse(
-                  assistsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-          } else {
-            this.assistsData = [];
-          }
-          if (player.shots !== 'nan') {
-            this.shotsData = shotsString
-              ? JSON.parse(
-                  shotsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-          } else {
-            this.shotsData = [];
-          }
-        } else {
-          this.shotsData = [];
-          this.assistsData = [];
-        }
-
-        this.shotsDataChange.emit([...this.shotsData]);
-        this.assistsDataChange.emit([...this.assistsData]);
-        if (player && player.position != 'G') {
-          this.gamescore$ = this.playersSvc.getGamescore(this.playerID, season);
-          this.gamescoreAverage$ = this.playersSvc.getGamescoreAverage(
-            this.playerID,
-            season
-          );
-        }
-      })
-    );
-
-    this.card$ = this.route.params.pipe(
-      map((params) => params['playerID']),
-      switchMap((id) => this.playersSvc.getCard(id, season)),
-      catchError(() => {
-        this.router.navigate(['/404']);
-        return of(null);
-      })
-    );
-  }
-
-  handleSeasonChange(season: string | undefined, event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.seasonChangedHandler(season!);
-    this.season = season;
   }
 
   onShotsDataChange(event: Event): void {

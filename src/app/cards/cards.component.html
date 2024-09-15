@@ -195,7 +195,7 @@
                     <li>
                       <a
                         class="dropdown-item"
-                        (click)="handleSeasonChange(undefined, $event)"
+                        [routerLink]="['/', player.playerID, 'year']"
                         >-</a
                       >
                     </li>
@@ -203,7 +203,7 @@
                       <a
                         class="dropdown-item"
                         href="#"
-                        (click)="handleSeasonChange(season.toString(), $event)"
+                        [routerLink]="['/', player.playerID, 'year', season]"
                       >
                         {{ season }}
                       </a>
@@ -237,21 +237,23 @@
 
 <ng-container *ngIf="gamescoreAverage$ | async as gamescoreAverage">
   <ng-container *ngIf="gamescore$ | async as gamescore">
-    <div class="gs-container">
-      <div class="gamescore">
-        <gamescore
-          [data]="gamescore"
-          [showRollingAverage]="showRollingAverage"
-          [average]="gamescoreAverage"
-        ></gamescore>
+    <ng-container *ngIf="!goalieMode">
+      <div class="gs-container">
+        <div class="gamescore">
+          <gamescore
+            [data]="gamescore"
+            [showRollingAverage]="showRollingAverage"
+            [average]="gamescoreAverage"
+          ></gamescore>
+        </div>
+        <div class="rolling-average-checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="showRollingAverage" />
+            5-Game Rolling Average
+          </label>
+        </div>
       </div>
-      <div class="rolling-average-checkbox">
-        <label>
-          <input type="checkbox" [(ngModel)]="showRollingAverage" />
-          5-Game Rolling Average
-        </label>
-      </div>
-    </div>
+    </ng-container>
   </ng-container>
 </ng-container>
 

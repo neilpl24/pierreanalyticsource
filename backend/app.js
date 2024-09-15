@@ -180,7 +180,7 @@ app.get("/players/name", (req, res, next) => {
 app.get("/players/seasons/:id", (req, res, next) => {
   const id = Number(req.query.id);
   db.all(
-    `SELECT DISTINCT season FROM skaters UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ? UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
     [id],
     (err, playerRows) => {
       if (err) {

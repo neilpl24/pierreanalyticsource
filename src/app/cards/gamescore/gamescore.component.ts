@@ -128,7 +128,7 @@ export class GamescoreComponent implements OnChanges {
       .domain(d3.extent(this.tData, (d) => d[0]) as [Date, Date])
       .range([0, this.width]);
     this.y = d3.scaleLinear(
-      [-4, 6],
+      [-3, 6],
       [this.height - this.marginBottom, this.marginTop]
     );
 
