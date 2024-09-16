@@ -42,27 +42,32 @@ export class ScoresComponent implements AfterViewInit {
               return of(null);
             })
           )
+          // TODO refactor this mess
           .subscribe((data: any) => {
-            this.bestxGs = data.bestxGs;
-            this.bestxGPlayer = data.bestxGs[0];
-            this.worstxGs = data.worstxGs;
-            this.worstxGPlayer = data.worstxGs[0];
-            this.bestGoalies = data.bestGoalies;
-            this.bestGoaliePlayer = data.bestGoalies[0];
-            this.worstGoalies = data.worstGoalies;
-            this.worstGoaliePlayer = data.worstGoalies[0];
-            this.isLoading = false;
+            if (!data || data.length == 0) {
+              this.router.navigate(['/404']);
+            } else {
+              this.bestxGs = data.bestxGs;
+              this.bestxGPlayer = data.bestxGs[0];
+              this.worstxGs = data.worstxGs;
+              this.worstxGPlayer = data.worstxGs[0];
+              this.bestGoalies = data.bestGoalies;
+              this.bestGoaliePlayer = data.bestGoalies[0];
+              this.worstGoalies = data.worstGoalies;
+              this.worstGoaliePlayer = data.worstGoalies[0];
+              this.isLoading = false;
+            }
           });
         return this.scoresService.getGames(date);
       })
     );
   }
 
-  navToGameCard(event: Event, gamePk: number) {
-    this.scoresService
-      .getGameData('2023', gamePk.toString())
-      .subscribe((game) => {
-        console.log(game);
-      });
-  }
+  // navToGameCard(event: Event, gamePk: number) {
+  //   this.scoresService
+  //     .getGameData('2023', gamePk.toString())
+  //     .subscribe((game) => {
+  //       console.log(game);
+  //     });
+  // }
 }
