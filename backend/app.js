@@ -26,6 +26,18 @@ db = createDbConnection("./player_stats.db");
 shots_db = createDbConnection("./shots.db");
 teams_db = createDbConnection("./team_stats.db");
 
+function createDbConnection(filepath) {
+  const db = new sqlite3.Database(filepath, (error) => {
+    if (error) {
+      return console.error(error.message);
+    }
+  });
+  console.log(
+    "Connection with SQLite has been established for database: " + filepath
+  );
+  return db;
+}
+
 function sanitizeParam(param) {
   return param.replace(/'/g, "''");
 }
