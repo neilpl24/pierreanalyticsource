@@ -1,7 +1,11 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { TeamsService } from '../services/teams.service';
 import { ReleaseNoteModel } from 'src/models/release-note.model';
-import { Observable, tap } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
+import { ScoreCardModel, setDefaults } from 'src/models/game.model';
+import { ScoresService } from '../services/scores.service';
+import { ActivatedRoute } from '@angular/router';
+
 declare var gtag: Function; // Declare the gtag function
 
 @Component({
@@ -11,12 +15,17 @@ declare var gtag: Function; // Declare the gtag function
 })
 export class LandingComponent implements AfterViewInit, OnInit {
   public releaseNotes$: Observable<ReleaseNoteModel[]>;
+  public scores$: Observable<ScoreCardModel[]>;
   public imageMap: { [key: string]: string } = {
     'Bennett Summy': 'bennett-alt.jpg',
     'Neil Pierre-Louis': 'neil-alt.png',
   };
 
-  constructor(private teamSvc: TeamsService) {}
+  constructor(
+    private teamSvc: TeamsService,
+    private scoresService: ScoresService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     // what does this do?
@@ -24,7 +33,13 @@ export class LandingComponent implements AfterViewInit, OnInit {
       page_path: window.location.pathname,
     });
 
-    this.releaseNotes$ = this.teamSvc.getReleaseNotes().pipe(tap(console.log));
+    this.releaseNotes$ = this.teamSvc.getReleaseNotes();
+
+    this.scores$ = this.scoresService.getGames().pipe(
+      map((scores) => {
+        return scores.map(setDefaults);
+      })
+    );
   }
 
   ngAfterViewInit(): void {}

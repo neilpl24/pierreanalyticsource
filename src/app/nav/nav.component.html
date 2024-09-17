@@ -1,7 +1,6 @@
 <nav
   class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center"
-  [style.background-color]="navColor + ' !important'"
->
+  [style.background-color]="navColor + ' !important'">
   <div class="container-fluid">
     <!-- Button group for mobile layout -->
     <div class="container" style="justify-content: flex-start">
@@ -13,30 +12,27 @@
           <button
             type="button"
             class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/about']"
-          >
+            [routerLink]="['/about']">
             About
           </button>
           <button
             type="button"
             class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/leaderboard']"
-          >
+            [routerLink]="['/leaderboard']">
             Leaderboards
           </button>
           <button
             type="button"
             class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/standings']"
-          >
+            [routerLink]="['/standings']">
             Standings
           </button>
           <a
             href="https://ko-fi.com/pierreanalytics"
             target="_blank"
-            class="btn btn-outline-secondary mobile-button"
-            >Donate</a
-          >
+            class="btn btn-outline-secondary mobile-button">
+            Donate
+          </a>
         </div>
       </div>
       <!-- Buttons for desktop layout -->
@@ -46,26 +42,23 @@
             <button
               type="button"
               class="btn-outline-secondary normal-button"
-              [routerLink]="['/about']"
-            >
+              [routerLink]="['/about']">
               About
             </button>
           </li>
           <!-- <li class="nav-item">
-        <button
-          type="button"
-          class="btn-outline-secondary normal-button"
-          [routerLink]="['/dates']"
-        >
-          Scores
-        </button>
-      </li> -->
+            <button
+              type="button"
+              class="btn-outline-secondary normal-button"
+              [routerLink]="['/dates']">
+              Scores
+            </button>
+          </li> -->
           <li class="nav-item">
             <button
               type="button"
               class="btn-outline-secondary normal-button"
-              [routerLink]="['/leaderboard']"
-            >
+              [routerLink]="['/leaderboard']">
               Leaderboards
             </button>
           </li>
@@ -73,8 +66,7 @@
             <button
               type="button"
               class="btn-outline-secondary normal-button"
-              [routerLink]="['/standings']"
-            >
+              [routerLink]="['/standings']">
               Standings
             </button>
           </li>
@@ -82,8 +74,7 @@
             <a
               href="https://ko-fi.com/pierreanalytics"
               target="_blank"
-              class="btn-outline-secondary normal-button"
-            >
+              class="btn-outline-secondary normal-button">
               Donate
             </a>
           </li>
@@ -110,28 +101,25 @@
           class="form-control search-select-height"
           placeholder="Search Player Name"
           [formControl]="searchControl"
-          (input)="onSearchInputChange()"
-        />
+          (input)="onSearchInputChange()" />
         <div
           class="dropdown"
           aria-labelledby="dropdownMenuButton"
-          *ngIf="searchControl.value && filteredPlayers.length > 0"
-        >
+          *ngIf="searchControl.value && filteredPlayers.length > 0">
           <a
             class="dropdown-item"
             href="#"
             *ngFor="let player of filteredPlayers | slice : 0 : 7"
             [routerLink]="['/', player.playerID, 'year', year]"
-            (click)="clearSearchInput()"
-          >
+            (click)="clearSearchInput()">
             <img
               src="{{
                 'https://assets.nhle.com/mugs/nhl/latest/' +
                   player.playerID +
                   '.png'
               }}"
-              class="logo"
-            />{{ player.firstName }} {{ player.lastName }}
+              class="logo" />
+            {{ player.firstName }} {{ player.lastName }}
           </a>
         </div>
       </div>

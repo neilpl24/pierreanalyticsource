@@ -1,13 +1,26 @@
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
 .notes-table {
-  width: 60%;
-  height: auto;
+  width: 50%;
+  overflow: auto;
+  max-height: 300px; /* Adjust the height as needed */
+  border: 1.5px solid grey;
 }
 
 .release-notes {
-  background-color: lightgrey;
-  border: 1px solid grey;
   padding: 10px;
-  margin-bottom: 10px;
+  max-height: 100px;
+  background-color: white;
+}
+
+.release-notes:nth-child(odd) {
+  background-color: lightskyblue;
 }
 
 .masked-image {
@@ -19,12 +32,6 @@
 
 .github-mark {
   font-size: 50px;
-}
-
-.landing-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .note-header {
@@ -41,9 +48,91 @@
   font-weight: bold;
 }
 
-.note-body {
+.note-body,
+.note-post {
   display: flex;
   flex-direction: row;
   gap: 5px;
-  justify-content: space-evenly;
+  justify-content: space-between;
+}
+
+.nav-icons {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  color: tomato;
+  overflow: visible;
+  font-size: 50px;
+}
+
+.release-header {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px;
+}
+.release-subheader {
+  font-size: 16px;
+}
+
+mat-large-icon-button {
+  font-size: 20px;
+}
+
+.nav-icon {
+  display: flex;
+  flex-direction: column;
+  font-size: 20px;
+  align-items: center;
+}
+
+.team-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.scores {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.score-bug {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  background-color: blanchedalmond;
+
+  width: 350px;
+}
+.score-bug:nth-child(2n-1) {
+  background-color: lightskyblue;
+}
+
+.score-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+}
+
+.middle-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40%;
+}
+
+@media (max-width: 600px) {
+  .notes-table {
+    width: 95%;
+    max-height: 375px;
+  }
+
+  .release-notes {
+    max-height: 125px;
+  }
 }

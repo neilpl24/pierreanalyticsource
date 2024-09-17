@@ -45,7 +45,6 @@ import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AboutComponent } from './about/about.component';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { TableComponent } from './cards/table/table.component';
-import { ScoresComponent } from './scores/scores.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { SeasonComponent } from './filters/season/season.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
@@ -58,6 +57,7 @@ import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DatePipe } from '@angular/common';
 import { GamescoreComponent } from './cards/gamescore/gamescore.component';
+import { MatIconButtonSizesModule } from 'mat-icon-button-sizes';
 
 @NgModule({
   declarations: [
@@ -76,7 +76,6 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     AboutComponent,
     LeaderboardComponent,
     TableComponent,
-    ScoresComponent,
     PagenotfoundComponent,
     SeasonComponent,
     VideoPlayerComponent,
@@ -86,6 +85,7 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     GamescoreComponent,
   ],
   imports: [
+    MatIconButtonSizesModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -430,38 +430,71 @@ app.get("/players_no_percentile", (req, res, next) => {
   });
 });
 
-app.get("/scores/:date", async (req, res, next) => {
+app.get("/scores", async (req, res, next) => {
   const date = req.query.date;
   const data = await (
-    await fetch(`https://statsapi.web.nhl.com/api/v1/schedule?date=${date}`)
+    await fetch(`https://api-web.nhle.com/v1/scoreboard/now`)
   ).json();
-  if (!data || !data.dates) {
-    return res.status(500).json({ error: "Internal Server Error" });
+
+  for (const date of data.gamesByDate) {
+    // just taking whatever the NHL has decided is the focused date
+    if (date.date === data.focusedDate) {
+      // could get logos from the NHL for this? might be easier?
+      // at some point, they will add live game data to this endpoint i'd guess.  I'll have to wait until
+      // the first couple games of the season to see what that looks like
+      // worse case scenario, I can just use a different endpoint
+      games = date.games.map((game) => ({
+        season: game.season,
+        gameType: game.gameType,
+        gameDate: game.gameDate,
+        venue: game.venue.default,
+        startTime: game.startTimeUTC,
+        easternUTCOffset: game.easternUTCOffset,
+        gameState: game.gameState,
+        awayTeamAbbr: game.awayTeam.abbrev,
+        awayTeamRecord: game.awayTeam.record,
+        awayTeamFullName: game.awayTeam.name.default,
+        awayTeamName: game.awayTeam.commonName.default,
+        awayTeamCity: game.awayTeam.placeNameWithPreposition.default,
+        awayTeamLogo: game.awayTeam.logo,
+        homeTeamAbbr: game.homeTeam.abbrev,
+        homeTeamRecord: game.homeTeam.record,
+        homeTeamFullName: game.homeTeam.name.default,
+        homeTeamName: game.homeTeam.commonName.default,
+        homeTeamCity: game.homeTeam.placeNameWithPreposition.default,
+        homeTeamLogo: game.homeTeam.logo,
+      }));
+      res.status(200).json(games);
+    }
   }
-  if (data.dates.length == 0) {
-    res.status(200).json([]);
-    return;
-  }
-  const games = data.dates[0].games.map((game) => ({
-    gamePk: game.gamePk,
-    awayTeam: game.teams.away.team.name,
-    awayRecord:
-      game.teams.away.leagueRecord.wins +
-      "-" +
-      game.teams.away.leagueRecord.losses +
-      "-" +
-      game.teams.away.leagueRecord.ot,
-    awayScore: game.teams.away.score,
-    homeTeam: game.teams.home.team.name,
-    homeRecord:
-      game.teams.home.leagueRecord.wins +
-      "-" +
-      game.teams.home.leagueRecord.losses +
-      "-" +
-      game.teams.home.leagueRecord.ot,
-    homeScore: game.teams.home.score,
-  }));
-  res.status(200).json(games);
+
+  //   if (!data || !data.dates) {
+  //     return res.status(500).json({ error: "Internal Server Error" });
+  //   }
+  //   if (data.dates.length == 0) {
+  //     res.status(200).json([]);
+  //     return;
+  //   }
+  //   const games = data.dates[0].games.map((game) => ({
+  //     gamePk: game.gamePk,
+  //     awayTeam: game.teams.away.team.name,
+  //     awayRecord:
+  //       game.teams.away.leagueRecord.wins +
+  //       "-" +
+  //       game.teams.away.leagueRecord.losses +
+  //       "-" +
+  //       game.teams.away.leagueRecord.ot,
+  //     awayScore: game.teams.away.score,
+  //     homeTeam: game.teams.home.team.name,
+  //     homeRecord:
+  //       game.teams.home.leagueRecord.wins +
+  //       "-" +
+  //       game.teams.home.leagueRecord.losses +
+  //       "-" +
+  //       game.teams.home.leagueRecord.ot,
+  //     homeScore: game.teams.home.score,
+  //   }));
+  //   res.status(200).json(games);
 });
 
 const dbGetAsync = util.promisify(db.get).bind(db);
@@ -853,7 +886,7 @@ app.get("/teams/card/:id", (req, res, next) => {
 
 app.get("/landing/release_notes", (req, res, next) => {
   teams_db.all(
-    "SELECT title, date, author, note, github_link FROM release_notes ORDER BY date DESC LIMIT 3",
+    "SELECT title, date, author, note, github_link FROM release_notes ORDER BY date DESC",
     (err, rows) => {
       if (err) {
         res.status(400).json({ error: err.message });

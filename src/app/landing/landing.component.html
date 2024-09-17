@@ -1,27 +1,59 @@
 <nav-bar></nav-bar>
 <div class="landing-container">
-  Welcome to the landing page!
+  <span class="release-header">Welcome to PierreAnalytics!</span>
+  <span class="release-subheader">
+    Your source for clean and colorful advanced NHL metrics
+  </span>
+  <span class="release-header">Release Notes</span>
   <div class="notes-table" *ngIf="releaseNotes$ | async as releaseNotes">
-    <h1>Release Notes</h1>
     <div class="release-notes" *ngFor="let note of releaseNotes">
       <div class="note-header">
         <span class="note-description">
-          <span class="note-title"> {{ note.title }} </span>
-          By {{ note.author }}
+          <span class="note-title">{{ note.title }}</span>
+          by {{ note.author }}
         </span>
-        <span>{{ note.date | date : "shortDate" }}</span>
+        <span>{{ note.date | date : "mediumDate" }}</span>
       </div>
       <div class="note-body">
-        <img
-          src="assets/{{ imageMap[note.author] }}"
-          class="masked-image"
-          alt="Fissure in Sandstone"
-        />
+        <span class="note-post">
+          <img
+            src="assets/{{ imageMap[note.author] }}"
+            class="masked-image"
+            alt="Fissure in Sandstone" />
 
-        <div>{{ note.note }}</div>
+          {{ note.note }}
+        </span>
 
         <a href="{{ note.githubLink }}" target="_blank">
           <i class="fab fa-github github-mark"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="scores$ | async" class="scores">
+    <div *ngFor="let game of scores$ | async" class="score-bug">
+      <div class="score-cell">
+        <img
+          src="assets/teams/{{ game.awayTeamCity }} {{ game.awayTeamName }}.png"
+          class="team-logo" />
+        <span>{{ game.awayTeamName }}</span>
+        <span>{{ game.homeTeamRecord }}</span>
+      </div>
+      <div *ngIf="game.gameState != 'FUT'"></div>
+      <div class="middle-cell" *ngIf="game.gameState == 'FUT'">
+        <span>{{ game.gameType }}</span>
+        <span>{{ game.startTime | date : "short" }}</span>
+        <span style="text-align: center">{{ game.venue }}</span>
+      </div>
+      <div class="score-cell">
+        <a [routerLink]="['/teams', team.teamId]">
+          <img
+            src="assets/teams/{{ game.homeTeamCity }} {{
+              game.homeTeamName
+            }}.png"
+            class="team-logo" />
+          <span>{{ game.homeTeamName }}</span>
+          <span>{{ game.homeTeamRecord }}</span>
         </a>
       </div>
     </div>
