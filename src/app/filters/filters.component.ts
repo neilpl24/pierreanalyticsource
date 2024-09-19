@@ -20,15 +20,14 @@ export const filtersDefault: Filters = {
 @Component({
   selector: 'filters',
   templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.css']
+  styleUrls: ['./filters.component.css'],
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent {
   @Output() filtersUpdated = new EventEmitter<Filters>();
 
   private filters: Filters = filtersDefault;
 
-  constructor(private seasonService: SeasonService) { }
-
+  constructor(private seasonService: SeasonService) {}
 
   handleSearchChange(searchText: string) {
     this.filters = {
@@ -74,8 +73,4 @@ export class FiltersComponent implements OnInit {
   emit() {
     this.filtersUpdated.emit(this.filters);
   }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -66,7 +66,7 @@ export class GamescoreComponent implements OnChanges {
       .padding(0.1)
       .colors(100);
 
-    var textColor = 'black';
+    const textColor = 'black';
     const val = Math.floor(percentile);
 
     return { background: gradient[val], color: textColor };

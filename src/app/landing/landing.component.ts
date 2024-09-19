@@ -8,7 +8,7 @@ import {
   filter,
 } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
-declare var gtag: Function; // Declare the gtag function
+declare const gtag: Function; // Declare the gtag function
 import { PlayersService } from '../services/players.service';
 import { Router } from '@angular/router';
 import { filtersDefault, FiltersComponent } from '../filters/filters.component';

@@ -17,7 +17,7 @@ export class TimelineComponent {
       .padding(0.1)
       .colors(101);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     const val = Math.floor(this.percentile);
 
