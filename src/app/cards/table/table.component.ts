@@ -53,7 +53,7 @@ export class TableComponent implements AfterViewInit, OnChanges {
     // this version will give us 10 colors of blue from there
 
     percentile = percentile * 100;
-    var textColor = 'black';
+    let textColor = 'black';
 
     if (percentile <= 10) {
       return { background: '#ffffff', color: textColor };

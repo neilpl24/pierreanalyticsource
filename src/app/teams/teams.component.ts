@@ -160,7 +160,7 @@ export class TeamsComponent implements AfterViewInit {
       .padding(0.1)
       .colors(this.totalTeams);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     return { background: gradient[rank - 1], color: textColor };
   }

@@ -124,7 +124,7 @@ export class LeaderboardComponent implements AfterViewInit, OnInit {
       .padding(0.1)
       .colors(100);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     const val = Math.floor(percentile);
 

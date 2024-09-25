@@ -19,7 +19,7 @@ import {
 } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 import { ActivatedRoute, Router } from '@angular/router';
-declare var gtag: Function; // Declare the gtag function
+declare const gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
 import { ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
@@ -381,7 +381,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
       .padding(0.1)
       .colors(100);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     const val = Math.floor(percentile);
 
