@@ -124,8 +124,8 @@ export class ShotsComponent implements AfterViewInit, OnChanges {
     // sometimes the nhl shot markers are placed on the wrong side of the ice
     // but there's nothing we can do about that
 
-    var imageX: number;
-    var imageY: number;
+    let imageX: number;
+    let imageY: number;
 
     // the image is 292x292, so my calculations are based on that
     // updating the image size will require updating these calculations

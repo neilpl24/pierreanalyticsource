@@ -21,6 +21,7 @@ export interface PlayerModel {
   xGA: number;
   gsae: number;
   xG: number;
+  season: number;
 }
 
 export function setDefaults(model: PlayerModel) {

@@ -9,6 +9,7 @@ import { GamescoreModel } from 'src/models/gamescore.model';
 import { GoalieModel } from 'src/models/goalie.model';
 import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
 import { Filters } from './leaderboard.service';
+import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
 
 @Injectable({
   providedIn: 'root',
@@ -44,22 +45,49 @@ export class PlayersService {
   public getGamescore(
     playerId: number,
     season?: string
-  ): Observable<GamescoreModel | null> {
+  ): Observable<GamescoreModel[]> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json; charset=utf-8'
     );
     let params = new HttpParams();
-    params = params.append('id', playerId.toString());
+
+    if (playerId) {
+      params = params.append('id', playerId.toString());
+    }
     if (season && season != '') {
       params = params.append('season', season?.toString());
-    }
-
-    if (season == '') {
+    } else {
       params = params.append('season', '2024');
     }
-    return this.http.get<GamescoreModel>(
+
+    return this.http.get<GamescoreModel[]>(
       `${this.baseUrl}/players/gamescore/${playerId}`,
+      { params, headers }
+    );
+  }
+
+  public getGamescoreAverage(
+    playerId: number,
+    season?: string
+  ): Observable<GamescoreAverageModel> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+
+    if (playerId) {
+      params = params.append('id', playerId.toString());
+    }
+    if (season && season != '') {
+      params = params.append('season', season?.toString());
+    } else {
+      params = params.append('season', '2024');
+    }
+
+    return this.http.get<GamescoreAverageModel>(
+      `${this.baseUrl}/players/gamescore/averages/${playerId}`,
       { params, headers }
     );
   }

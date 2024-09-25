@@ -53,7 +53,11 @@ import { GameComponent } from './game/game.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
-import { DatePipe } from '@angular/common';
+import {
+  DatePipe,
+  HashLocationStrategy,
+  LocationStrategy,
+} from '@angular/common';
 import { SkatersLeaderboard } from './leaderboard/skaters/skaters.component';
 import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
 import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
@@ -125,7 +129,10 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     MdbTooltipModule,
     MdbValidationModule,
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

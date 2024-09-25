@@ -17,6 +17,8 @@ const routes: Routes = [
   { path: '404', component: PageNotFoundComponent },
   { path: ':playerID/year', component: CardsComponent },
   { path: ':playerID/year/:season', component: CardsComponent },
+  { path: 'scores', component: DatePickerComponent },
+  { path: 'scores/:date', component: ScoresComponent },
   { path: 'video/:link', component: VideoPlayerComponent },
   { path: 'standings', component: StandingsComponent },
   { path: 'teams/:teamID', component: TeamsComponent },

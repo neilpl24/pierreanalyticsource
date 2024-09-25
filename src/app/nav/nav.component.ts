@@ -69,9 +69,7 @@ export class NavComponent implements OnInit, OnDestroy {
           (searchText: string | null): searchText is string =>
             searchText !== null
         ),
-        switchMap((searchText: string) =>
-          this.playersService.getName(this.filters)
-        )
+        switchMap(() => this.playersService.getName(this.filters))
       )
       .subscribe((players: PlayerModel[] | null) => {
         if (players !== null) {

@@ -1,0 +1,44 @@
+.gs-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.text-center {
+  text-align: center;
+}
+
+.stats-box {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px 16px;
+  margin: 16px auto;
+  margin-bottom: -2%;
+  width: 80%;
+  max-width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  .stats-text {
+    margin: 0;
+    font-size: 14px;
+    color: black;
+  }
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 2%;
+}
