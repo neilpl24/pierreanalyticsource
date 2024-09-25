@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { CardsComponent } from './cards/cards.component';
 import { LandingComponent } from './landing/landing.component';
 import { FiltersComponent } from './filters/filters.component';
@@ -13,9 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from './filters/search/search.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
-import { TeamComponent } from './filters/team/team.component';
-import { NationalityComponent } from './filters/nationality/nationality.component';
-import { PositionComponent } from './filters/position/position.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
@@ -43,10 +41,9 @@ import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
 import { MdbValidationModule } from 'mdb-angular-ui-kit/validation';
 import { AboutComponent } from './about/about.component';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { TableComponent } from './cards/table/table.component';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 import { ScoresComponent } from './scores/scores.component';
-import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { SeasonComponent } from './filters/season/season.component';
 import { VideoPlayerComponent } from './video-player/video-player.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
@@ -61,6 +58,10 @@ import {
   HashLocationStrategy,
   LocationStrategy,
 } from '@angular/common';
+import { SkatersLeaderboard } from './leaderboard/skaters/skaters.component';
+import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
+import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { GamescoreComponent } from './cards/gamescore/gamescore.component';
 
 @NgModule({
@@ -70,23 +71,23 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     LandingComponent,
     FiltersComponent,
     SearchComponent,
-    TeamComponent,
     TeamsComponent,
-    NationalityComponent,
-    PositionComponent,
     TimelineComponent,
     ShotsComponent,
     NavComponent,
     AboutComponent,
-    LeaderboardComponent,
     TableComponent,
     ScoresComponent,
-    PagenotfoundComponent,
+    PageNotFoundComponent,
     SeasonComponent,
     VideoPlayerComponent,
     DatePickerComponent,
     GameComponent,
     StandingsComponent,
+    LeaderboardComponent,
+    SkatersLeaderboard,
+    GoaliesLeaderboard,
+    TeamsLeaderboard,
     GamescoreComponent,
   ],
   imports: [
@@ -98,6 +99,7 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     MatFormFieldModule,
     MatIconModule,
     MatNativeDateModule,
+    MatSidenavModule,
     MatButtonModule,
     MatCardModule,
     MatInputModule,

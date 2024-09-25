@@ -18,21 +18,8 @@ import { PlayerModel } from 'src/models/player.model';
 import { Subscription } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 
-export interface Filters {
-  searchText: string;
-  team: string | null;
-  nationality: string | null;
-  position: string | null;
-  season: string | null;
-}
-
-export const filtersDefault: Filters = {
-  searchText: '',
-  team: null,
-  nationality: null,
-  position: null,
-  season: '',
-};
+import { Filters } from '../services/leaderboard.service';
+import { availableSeasons } from '../utils';
 
 @Component({
   selector: 'nav-bar',
@@ -42,7 +29,7 @@ export const filtersDefault: Filters = {
 export class NavComponent implements OnInit, OnDestroy {
   public searchControl = new FormControl({ value: '', disabled: true });
   private subscription: Subscription;
-  private filters: Filters = filtersDefault;
+  private filters: Filters = new Filters();
   year: string | null = null;
 
   @Input() navColor: string;
@@ -50,10 +37,19 @@ export class NavComponent implements OnInit, OnDestroy {
 
   public filteredPlayers: PlayerModel[] = [];
 
+  public availableSeasons: string[];
+
   constructor(
     private playersService: PlayersService,
     private renderer: Renderer2
   ) {}
+
+  dropdownToggle: any;
+  showDropdown = false;
+
+  toggleDropdown() {
+    this.showDropdown = !this.showDropdown;
+  }
 
   get isSearchInputDisabled(): boolean {
     return this.year === null;
@@ -80,6 +76,8 @@ export class NavComponent implements OnInit, OnDestroy {
           this.filteredPlayers = players;
         }
       });
+
+    this.availableSeasons = availableSeasons;
   }
 
   clearSearchInput() {

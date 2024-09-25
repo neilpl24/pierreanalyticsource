@@ -1,3 +1,5 @@
+import { getPlayerPosition, roundDecimal } from 'src/app/utils';
+
 // Non statistical information regarding a player
 export interface PlayerModel {
   firstName: string;
@@ -10,8 +12,24 @@ export interface PlayerModel {
   weight: number;
   teamId: number;
   team: string;
-  season: number;
   handedness: string;
   shots: string;
   assists: string;
+  goals: number;
+  primaryAssistsEV: number;
+  xGF: number;
+  xGA: number;
+  gsae: number;
+  xG: number;
+  season: number;
+}
+
+export function setDefaults(model: PlayerModel) {
+  model.position = getPlayerPosition(model.position);
+  model.goals = roundDecimal(model.goals);
+  model.primaryAssistsEV = roundDecimal(model.primaryAssistsEV);
+  model.xGF = roundDecimal(model.xGF);
+  model.xGA = roundDecimal(model.xGA);
+  model.gsae = roundDecimal(model.gsae);
+  return model;
 }

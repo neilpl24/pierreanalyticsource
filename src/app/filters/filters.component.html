@@ -1,14 +1,14 @@
 <div class="filter-container">
-    <div class="filter">
-        <season-filter (seasonChanged)="handleSeasonChange($event)"></season-filter>
-    </div>
-    <div class="filter">
-        <team-filter (teamChanged)="handleTeamChange($event)"></team-filter>
-    </div>
-    <div class="filter">
-        <position-filter (positionChanged)="handlePositionChange($event)"></position-filter>
-    </div>
-    <div class="filter">
-        <nationality-filter (nationalityChanged)="handleNationalityChange($event); "></nationality-filter>
-    </div>
+  <div class="filter">
+    <button mat-button (click)="openFilterMenu()">
+      <mat-icon>filter_list</mat-icon>
+      Add Filters
+    </button>
+  </div>
+  <div class="filter">
+    <button mat-button (click)="clearFilters()">
+      <mat-icon>filter_list_off</mat-icon>
+      Clear Filters
+    </button>
+  </div>
 </div>

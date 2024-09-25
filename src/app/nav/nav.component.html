@@ -17,19 +17,40 @@
           >
             About
           </button>
-          <!-- <button
-            type="button"
-            class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/scores']"
-          >
-            Scores
-          </button> -->
+
           <button
-            type="button"
             class="btn btn-outline-secondary mobile-button"
-            [routerLink]="['/leaderboard']"
+            (click)="toggleDropdown()"
           >
             Leaderboards
+
+            <ul
+              class="dropdown-menu"
+              style="text-transform: capitalize"
+              *ngIf="showDropdown"
+            >
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/skaters']"
+              >
+                Skaters
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/goalies']"
+              >
+                Goalies
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/teams']"
+              >
+                Teams
+              </li>
+            </ul>
           </button>
           <button
             type="button"
@@ -68,13 +89,40 @@
             </button>
           </li> -->
           <li class="nav-item">
-            <button
-              type="button"
-              class="btn-outline-secondary normal-button"
-              [routerLink]="['/leaderboard']"
-            >
-              Leaderboards
-            </button>
+            <div class="dropdown">
+              <button
+                class="dropdown-button btn-outline-secondary normal-button"
+                (click)="toggleDropdown()"
+              >
+                Leaderboards
+              </button>
+              <ul class="dropdown-menu" *ngIf="showDropdown">
+                <li
+                  class="dropdown-item"
+                  (click)="toggleDropdown()"
+                  [routerLink]="['/leaderboard/skaters']"
+                >
+                  <mat-icon> ice_skating</mat-icon>
+                  Skaters
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="toggleDropdown()"
+                  [routerLink]="['/leaderboard/goalies']"
+                >
+                  <mat-icon> sports_hockey</mat-icon>
+                  Goalies
+                </li>
+                <li
+                  class="dropdown-item"
+                  (click)="toggleDropdown()"
+                  [routerLink]="['/leaderboard/teams']"
+                >
+                  <mat-icon> group</mat-icon>
+                  Teams
+                </li>
+              </ul>
+            </div>
           </li>
           <li class="nav-item">
             <button
@@ -99,16 +147,11 @@
     </div>
     <div class="container" style="justify-content: flex-end">
       <div class="search-select-height">
-        <!-- Replace mat-form-field with a regular select element -->
         <select class="form-select year-select" (change)="selectYear($event)">
           <option value="null">Year</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
+          <option *ngFor="let season of availableSeasons" [value]="season">
+            {{ season }}
+          </option>
         </select>
       </div>
       <div class="search-spacing">
@@ -120,7 +163,7 @@
           (input)="onSearchInputChange()"
         />
         <div
-          class="dropdown"
+          class="dropdown-search"
           aria-labelledby="dropdownMenuButton"
           *ngIf="searchControl.value && filteredPlayers.length > 0"
         >

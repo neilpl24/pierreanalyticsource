@@ -1,0 +1,42 @@
+.plain-link {
+  color: inherit; /* Inherit the color from the parent when not hovered */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.plain-link:hover {
+  color: steelblue;
+}
+
+.logo-div {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 20px;
+}
+.logo {
+  width: 35px;
+  height: 35px;
+}
+
+.table-data {
+  padding: 10px !important;
+  background-color: white;
+}
+.small-column {
+  // leaderboard columns with numbers
+  width: 115px;
+  text-align: center;
+  font-size: medium;
+}
+
+.column-header {
+  // leaderboard header columns
+  font-size: 15px;
+  text-align: center;
+}
+
+.text-size {
+  // leaderboard colummns without numbers
+  font-size: 15px;
+}

@@ -1,215 +1,123 @@
 <nav-bar></nav-bar>
 <div class="list">
   <div class="table-wrapper">
-    <filters></filters>
-    <table
-      mat-table
-      class="table table-data table-hover align-middle mb-0 bg-white table-bordered border-secondary"
-      [dataSource]="dataSource"
-      matSort
-      (matSortChange)="onSortChange($event)"
-    >
-      <caption>
-        {{
-          season
-        }}
-        NHL Player Leadboards - Hover over the column names for more info.
-      </caption>
-      <ng-container matColumnDef="name">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="lastName"
-          class="left"
+    <!-- if the type is skaters or goalies, then show the sidenav for filters -->
+    <div *ngIf="type === 'skaters' || type === 'goalies'">
+      <mat-sidenav-container>
+        <mat-sidenav
+          #filterSidenav
+          position="end"
+          mode="over"
+          class="filter-sidenav"
         >
-          Name
-        </th>
-        <td mat-cell *matCellDef="let player" class="left">
-          <div class="logo-div">
-            <img
-              src="{{
-                'https://assets.nhle.com/mugs/nhl/latest/' +
-                  player.playerID +
-                  '.png'
-              }}"
-              class="logo row"
-            />
-            <div class="row">{{ player.firstName }} {{ player.lastName }}</div>
+          <div class="header">
+            <div class="header-title">Filters</div>
+            <button mat-icon-button (click)="closeSidenav()">
+              <mat-icon class="close-icon">close</mat-icon>
+            </button>
           </div>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef class="small-column">Position</th>
-        <td mat-cell *matCellDef="let player">
-          {{ getPlayerPosition(player.position) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="team">
-        <th mat-header-cell *matHeaderCellDef>Team</th>
-        <td mat-cell *matCellDef="let player">
-          <a [routerLink]="['/teams', player.teamId]" class="plain-link">
-            <div class="logo-div">
-              <img
-                src="{{ 'assets/teams/' + player.team + '.png' }}"
-                class="logo row"
-              />
-              <div class="row">{{ player.team }}</div>
+
+          <div *ngIf="filters$ | async as filters">
+            <div
+              class="filters-container"
+              *ngIf="availableFilters | async as availableFilters"
+            >
+              <div class="season">
+                <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                  <mat-label>Season</mat-label>
+                  <mat-select
+                    [(ngModel)]="filters.season"
+                    #seasonSelect="ngModel"
+                  >
+                    <mat-option
+                      *ngFor="let season of availableSeasons"
+                      [value]="season"
+                    >
+                      {{ season }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="updateFilters('season', seasonSelect.value)"
+                >
+                  Apply
+                </button>
+              </div>
+
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Position</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.position"
+                  (selectionChange)="updateFilters('position', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let position of availableFilters.positions"
+                    [value]="position"
+                  >
+                    {{ position }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Team</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.team"
+                  (selectionChange)="updateFilters('team', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let team of availableFilters.teams"
+                    [value]="team"
+                  >
+                    <img
+                      [src]="'assets/teams/' + team + '.png'"
+                      onError="this.src = 'assets/teams/default.png'"
+                      alt="{{ team }}"
+                      class="team-logo"
+                    />
+                    {{ team }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill" subscriptSizing="dynamic">
+                <mat-label>Nationality</mat-label>
+                <mat-select
+                  multiple
+                  [(ngModel)]="filters.nationality"
+                  (selectionChange)="updateFilters('nationality', $event.value)"
+                >
+                  <mat-option
+                    *ngFor="let nationality of availableFilters.nationalities"
+                    [value]="nationality"
+                  >
+                    <span
+                      class="fi fi-{{ countryCodeMap[nationality] }}"
+                    ></span>
+                    {{ nationality }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
-          </a>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="goals">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="goals"
-          [matTooltip]="getTooltip('goals')"
-          matTooltipPosition="above"
-        >
-          Goals/60
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.goals, 'goals')"
-          class="small-column"
-        >
-          {{ roundDecimal(player.goals) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="finishing">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="gsae"
-          [matTooltip]="getTooltip('finishing')"
-          matTooltipPosition="above"
-        >
-          Finishing
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.gsae, 'gsae')"
-          class="small-column"
-        >
-          {{ roundDecimal(player.gsae) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="primaryAssistsEV">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="primaryAssistsEV"
-          [matTooltip]="getTooltip('assists')"
-          matTooltipPosition="above"
-        >
-          Assists/60
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')"
-          class="small-column"
-        >
-          {{ roundDecimal(player.primaryAssistsEV) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="xGF">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="xGF"
-          [matTooltip]="getTooltip('xgf')"
-          matTooltipPosition="above"
-        >
-          xGF
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.xGF, 'xGF')"
-        >
-          {{ roundDecimal(player.xGF) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="xGA">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="xGA"
-          [matTooltip]="getTooltip('xga')"
-          matTooltipPosition="above"
-        >
-          xGA
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.xGA, 'xGA')"
-        >
-          {{ roundDecimal(player.xGA) }}
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="xGPercentage">
-        <th
-          mat-header-cell
-          *matHeaderCellDef
-          mat-sort-header="xG"
-          [matTooltip]="getTooltip('xgPercent')"
-          matTooltipPosition="above"
-        >
-          xG%
-        </th>
-        <td
-          mat-cell
-          *matCellDef="let player"
-          [ngStyle]="getCellColors(player.xG, 'xG')"
-        >
-          {{ player.xG }}
-        </td>
-      </ng-container>
-
-      <tr
-        mat-header-row
-        *matHeaderRowDef="[
-          'name',
-          'position',
-          'team',
-          'goals',
-          'finishing',
-          'primaryAssistsEV',
-          'xGPercentage',
-          'xGF',
-          'xGA'
-        ]"
-      ></tr>
-      <tr
-        mat-row
-        *matRowDef="
-          let player;
-          columns: [
-            'name',
-            'position',
-            'team',
-            'goals',
-            'finishing',
-            'primaryAssistsEV',
-            'xGPercentage',
-            'xGF',
-            'xGA'
-          ]
-        "
-        [routerLink]="['/', player.playerID, 'year', season]"
-      ></tr>
-    </table>
-
-    <mat-paginator
-      [pageSize]="10"
-      [pageSizeOptions]="[10, 25, 50, 100]"
-      [length]="dataSource.data.length"
-      showFirstLastButtons
-    ></mat-paginator>
-    <ng-template #emptyState> </ng-template>
+          </div>
+        </mat-sidenav>
+        <mat-sidenav-content>
+          <filters></filters>
+          <ng-container *ngIf="type === 'skaters'">
+            <skatersLeaderboard />
+          </ng-container>
+          <ng-container *ngIf="type === 'goalies'">
+            <goaliesLeaderboard />
+          </ng-container>
+        </mat-sidenav-content>
+      </mat-sidenav-container>
+    </div>
+    <div *ngIf="type === 'teams'">
+      <teamsLeaderboard />
+    </div>
   </div>
 </div>

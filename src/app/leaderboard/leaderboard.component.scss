@@ -1,24 +1,49 @@
-.plain-link {
-  color: inherit; /* Inherit the color from the parent when not hovered */
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.plain-link:hover {
-  color: steelblue;
-}
-
-.logo-div {
+.header {
   display: flex;
-  align-items: center;
+  justify-content: space-between;
   flex-direction: row;
+  align-items: center;
   gap: 20px;
-}
-.logo {
-  width: 35px;
-  height: 35px;
+  padding: 10px;
+
+  .header-title {
+    font-size: 20px;
+    font-weight: 500;
+  }
 }
 
-.table-data {
-  padding: 10px !important;
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+}
+
+.filter-sidenav {
+  width: 35%;
+}
+
+.team-logo,
+.flag-icon {
+  width: 30px;
+  height: auto;
+  margin-right: 5px;
+}
+
+.close-icon {
+  color: coral;
+}
+
+.season {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-sidenav {
+    width: 80%;
+  }
 }
