@@ -1,7 +1,21 @@
+DROP TABLE IF EXISTS teams;
+CREATE TABLE teams (
+    team_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_name TEXT NOT NULL,
+    location TEXT,
+    name TEXT,
+    team_abbr TEXT,
+    division TEXT,
+    conference TEXT,
+    primary_color TEXT,
+    secondary_color TEXT
+);
+
+
 INSERT INTO teams (team_name, location, name, team_abbr, division, conference, primary_color, secondary_color)
 VALUES
 ('Anaheim Ducks', 'Anaheim', 'Ducks', 'ANA', 'Pacific', 'Western', '#B9975B', '#000000'),
-('Arizona Coyotes', 'Arizona', 'Coyotes', 'ARI', 'Central', 'Western', '#8C2633', '#E2D6B5'),
+('Utah Hockey Club', 'Utah', 'Hockey Club', 'UTA', 'Central', 'Western', '#6CADE5', '#000000'),
 ('Boston Bruins', 'Boston', 'Bruins', 'BOS', 'Atlantic', 'Eastern', '#FFB81C', '#000000'),
 ('Buffalo Sabres', 'Buffalo', 'Sabres', 'BUF', 'Atlantic', 'Eastern', '#002654', '#FDBB30'),
 ('Calgary Flames', 'Calgary', 'Flames', 'CGY', 'Pacific', 'Western', '#C8102E', '#F1BE48'),

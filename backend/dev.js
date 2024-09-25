@@ -757,7 +757,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
   const id = Number(req.params.id);
   const teamIdsToAbbr = {
     1: "ANA",
-    2: "ARI",
+    2: "UTA",
     3: "BOS",
     4: "BUF",
     5: "CGY",
