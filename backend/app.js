@@ -751,7 +751,6 @@ app.get("/leaderboard/goalies", (req, res, next) => {
 });
 
 app.get("/leaderboard/teams", (req, res, next) => {
-  console.log("leaderboard/teams");
   const type = Number(req.query.type);
   let filters = req.query;
   // let { query, params } = getPlayers(filters, "teams");
@@ -839,7 +838,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
   const id = Number(req.params.id);
   const teamIdsToAbbr = {
     1: "ANA",
-    2: "ARI",
+    2: "UTA",
     3: "BOS",
     4: "BUF",
     5: "CGY",
