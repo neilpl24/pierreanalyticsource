@@ -521,7 +521,7 @@ app.get("/leaderboard/teams", (req, res, next) => {
 
   const query = `SELECT * FROM teams WHERE season = (SELECT MAX(season) FROM teams) LIMIT 32;`;
 
-  teams_db.all(query, params, (err, rows) => {
+  teams_db.all(query, [], (err, rows) => {
     if (err) {
       res.status(400).json({ error: err.message });
       return;
