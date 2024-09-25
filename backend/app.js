@@ -179,17 +179,15 @@ app.get("/players/name", (req, res, next) => {
 
 app.get("/players/seasons/:id", (req, res, next) => {
   const id = Number(req.query.id);
-  let season = "";
-  season = "_" + req.query.season;
   db.all(
-    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ? UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
     [id],
     (err, playerRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
       }
-      playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
+      rows = playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
       res.status(200).json(playerRows);
     }
   );
@@ -215,6 +213,62 @@ app.get("/standings", (req, res, next) => {
       res.status(200).json(rows);
     }
   });
+});
+
+app.get("/players/gamescore/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.all(
+    `SELECT * FROM gamescore WHERE PlayerId = ? AND season = ${season - 1}`,
+    [id],
+    (err, playerRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (playerRows) {
+        let response = [];
+        for (let row of playerRows) {
+          response.push({
+            playerId: row.PlayerId,
+            name: row.Name,
+            date: row.Date,
+            gamescore: row.Gamescore,
+          });
+        }
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
+app.get("/players/gamescore/averages/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.get(
+    `SELECT * FROM gamescore_percentiles WHERE PlayerId = ? AND season = ${
+      season - 1
+    }`,
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      let response;
+      if (row) {
+        response = {
+          playerId: row.PlayerId,
+          average: row.average_gamescore,
+          percentile: row.percentile,
+          zScore: row.z_score,
+        };
+      }
+      res.status(200).json(response);
+    }
+  );
 });
 
 app.get("/players/card/war/:id", (req, res, next) => {
@@ -433,35 +487,54 @@ app.get("/players_no_percentile", (req, res, next) => {
 
 app.get("/scores/:date", async (req, res, next) => {
   const date = req.query.date;
+
   const data = await (
-    await fetch(`https://statsapi.web.nhl.com/api/v1/schedule?date=${date}`)
+    await fetch(`https://api-web.nhle.com/v1/schedule/${date}`)
   ).json();
-  if (!data || !data.dates) {
-    return res.status(500).json({ error: "Internal Server Error" });
-  }
-  if (data.dates.length == 0) {
+  if (!data || data.gameWeek[0].numberOfGames == 0) {
     res.status(200).json([]);
     return;
   }
-  const games = data.dates[0].games.map((game) => ({
-    gamePk: game.gamePk,
-    awayTeam: game.teams.away.team.name,
-    awayRecord:
-      game.teams.away.leagueRecord.wins +
-      "-" +
-      game.teams.away.leagueRecord.losses +
-      "-" +
-      game.teams.away.leagueRecord.ot,
-    awayScore: game.teams.away.score,
-    homeTeam: game.teams.home.team.name,
-    homeRecord:
-      game.teams.home.leagueRecord.wins +
-      "-" +
-      game.teams.home.leagueRecord.losses +
-      "-" +
-      game.teams.home.leagueRecord.ot,
-    homeScore: game.teams.home.score,
-  }));
+  const regularSeasonEndDate = data.regularSeasonEndDate;
+  const chosenDate = regularSeasonEndDate > date ? date : regularSeasonEndDate;
+
+  const games = await Promise.all(
+    data.gameWeek[0].games.map(async (game) => {
+      const standingsData = await fetch(
+        `https://api-web.nhle.com/v1/standings/${chosenDate}`
+      ).then((res) => res.json());
+      const teamData = await fetch(
+        `https://api.nhle.com/stats/rest/en/team`
+      ).then((res) => res.json());
+
+      const awayTeamName = teamData.data.filter(
+        (x) => x.id == game.awayTeam.id
+      )[0].fullName;
+      const homeTeamName = teamData.data.filter(
+        (x) => x.id == game.homeTeam.id
+      )[0].fullName;
+
+      const homeStats = standingsData.standings.find(
+        (x) => x.teamName.default === homeTeamName
+      );
+      const awayStats = standingsData.standings.find(
+        (x) => x.teamName.default === awayTeamName
+      );
+      return {
+        gamePk: game.id,
+        awayTeam: awayTeamName,
+        awayRecord: `${awayStats.wins}-${awayStats.losses}-${
+          awayStats.otLosses + awayStats.shootoutLosses
+        }`,
+        awayScore: game.awayTeam.score,
+        homeTeam: homeTeamName,
+        homeRecord: `${homeStats.wins}-${homeStats.losses}-${
+          homeStats.otLosses + homeStats.shootoutLosses
+        }`,
+        homeScore: game.homeTeam.score,
+      };
+    })
+  );
   res.status(200).json(games);
 });
 
@@ -485,9 +558,9 @@ app.get("/scores/:year/:date", async (req, res, next) => {
 
       shots = rows;
       if (!shots || shots.length == 0) {
-        return res.status(500).json({ error: "No games." });
+        return res.status(200).json([]);
       }
-      let season = "_" + shots[0].season.toString().slice(4, 8);
+      let season = shots[0].season.toString().slice(4, 8);
 
       const skatersXGFMap = new Map();
       const skatersXGAMap = new Map();
@@ -535,10 +608,12 @@ app.get("/scores/:year/:date", async (req, res, next) => {
           if (!nameRow) {
             const info = await (
               await fetch(
-                `https://statsapi.web.nhl.com/api/v1/people/${skaterID}/`
+                `https://api-web.nhle.com/v1/player/${skaterID}/landing`
               )
             ).json();
-            nameRow = { fullName: info["people"][0]["fullName"] };
+            nameRow = {
+              fullName: info.firstName.default + " " + info.lastName.default,
+            };
           } else {
             nameRow = { fullName: nameRow.firstName + " " + nameRow.lastName };
           }

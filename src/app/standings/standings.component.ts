@@ -1,7 +1,6 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { ScoresService } from '../services/scores.service';
 import { StandingsModel } from 'src/models/standings.model';
-import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import * as chroma from 'chroma-js';
@@ -79,7 +78,7 @@ export class StandingsComponent implements AfterViewInit {
       .padding(0.1)
       .colors(100);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     const val = Math.floor(percentile);
 

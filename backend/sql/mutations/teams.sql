@@ -1,3 +1,17 @@
+DROP TABLE IF EXISTS teams;
+CREATE TABLE teams (
+    team_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    team_name TEXT NOT NULL,
+    location TEXT,
+    name TEXT,
+    team_abbr TEXT,
+    division TEXT,
+    conference TEXT,
+    primary_color TEXT,
+    secondary_color TEXT
+);
+
+
 INSERT INTO teams (team_name, location, name, team_abbr, division, conference, primary_color, secondary_color)
 VALUES
 ('Anaheim Ducks', 'Anaheim', 'Ducks', 'ANA', 'Pacific', 'Western', '#B9975B', '#000000'),
