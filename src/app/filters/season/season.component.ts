@@ -15,7 +15,6 @@ export class SeasonComponent implements OnInit {
   private subscription: Subscription;
 
   ngOnInit(): void {
-    this.seasons = ['2018', '2019', '2020', '2021', '2022', '2023', '2024'];
     this.subscription = this.seasonControl.valueChanges
       .pipe(distinctUntilChanged())
       .subscribe((season) => this.seasonChanged.emit(season!));

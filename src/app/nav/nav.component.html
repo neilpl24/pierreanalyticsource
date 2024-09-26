@@ -15,11 +15,35 @@
             [routerLink]="['/about']">
             About
           </button>
+
           <button
-            type="button"
             class="btn btn-outline-secondary mobile-button"
             [routerLink]="['/leaderboard']">
             Leaderboards
+
+            <ul
+              class="dropdown-menu"
+              style="text-transform: capitalize"
+              *ngIf="showDropdown">
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/skaters']">
+                Skaters
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/goalies']">
+                Goalies
+              </li>
+              <li
+                class="dropdown-item"
+                (click)="toggleDropdown()"
+                [routerLink]="['/leaderboard/teams']">
+                Teams
+              </li>
+            </ul>
           </button>
           <button
             type="button"
@@ -83,16 +107,11 @@
     </div>
     <div class="container" style="justify-content: flex-end">
       <div class="search-select-height">
-        <!-- Replace mat-form-field with a regular select element -->
         <select class="form-select year-select" (change)="selectYear($event)">
           <option value="null">Year</option>
-          <option value="2018">2018</option>
-          <option value="2019">2019</option>
-          <option value="2020">2020</option>
-          <option value="2021">2021</option>
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
+          <option *ngFor="let season of availableSeasons" [value]="season">
+            {{ season }}
+          </option>
         </select>
       </div>
       <div class="search-spacing">
@@ -103,7 +122,7 @@
           [formControl]="searchControl"
           (input)="onSearchInputChange()" />
         <div
-          class="dropdown"
+          class="dropdown-search"
           aria-labelledby="dropdownMenuButton"
           *ngIf="searchControl.value && filteredPlayers.length > 0">
           <a

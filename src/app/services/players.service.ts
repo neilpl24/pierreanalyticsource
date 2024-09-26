@@ -3,10 +3,13 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { PlayerModel } from 'src/models/player.model';
 import { Sort } from '@angular/material/sort';
-import { Filters } from '../filters/filters.component';
 import { environment } from 'src/environments/environment';
 import { CardModel } from 'src/models/card.model';
 import { GamescoreModel } from 'src/models/gamescore.model';
+import { GoalieModel } from 'src/models/goalie.model';
+import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
+import { Filters } from './leaderboard.service';
+import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
 
 @Injectable({
   providedIn: 'root',
@@ -42,22 +45,49 @@ export class PlayersService {
   public getGamescore(
     playerId: number,
     season?: string
-  ): Observable<GamescoreModel | null> {
+  ): Observable<GamescoreModel[]> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json; charset=utf-8'
     );
     let params = new HttpParams();
-    params = params.append('id', playerId.toString());
+
+    if (playerId) {
+      params = params.append('id', playerId.toString());
+    }
     if (season && season != '') {
       params = params.append('season', season?.toString());
-    }
-
-    if (season == '') {
+    } else {
       params = params.append('season', '2024');
     }
-    return this.http.get<GamescoreModel>(
+
+    return this.http.get<GamescoreModel[]>(
       `${this.baseUrl}/players/gamescore/${playerId}`,
+      { params, headers }
+    );
+  }
+
+  public getGamescoreAverage(
+    playerId: number,
+    season?: string
+  ): Observable<GamescoreAverageModel> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+
+    if (playerId) {
+      params = params.append('id', playerId.toString());
+    }
+    if (season && season != '') {
+      params = params.append('season', season?.toString());
+    } else {
+      params = params.append('season', '2024');
+    }
+
+    return this.http.get<GamescoreAverageModel>(
+      `${this.baseUrl}/players/gamescore/averages/${playerId}`,
       { params, headers }
     );
   }
@@ -99,55 +129,15 @@ export class PlayersService {
     );
   }
 
-  public getName(
-    filters: Filters,
-    season?: string
-  ): Observable<PlayerModel[] | null> {
+  public getName(filters: Filters, season?: string): Observable<PlayerModel[]> {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json; charset=utf-8'
     );
-    let params = new HttpParams();
 
-    if (filters.searchText) {
-      params = params.append('name', filters.searchText);
-    } else {
-      params = params.append('name', '');
-    }
+    const sortDefault: Sort = { active: 'LASTNAME', direction: 'asc' };
 
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
-
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
-
-    if (filters.season) {
-      if (filters.season == '') {
-        filters.season = '2024';
-      }
-      params = params.append('season', filters.season.toString());
-    } else {
-      params = params.append('season', '2024');
-    }
-
-    if (season && season != '') {
-      params = params.append('season', season.toString());
-    }
-
-    params = params.append('sortField', 'LASTNAME');
-    params = params.append('sortDir', 'asc');
+    let params = this.buildFilterParams(filters, sortDefault);
 
     return this.http.get<PlayerModel[]>(`${this.baseUrl}/players/`, {
       params,
@@ -160,44 +150,8 @@ export class PlayersService {
       'Content-Type',
       'application/json; charset=utf-8'
     );
-    let params = new HttpParams();
 
-    if (filters.searchText) {
-      params = params.append('name', filters.searchText);
-    } else {
-      params = params.append('name', '');
-    }
-
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
-
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
-    if (filters.season) {
-      if (filters.season == '') {
-        filters.season = '2024';
-      }
-      params = params.append('season', filters.season.toString());
-    } else {
-      params = params.append('season', '2024');
-    }
-
-    if (sort.active) {
-      params = params.append('sortField', sort.active);
-      params = params.append('sortDir', sort.direction);
-    }
+    let params = this.buildFilterParams(filters, sort);
 
     return this.http.get<PlayerModel[]>(`${this.baseUrl}/players/`, {
       params,
@@ -213,6 +167,19 @@ export class PlayersService {
       'Content-Type',
       'application/json; charset=utf-8'
     );
+
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<PlayerModel[]>(
+      `${this.baseUrl}/players_no_percentile/skaters`,
+      {
+        params,
+        headers,
+      }
+    );
+  }
+
+  public buildFilterParams(filters: Filters, sort: Sort): HttpParams {
     let params = new HttpParams();
 
     if (filters.searchText) {
@@ -220,24 +187,12 @@ export class PlayersService {
     } else {
       params = params.append('name', '');
     }
+    // from legacy code which did filtering on the backend
+    params = params.append('team', '');
 
-    if (filters.team) {
-      params = params.append('team', filters.team.toString());
-    } else {
-      params = params.append('team', '');
-    }
+    params = params.append('position', '');
 
-    if (filters.position) {
-      params = params.append('position', filters.position.toString());
-    } else {
-      params = params.append('position', +'');
-    }
-
-    if (filters.nationality) {
-      params = params.append('nationality', filters.nationality.toString());
-    } else {
-      params = params.append('nationality', '');
-    }
+    params = params.append('nationality', '');
 
     if (filters.season) {
       if (filters.season == '') {
@@ -252,8 +207,56 @@ export class PlayersService {
       params = params.append('sortField', sort.active);
       params = params.append('sortDir', sort.direction);
     }
-    return this.http.get<PlayerModel[]>(
-      `${this.baseUrl}/players_no_percentile/`,
+
+    return params;
+  }
+
+  public getSkaterLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<PlayerModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<PlayerModel[]>(`${this.baseUrl}/leaderboard/skaters`, {
+      params,
+      headers,
+    });
+  }
+
+  public getGoalieLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<GoalieModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<GoalieModel[]>(`${this.baseUrl}/leaderboard/goalies`, {
+      params,
+      headers,
+    });
+  }
+
+  // this probably should be in teams service, but all the infrastructure is here
+  public getTeamLeaderboard(
+    filters: Filters,
+    sort: Sort
+  ): Observable<TeamLeaderboardModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+
+    let params = this.buildFilterParams(filters, sort);
+
+    return this.http.get<TeamLeaderboardModel[]>(
+      `${this.baseUrl}/leaderboard/teams`,
       {
         params,
         headers,

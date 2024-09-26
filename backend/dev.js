@@ -55,18 +55,6 @@ function getPlayers(filters, table) {
   let query = [];
   let params = [];
 
-  if (filters.team !== "") {
-    query.push("TEAM = ?");
-    params.push(sanitizeParam(filters.team));
-  }
-  if (filters.nationality !== "") {
-    query.push("NATIONALITY = ?");
-    params.push(sanitizeParam(filters.nationality));
-  }
-  if (filters.position !== "0") {
-    query.push("POSITION = ?");
-    params.push(sanitizeParam(filters.position));
-  }
   if (filters.name !== "") {
     let name = sanitizeParam(filters.name.toLowerCase());
     query.push(
@@ -179,17 +167,15 @@ app.get("/players/name", (req, res, next) => {
 
 app.get("/players/seasons/:id", (req, res, next) => {
   const id = Number(req.query.id);
-  let season = "";
-  season = "_" + req.query.season;
   db.all(
-    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ? UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
     [id],
     (err, playerRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
       }
-      playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
+      rows = playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
       res.status(200).json(playerRows);
     }
   );
@@ -215,6 +201,62 @@ app.get("/standings", (req, res, next) => {
       res.status(200).json(rows);
     }
   });
+});
+
+app.get("/players/gamescore/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.all(
+    `SELECT * FROM gamescore WHERE PlayerId = ? AND season = ${season - 1}`,
+    [id],
+    (err, playerRows) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      if (playerRows) {
+        let response = [];
+        for (let row of playerRows) {
+          response.push({
+            playerId: row.PlayerId,
+            name: row.Name,
+            date: row.Date,
+            gamescore: row.Gamescore,
+          });
+        }
+        res.status(200).json(response);
+      }
+    }
+  );
+});
+
+app.get("/players/gamescore/averages/:id", (req, res, next) => {
+  const id = Number(req.query.id);
+  const season = req.query.season;
+  db.get(
+    `SELECT * FROM gamescore_percentiles WHERE PlayerId = ? AND season = ${
+      season - 1
+    }`,
+    [id],
+    (err, row) => {
+      if (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+
+      let response;
+      if (row) {
+        response = {
+          playerId: row.PlayerId,
+          average: row.average_gamescore,
+          percentile: row.percentile,
+          zScore: row.z_score,
+        };
+      }
+      res.status(200).json(response);
+    }
+  );
 });
 
 app.get("/players/card/war/:id", (req, res, next) => {
@@ -403,7 +445,7 @@ app.get("/players/info/:id", (req, res, next) => {
   );
 });
 
-app.get("/players_no_percentile", (req, res, next) => {
+app.get("/leaderboard/skaters", (req, res, next) => {
   let filters = req.query;
   let { query, params } = getPlayers(filters, "skaters_no_percentile");
 
@@ -518,9 +560,9 @@ app.get("/scores/:year/:date", async (req, res, next) => {
 
       shots = rows;
       if (!shots || shots.length == 0) {
-        return res.status(500).json({ error: "No games." });
+        return res.status(200).json([]);
       }
-      let season = "_" + shots[0].season.toString().slice(4, 8);
+      let season = shots[0].season.toString().slice(4, 8);
 
       const skatersXGFMap = new Map();
       const skatersXGAMap = new Map();
@@ -568,10 +610,12 @@ app.get("/scores/:year/:date", async (req, res, next) => {
           if (!nameRow) {
             const info = await (
               await fetch(
-                `https://statsapi.web.nhl.com/api/v1/people/${skaterID}/`
+                `https://api-web.nhle.com/v1/player/${skaterID}/landing`
               )
             ).json();
-            nameRow = { fullName: info["people"][0]["fullName"] };
+            nameRow = {
+              fullName: info.firstName.default + " " + info.lastName.default,
+            };
           } else {
             nameRow = { fullName: nameRow.firstName + " " + nameRow.lastName };
           }
@@ -715,7 +759,7 @@ app.get("/teams/roster/:id", async (req, res, next) => {
   const id = Number(req.params.id);
   const teamIdsToAbbr = {
     1: "ANA",
-    2: "ARI",
+    2: "UTA",
     3: "BOS",
     4: "BUF",
     5: "CGY",

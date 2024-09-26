@@ -1,8 +1,10 @@
 .filter-container {
   display: flex;
-  margin-bottom: 20px;
+  flex-direction: row;
   align-items: center;
   gap: 10px;
+  justify-content: end;
+  padding: 5px;
 }
 
 .filter {
@@ -12,5 +14,9 @@
 @media only screen and (max-width: 768px) {
   .btn {
     padding: 10px;
+  }
+
+  .filter-container {
+    justify-content: start;
   }
 }

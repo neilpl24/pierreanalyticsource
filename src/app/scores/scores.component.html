@@ -1,0 +1,173 @@
+<!-- <nav-bar></nav-bar>
+<div class="centered-scoreboard">
+  <h1>Scoreboard for {{ selectedDate }}</h1>
+  <div class="score-card-container">
+    <div class="score-card" *ngFor="let score of scores$ | async">
+      <div class="teams">
+        <div class="away-team">
+          <img
+            src="{{ 'assets/teams/' + score.awayTeam + '.png' }}"
+            class="score-images"
+          />
+        </div>
+        <div class="vs-divider">vs</div>
+        <div class="home-team">
+          <img
+            src="{{ 'assets/teams/' + score.homeTeam + '.png' }}"
+            class="score-images"
+          />
+        </div>
+      </div>
+      <div class="records">
+        <div class="away-record">{{ score.awayRecord }}</div>
+        <div class="home-record">{{ score.homeRecord }}</div>
+      </div>
+      <div class="scores">
+        <div class="away-score">{{ score.awayScore }}</div>
+        <div class="score-divider">-</div>
+        <div class="home-score">{{ score.homeScore }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="flex-container">
+  <ng-container *ngIf="isLoading; else content">
+    <mat-spinner></mat-spinner>
+  </ng-container>
+</div>
+<div class="flex-container">
+  <ng-template #content>
+    <ng-container *ngIf="bestGoaliePlayer">
+      <mat-card>
+        <mat-card-content>
+          <mat-card-title>Best Goalies</mat-card-title>
+          <img
+            class="pfp"
+            src="{{
+              'https://assets.nhle.com/mugs/nhl/latest/' +
+                bestGoaliePlayer.goalieID +
+                '.png'
+            }}"
+          />
+          <table class="best-saves-table">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Player</th>
+                <th>GSAx</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of bestGoalies; let i = index">
+                <td class="best-save-index" [ngClass]="{ bold: i === 0 }">
+                  {{ i + 1 }}
+                </td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.gsax | number : "1.2-2" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="worstGoaliePlayer">
+      <mat-card>
+        <mat-card-content>
+          <mat-card-title>Worst Goalies</mat-card-title>
+          <img
+            class="pfp"
+            src="{{
+              'https://assets.nhle.com/mugs/nhl/latest/' +
+                worstGoaliePlayer.goalieID +
+                '.png'
+            }}"
+          />
+          <table class="best-saves-table">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Player</th>
+                <th>GSAx</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of worstGoalies; let i = index">
+                <td class="best-save-index" [ngClass]="{ bold: i === 0 }">
+                  {{ i + 1 }}
+                </td>
+                <td>{{ player.name }}</td>
+                <td>{{ player.gsax | number : "1.2-2" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="bestxGPlayer">
+      <mat-card>
+        <mat-card-content>
+          <mat-card-title>Best xGF%</mat-card-title>
+          <img
+            class="pfp"
+            src="{{
+              'https://assets.nhle.com/mugs/nhl/latest/' +
+                bestxGPlayer.playerID +
+                '.png'
+            }}"
+          />
+          <table class="best-saves-table">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Player</th>
+                <th>xGF%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of bestxGs; let i = index">
+                <td class="best-save-index" [ngClass]="{ bold: i === 0 }">
+                  {{ i + 1 }}
+                </td>
+                <td>{{ player.name }}</td>
+                <td>{{ (player.xGF * 100).toFixed(2) }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+    <ng-container *ngIf="worstxGPlayer">
+      <mat-card>
+        <mat-card-content>
+          <mat-card-title>Worst xGF%</mat-card-title>
+          <img
+            class="pfp"
+            src="{{
+              'https://assets.nhle.com/mugs/nhl/latest/' +
+                worstxGPlayer.playerID +
+                '.png'
+            }}"
+          />
+          <table class="best-saves-table">
+            <thead>
+              <tr>
+                <th>Index</th>
+                <th>Player</th>
+                <th>xGF%</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let player of worstxGs; let i = index">
+                <td class="best-save-index" [ngClass]="{ bold: i === 0 }">
+                  {{ i + 1 }}
+                </td>
+                <td>{{ player.name }}</td>
+                <td>{{ (player.xGF * 100).toFixed(2) }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </mat-card-content>
+      </mat-card>
+    </ng-container>
+  </ng-template>
+</div> -->

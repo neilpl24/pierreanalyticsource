@@ -19,10 +19,13 @@ import {
 } from 'rxjs';
 import { PlayersService } from '../services/players.service';
 import { ActivatedRoute, Router } from '@angular/router';
-declare var gtag: Function; // Declare the gtag function
+declare const gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
 import { ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
+import { countryCodeMap } from '../utils';
+import { GamescoreModel } from 'src/models/gamescore.model';
+import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
 
 @Component({
   selector: 'app-cards',
@@ -37,7 +40,11 @@ export class CardsComponent implements AfterViewInit, OnInit {
     ShotModel[]
   >();
   shotsData: ShotModel[] = [];
+  goalieMode: boolean;
   assistsData: ShotModel[] = [];
+  gamescore$: Observable<GamescoreModel[]>;
+  gamescoreAverage$: Observable<GamescoreAverageModel>;
+  showRollingAverage: boolean = false;
   public player$: Observable<PlayerModel | null>;
   public card$: Observable<CardModel | null>;
   public playerID: number;
@@ -48,7 +55,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
 
   nhlTeamMainColors: any = {
     'Anaheim Ducks': '#B9975B',
-    'Arizona Coyotes': '#8C2633',
+    'Utah Hockey Club': '#6CADE5',
     'Boston Bruins': '#FFB81C',
     'Buffalo Sabres': '#002654',
     'Calgary Flames': '#C8102E',
@@ -99,7 +106,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
 
   nhlTeamMap: any = {
     'Anaheim Ducks': 'ANA',
-    'Arizona Coyotes': 'ARI',
+    'Utah Hockey Club': 'UTA',
     'Boston Bruins': 'BOS',
     'Buffalo Sabres': 'BUF',
     'Calgary Flames': 'CGY',
@@ -159,6 +166,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
     'High Danger Freq',
     'PK',
   ];
+  countryCodeMap: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -170,17 +178,18 @@ export class CardsComponent implements AfterViewInit, OnInit {
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
+
+    this.countryCodeMap = countryCodeMap;
   }
 
   ngAfterViewInit(): void {
     this.player$ = this.route.params.pipe(
       switchMap((params) => {
-        const playerID = params['playerID'];
-        const year = params['season'];
-        this.season = year;
-        this.seasons$ = this.playersSvc.getYearsPlayed(playerID);
-        return this.playersSvc.getInfo(playerID, year).pipe(
-          mergeMap(() => this.playersSvc.getInfo(playerID, year)),
+        this.playerID = params['playerID'];
+        this.season = params['season'];
+        this.seasons$ = this.playersSvc.getYearsPlayed(this.playerID);
+        return this.playersSvc.getInfo(this.playerID, this.season).pipe(
+          mergeMap(() => this.playersSvc.getInfo(this.playerID, this.season)),
           catchError(() => {
             this.router.navigate(['/404']);
             return of(null);
@@ -189,6 +198,19 @@ export class CardsComponent implements AfterViewInit, OnInit {
       }),
       tap((player) => {
         if (player) {
+          if (player.position != 'G') {
+            this.gamescore$ = this.playersSvc.getGamescore(
+              this.playerID,
+              this.season
+            );
+            this.gamescoreAverage$ = this.playersSvc.getGamescoreAverage(
+              this.playerID,
+              this.season
+            );
+            this.goalieMode = false;
+          } else {
+            this.goalieMode = true;
+          }
           this.navColor = this.nhlTeamMainColors[player.team];
           let shotsString = player.shots;
           this.playerID = player.playerID;
@@ -196,6 +218,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
           const assistsString = player.assists;
           // I can't stress how stupid this and how I could easily solve this problem in my scraper, but alas here we are
           if (player.position != 'G' && player.assists != 'nan') {
+            this.goalieMode = false;
             this.assistsData = assistsString
               ? JSON.parse(
                   assistsString
@@ -207,6 +230,7 @@ export class CardsComponent implements AfterViewInit, OnInit {
               : [];
           } else {
             this.assistsData = [];
+            this.goalieMode = true;
           }
           if (player.shots != 'nan') {
             this.shotsData = shotsString
@@ -327,73 +351,6 @@ export class CardsComponent implements AfterViewInit, OnInit {
     ];
   }
 
-  seasonChangedHandler(season: string): void {
-    this.seasonChanged.next(season);
-    this.player$ = this.route.params.pipe(
-      map((params) => params['playerID']),
-      switchMap((id) => this.playersSvc.getInfo(id, season)),
-      catchError(() => {
-        this.router.navigate(['/404']);
-        return of(null);
-      }),
-      tap((player) => {
-        if (player) {
-          const shotsString = player.shots;
-          this.playerID = player.playerID;
-          const assistsString = player.assists;
-          this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
-          if (player.position !== 'G' && player.assists !== 'nan') {
-            this.assistsData = assistsString
-              ? JSON.parse(
-                  assistsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-          } else {
-            this.assistsData = [];
-          }
-          if (player.shots !== 'nan') {
-            this.shotsData = shotsString
-              ? JSON.parse(
-                  shotsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-          } else {
-            this.shotsData = [];
-          }
-        } else {
-          this.shotsData = [];
-          this.assistsData = [];
-        }
-        this.shotsDataChange.emit([...this.shotsData]);
-        this.assistsDataChange.emit([...this.assistsData]);
-      })
-    );
-
-    this.card$ = this.route.params.pipe(
-      map((params) => params['playerID']),
-      switchMap((id) => this.playersSvc.getCard(id, season)),
-      catchError(() => {
-        this.router.navigate(['/404']);
-        return of(null);
-      })
-    );
-  }
-
-  handleSeasonChange(season: string | undefined, event: Event): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.seasonChangedHandler(season!);
-    this.season = season;
-  }
-
   onShotsDataChange(event: Event): void {
     const shotsData = (event.target as HTMLInputElement).value;
     this.shotsData = JSON.parse(
@@ -428,11 +385,16 @@ export class CardsComponent implements AfterViewInit, OnInit {
       .padding(0.1)
       .colors(100);
 
-    var textColor = 'black';
+    const textColor = 'black';
 
     const val = Math.floor(percentile);
 
     return { background: gradient[val], color: textColor };
+  }
+
+  onRollingAverageToggle(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.showRollingAverage = checkbox.checked;
   }
 
   getBirthdayData(birthday: string): string {

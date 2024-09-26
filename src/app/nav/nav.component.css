@@ -47,7 +47,7 @@ mat-form-field {
   padding: 0px;
 }
 
-.dropdown {
+.dropdown-search {
   position: absolute;
   display: inline-block;
   z-index: 5;
@@ -62,6 +62,7 @@ mat-form-field {
   min-width: 230px;
   border: 1px solid #ddd;
 }
+
 .show {
   display: block;
 }
@@ -72,17 +73,56 @@ mat-form-field {
   left: 0;
   right: auto;
   min-width: 100%;
-  margin-top: 0.5rem;
-  transform: translate(0, 0);
+  margin: 0px;
+  text-align: center;
+  z-index: 10; /* Higher than navbar */
 }
 
 .dropdown-item {
   width: inherit;
   background-color: #f6f6f6;
-  border-radius: 1px;
   border-left: 2px solid #ccc;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 10px;
+  position: relative;
+  z-index: 15; /* Higher than dropdown-menu */
+}
+
+.dropdown-container {
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropdown-list {
+  display: none;
+  position: absolute; /* Positions below the button */
+  background-color: #fff;
+  border: 1px solid #ccc;
+  list-style: none; /* Removes default bullet points */
+  padding: 0;
+  /* Other styles for borders, shadows, etc. */
+}
+
+.dropdown-list li {
+  padding: 5px 10px;
+  cursor: pointer; /* Indicates interactivity for options */
+  /* Styles for hover effects, etc. */
+}
+
+.logo {
+  width: 40px;
+  height: auto;
+}
+
+.navbar {
+  position: relative;
+  z-index: 5; /* Ensure navbar is above other content */
 }
 
 @media only screen and (max-width: 1000px) {
@@ -109,13 +149,30 @@ mat-form-field {
   }
 
   .mobile-button {
-    padding: 5px;
+    padding: 8px;
     background-color: black;
     color: white;
     align-items: center;
+    text-transform: capitalize;
+    font-size: 12px;
+    position: relative;
+    z-index: 20; /* Ensure buttons are above dropdown */
   }
 
   .search-select-height {
     margin-top: 10px;
+  }
+
+  .btn-group {
+    position: relative;
+    z-index: 20; /* Ensure button group is above other elements */
+  }
+
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 80; /* Highest z-index for mobile dropdown */
   }
 }
