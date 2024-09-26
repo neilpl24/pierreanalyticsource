@@ -53,33 +53,43 @@
         loading="lazy"
         height="500px"
         width="300px"
-        src="https://syndication.twitter.com/srv/timeline-profile/screen-name/pierreanalytics?frame=false&hideBorder=false&hideFooter=false&hideHeader=true&hideScrollBar=true&origin=pierreanalytics&maxHeight=800px&showHeader=true&showReplies=false&transparent=false&theme=light"
-        frameborder="0"
+        src="https://syndication.twitter.com/srv/timeline-profile/screen-name/pierreanalytics?frame=false&hideBorder=false&hideFooter=false&hideHeader=true&hideScrollBar=true&origin=pierreanalytics&maxHeight=800px&showHeader=true&showReplies=false&transparent=false&theme=dark"
+        frameborder="1"
         scrolling="no"></iframe>
       <iframe
         loading="lazy"
         height="500px"
         width="300px"
-        src="https://syndication.twitter.com/srv/timeline-profile/screen-name/nhlxgbot?frame=false&hideBorder=false&hideFooter=false&hideHeader=true&hideScrollBar=true&origin=pierreanalytics&maxHeight=800px&showHeader=true&showReplies=false&transparent=false&theme=light"
-        frameborder="0"
+        src="https://syndication.twitter.com/srv/timeline-profile/screen-name/nhlxgbot?frame=false&hideBorder=false&hideFooter=false&hideHeader=true&hideScrollBar=true&origin=pierreanalytics&maxHeight=800px&showHeader=true&showReplies=false&transparent=false&theme=dark"
+        frameborder="1"
         scrolling="no"></iframe>
     </div>
   </div>
-  <!-- <div *ngIf="scores$ | async" class="scores">
+  <div *ngIf="scores$ | async" class="scores">
     <div *ngFor="let game of scores$ | async" class="score-bug">
+      <!-- Away Team Info -->
       <div class="score-cell">
         <img
           src="assets/teams/{{ game.awayTeamCity }} {{ game.awayTeamName }}.png"
           class="team-logo" />
         <span>{{ game.awayTeamName }}</span>
-        <span>{{ game.homeTeamRecord }}</span>
+        <span>{{ game.awayTeamRecord }}</span>
       </div>
-      <div *ngIf="game.gameState != 'FUT'"></div>
-      <div class="middle-cell" *ngIf="game.gameState == 'FUT'">
-        <span>{{ game.gameType }}</span>
-        <span>{{ game.startTime | date : "short" }}</span>
-        <span style="text-align: center">{{ game.venue }}</span>
+
+      <!-- Middle Info -->
+      <div class="middle-cell">
+        <ng-container *ngIf="game.gameState != 'FUT'; else futureGame">
+          <span>{{ game.gameState }}</span>
+          <span>{{ game.awayTeamScore }} - {{ game.homeTeamScore }}</span>
+        </ng-container>
+        <ng-template #futureGame>
+          <span>{{ game.gameType }}</span>
+          <span>{{ game.startTime | date : "EEE, MMM d, h:mm a" }}</span>
+          <span>{{ game.venue }}</span>
+        </ng-template>
       </div>
+
+      <!-- Home Team Info -->
       <div class="score-cell">
         <img
           src="assets/teams/{{ game.homeTeamCity }} {{ game.homeTeamName }}.png"
@@ -88,5 +98,5 @@
         <span>{{ game.homeTeamRecord }}</span>
       </div>
     </div>
-  </div> -->
+  </div>
 </div>

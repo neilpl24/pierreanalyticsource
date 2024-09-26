@@ -4,6 +4,7 @@ export interface ScoreCardModel {
   awayTeamCity: string;
   awayTeamFullName: string;
   awayTeamLogo: string;
+  awayTeamScore: number;
   awayTeamName: string;
   awayTeamRecord: string;
   easternUTCOffset: string;
@@ -13,6 +14,7 @@ export interface ScoreCardModel {
   homeTeamAbbr: string;
   homeTeamCity: string;
   homeTeamFullName: string;
+  homeTeamScore: number;
   homeTeamLogo: string;
   homeTeamName: string;
   homeTeamRecord: string;

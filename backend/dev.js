@@ -473,6 +473,153 @@ app.get("/leaderboard/skaters", (req, res, next) => {
   });
 });
 
+app.get("/leaderboard/teams", (req, res, next) => {
+  // let { query, params } = getPlayers(filters, "teams");
+  const params = req.params; // others have req.params here, but we don't need them yet
+
+  const query = `SELECT * FROM teams WHERE season = (SELECT MAX(season) FROM teams) LIMIT 32;`;
+
+  teams_db.all(query, [], (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    rows = rows.map((row) => ({
+      teamName: row.team_name,
+      teamId: Number(row.team_id),
+      season: row.season,
+      wins: row.wins,
+      losses: row.losses,
+      otl: row.otl,
+      gf: row.gf,
+      ga: row.ga,
+      points: row.points,
+      gamesPlayed: row.games_played,
+      division: row.division,
+      ev_xGF: row.ev_xGF,
+      ev_xGFRank: row.ev_xGF_rank,
+      ev_xGA: row.ev_xGA,
+      ev_xGARank: row.ev_xGA_rank,
+      xGF: row.xGF,
+      xGA: row.xGA,
+      l10Wins: row.l10Wins,
+      l10Losses: row.l10Losses,
+      leagueRank: row.leagueRank,
+      divisionRank: row.divisionRank,
+      pp: row.pp,
+      ppRank: row.pp_rank,
+      pk: row.pk,
+      pkRank: row.pk_rank,
+      gfNonEmpty: row.gf_non_empty,
+      gaNonEmpty: row.ga_non_empty,
+      finishing: row.finishing,
+      finishingRank: row.finishing_rank,
+      gsax: row.gsax,
+      gsaxRank: row.gsax_rank,
+      xGPercentage: row.xGPercentage,
+      xGPercentageRank: row.xGPercentage_rank,
+    }));
+    x;
+    res.status(200).json(rows);
+  });
+});
+
+app.get("/leaderboard/goalies", (req, res, next) => {
+  let filters = req.query;
+  let { query, params } = getPlayers(filters, "goalie_numbers_no_percentile");
+
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    rows = rows.map((row) => ({
+      position: row.position,
+      firstName: row.firstName,
+      lastName: row.lastName,
+      birthDate: row.birthDate,
+      nationality: row.nationality,
+      height: row.height,
+      weight: row.weight,
+      team: row.team,
+      teamId: Number(row.team_id),
+      handedness: row.handedness,
+      toi: row.TOI,
+      starts: row.starts,
+      shootout: row.shootout,
+      lowDanger: row.low_danger * row.TOI,
+      medDanger: row.medium_danger * row.TOI,
+      medDangerFreq: row.medium_danger_freq,
+      highDanger: row.high_danger * row.TOI,
+      highDangerFreq: row.high_danger_freq,
+      gsax:
+        row.low_danger * row.TOI +
+        row.medium_danger * row.TOI +
+        row.high_danger * row.TOI,
+      pk: row.pk * row.TOI,
+      ev: row.ev * row.TOI,
+      shots: row.shots,
+      playerID: Number(row.player_id),
+    }));
+
+    res.status(200).json(rows);
+  });
+});
+
+app.get("/leaderboard/teams", (req, res, next) => {
+  // let { query, params } = getPlayers(filters, "teams");
+  const params = req.params; // others have req.params here, but we don't need them yet
+
+  const query = `SELECT * FROM teams WHERE season = (SELECT MAX(season) FROM teams) LIMIT 32;`;
+
+  teams_db.all(query, [], (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    rows = rows.map((row) => ({
+      teamName: row.team_name,
+      teamId: Number(row.team_id),
+      season: row.season,
+      wins: row.wins,
+      losses: row.losses,
+      otl: row.otl,
+      gf: row.gf,
+      ga: row.ga,
+      points: row.points,
+      gamesPlayed: row.games_played,
+      division: row.division,
+      ev_xGF: row.ev_xGF,
+      ev_xGFRank: row.ev_xGF_rank,
+      ev_xGA: row.ev_xGA,
+      ev_xGARank: row.ev_xGA_rank,
+      xGF: row.xGF,
+      xGA: row.xGA,
+      l10Wins: row.l10Wins,
+      l10Losses: row.l10Losses,
+      leagueRank: row.leagueRank,
+      divisionRank: row.divisionRank,
+      pp: row.pp,
+      ppRank: row.pp_rank,
+      pk: row.pk,
+      pkRank: row.pk_rank,
+      gfNonEmpty: row.gf_non_empty,
+      gaNonEmpty: row.ga_non_empty,
+      finishing: row.finishing,
+      finishingRank: row.finishing_rank,
+      gsax: row.gsax,
+      gsaxRank: row.gsax_rank,
+      xGPercentage: row.xGPercentage,
+      xGPercentageRank: row.xGPercentage_rank,
+    }));
+
+    res.status(200).json(rows);
+  });
+});
+
 app.get("/scores", async (req, res, next) => {
   const date = req.query.date;
   const data = await (
@@ -497,10 +644,12 @@ app.get("/scores", async (req, res, next) => {
         awayTeamAbbr: game.awayTeam.abbrev,
         awayTeamRecord: game.awayTeam.record,
         awayTeamFullName: game.awayTeam.name.default,
+        awayTeamScore: game.awayTeam.score,
         awayTeamName: game.awayTeam.commonName.default,
         awayTeamCity: game.awayTeam.placeNameWithPreposition.default,
         awayTeamLogo: game.awayTeam.logo,
         homeTeamAbbr: game.homeTeam.abbrev,
+        homeTeamScore: game.homeTeam.score,
         homeTeamRecord: game.homeTeam.record,
         homeTeamFullName: game.homeTeam.name.default,
         homeTeamName: game.homeTeam.commonName.default,
