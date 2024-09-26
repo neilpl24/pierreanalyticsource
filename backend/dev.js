@@ -445,8 +445,6 @@ app.get("/players/info/:id", (req, res, next) => {
 });
 
 app.get("/leaderboard/skaters", (req, res, next) => {
-  console.log("leaderboard/skaters");
-
   let filters = req.query;
   let { query, params } = getPlayers(filters, "skaters_no_percentile");
 
@@ -475,9 +473,8 @@ app.get("/leaderboard/skaters", (req, res, next) => {
 });
 
 app.get("/leaderboard/goalies", (req, res, next) => {
-  console.log("leaderboard/goalies");
   let filters = req.query;
-  let { query, params } = getPlayers(filters, "goalie_numbers");
+  let { query, params } = getPlayers(filters, "goalie_numbers_no_percentile");
 
   db.all(query, params, (err, rows) => {
     if (err) {
@@ -499,13 +496,17 @@ app.get("/leaderboard/goalies", (req, res, next) => {
       toi: row.TOI,
       starts: row.starts,
       shootout: row.shootout,
-      lowDanger: row.low_danger,
-      mediumDanger: row.medium_danger,
-      mediumDangerFreq: row.medium_danger_freq,
-      highDanger: row.high_danger,
+      lowDanger: row.low_danger * row.TOI,
+      medDanger: row.medium_danger * row.TOI,
+      medDangerFreq: row.medium_danger_freq,
+      highDanger: row.high_danger * row.TOI,
       highDangerFreq: row.high_danger_freq,
-      pk: row.pk,
-      ev: row.ev,
+      gsax:
+        row.low_danger * row.TOI +
+        row.medium_danger * row.TOI +
+        row.high_danger * row.TOI,
+      pk: row.pk * row.TOI,
+      ev: row.ev * row.TOI,
       shots: row.shots,
       playerID: Number(row.player_id),
     }));
@@ -515,7 +516,6 @@ app.get("/leaderboard/goalies", (req, res, next) => {
 });
 
 app.get("/leaderboard/teams", (req, res, next) => {
-  console.log("leaderboard/teams");
   // let { query, params } = getPlayers(filters, "teams");
   const params = req.params; // others have req.params here, but we don't need them yet
 

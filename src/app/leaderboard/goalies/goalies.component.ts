@@ -34,10 +34,11 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     'name',
     'position',
     'team',
-    'starts',
+    'lowDanger',
+    'medDanger',
+    'highDanger',
+    'gsax',
     'shootout',
-    'pk',
-    'ev',
   ];
 
   constructor(
@@ -144,6 +145,9 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     xgPercent: 'Expected Goals Percentage',
     xgf: 'Expected Goals For per 60 Minutes',
     xga: 'Expected Goals Against per 60 Minutes',
+    lowDanger: 'GSAx on shots between < 0.05 xG',
+    medDanger: 'GSAx on shots between 0.05 xG and 0.15 xG',
+    highDanger: 'GSAx on shots > 0.15 xG',
   };
 
   getTooltip(key: string): string {
