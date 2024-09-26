@@ -30,37 +30,38 @@ export class ScoresComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
-    this.scores$ = this.route.params.pipe(
-      switchMap((params) => {
-        const date = params['date'];
-        this.selectedDate = date;
-        this.scoresService
-          .getDateData(date.toString().slice(0, 4), date)
-          .pipe(
-            catchError(() => {
-              this.router.navigate(['/404']);
-              return of(null);
-            })
-          )
-          // TODO refactor this mess
-          .subscribe((data: any) => {
-            if (!data || data.length == 0) {
-              this.router.navigate(['/404']);
-            } else {
-              this.bestxGs = data.bestxGs;
-              this.bestxGPlayer = data.bestxGs[0];
-              this.worstxGs = data.worstxGs;
-              this.worstxGPlayer = data.worstxGs[0];
-              this.bestGoalies = data.bestGoalies;
-              this.bestGoaliePlayer = data.bestGoalies[0];
-              this.worstGoalies = data.worstGoalies;
-              this.worstGoaliePlayer = data.worstGoalies[0];
-              this.isLoading = false;
-            }
-          });
-        return this.scoresService.getGames(date);
-      })
-    );
+    // wouldn't let me compile without editing all this out
+    // this.scores$ = this.route.params.pipe(
+    //   switchMap((params) => {
+    //     const date = params['date'];
+    //     this.selectedDate = date;
+    //     this.scoresService
+    //       .getDateData(date.toString().slice(0, 4), date)
+    //       .pipe(
+    //         catchError(() => {
+    //           this.router.navigate(['/404']);
+    //           return of(null);
+    //         })
+    //       )
+    //       // TODO refactor this mess
+    //       .subscribe((data: any) => {
+    //         if (!data || data.length == 0) {
+    //           this.router.navigate(['/404']);
+    //         } else {
+    //           this.bestxGs = data.bestxGs;
+    //           this.bestxGPlayer = data.bestxGs[0];
+    //           this.worstxGs = data.worstxGs;
+    //           this.worstxGPlayer = data.worstxGs[0];
+    //           this.bestGoalies = data.bestGoalies;
+    //           this.bestGoaliePlayer = data.bestGoalies[0];
+    //           this.worstGoalies = data.worstGoalies;
+    //           this.worstGoaliePlayer = data.worstGoalies[0];
+    //           this.isLoading = false;
+    //         }
+    //       });
+    //      return this.scoresService.getGames(date);
+    //   })
+    //);
   }
 
   // navToGameCard(event: Event, gamePk: number) {

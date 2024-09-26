@@ -263,4 +263,16 @@ export class PlayersService {
       }
     );
   }
+
+  getLuckyPlayer() {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+    return this.http.get<PlayerModel>(`${this.baseUrl}/players/lucky`, {
+      headers,
+      params,
+    });
+  }
 }

@@ -36,6 +36,7 @@
     "hls.js": "^1.4.9",
     "iconv-lite": "^0.6.3",
     "jquery": "^3.7.0",
+    "mat-icon-button-sizes": "^1.0.6",
     "mdb-angular-ui-kit": "^4.1.0",
     "mdb-ui-kit": "^6.4.0",
     "popper.js": "^1.16.1",

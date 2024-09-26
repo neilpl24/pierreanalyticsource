@@ -6,6 +6,7 @@ import { TeamModel } from 'src/models/team.model';
 import { StandingsModel } from 'src/models/standings.model';
 import { RosterModel } from 'src/models/roster.model';
 import { TeamCardModel } from 'src/models/team-card.model';
+import { ReleaseNoteModel } from 'src/models/release-note.model';
 
 @Injectable({
   providedIn: 'root',
@@ -72,6 +73,20 @@ export class TeamsService {
     return this.http.get<TeamCardModel>(
       `${this.baseUrl}/teams/card/${teamId}`,
       { params, headers }
+    );
+  }
+
+  public getReleaseNotes(): Observable<ReleaseNoteModel[]> {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+
+    return this.http.get<ReleaseNoteModel[]>(
+      `${this.baseUrl}/landing/release_notes`,
+      {
+        headers,
+      }
     );
   }
 }

@@ -1,6 +1,11 @@
 @import "flag-icons/css/flag-icons.min.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "mdb-angular-ui-kit/assets/scss/mdb.scss";
+// @import "mat-icon-button-sizes/style.css";
+// @import "mat-icon-button-sizes/styles/mat-icon-button-size.mixin";
+
+// // adding a custom override for the large size
+// @include MatIconButtonSize("large", 100px, 60px);
 
 html,
 body {
@@ -19,6 +24,8 @@ body {
   width: 30px;
   height: 30px;
   margin-right: 5px;
+  border: 2px solid black;
+  border-radius: 50%;
 }
 
 .main-logo {

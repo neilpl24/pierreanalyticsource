@@ -13,15 +13,14 @@ export class ScoresService {
 
   private baseUrl = environment.apiUrl;
 
-  public getGames(date: string) {
+  public getGames() {
     const headers = new HttpHeaders().set(
       'Content-Type',
       'application/json; charset=utf-8'
     );
     let params = new HttpParams();
-    params = params.append('date', date);
 
-    return this.http.get<ScoreCardModel[]>(`${this.baseUrl}/scores/${date}`, {
+    return this.http.get<ScoreCardModel[]>(`${this.baseUrl}/scores/`, {
       params,
       headers,
     });
