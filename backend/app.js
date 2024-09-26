@@ -497,17 +497,14 @@ app.get("/leaderboard/goalies", (req, res, next) => {
       toi: row.TOI,
       starts: row.starts,
       shootout: row.shootout,
-      lowDanger: row.low_danger * row.TOI,
-      medDanger: row.medium_danger * row.TOI,
+      lowDanger: row.low_danger,
+      medDanger: row.medium_danger,
       medDangerFreq: row.medium_danger_freq,
-      highDanger: row.high_danger * row.TOI,
+      highDanger: row.high_danger,
       highDangerFreq: row.high_danger_freq,
-      gsax:
-        row.low_danger * row.TOI +
-        row.medium_danger * row.TOI +
-        row.high_danger * row.TOI,
-      pk: row.pk * row.TOI,
-      ev: row.ev * row.TOI,
+      gsax: row.low_danger + row.medium_danger + row.high_danger,
+      pk: row.pk,
+      ev: row.ev,
       shots: row.shots,
       playerID: Number(row.player_id),
     }));
