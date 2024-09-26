@@ -520,7 +520,7 @@ app.get("/leaderboard/teams", (req, res, next) => {
       xGPercentage: row.xGPercentage,
       xGPercentageRank: row.xGPercentage_rank,
     }));
-
+    x;
     res.status(200).json(rows);
   });
 });
