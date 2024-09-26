@@ -40,3 +40,8 @@
   // leaderboard colummns without numbers
   font-size: 15px;
 }
+
+.mat-mdc-row:hover {
+  background-color: rgb(196, 191, 191) !important;
+  cursor: pointer;
+}
