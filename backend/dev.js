@@ -2,6 +2,7 @@ const express = require("express");
 const util = require("util");
 const csvParser = require("csv-parser");
 const fs = require("fs");
+const { first } = require("rxjs");
 const sqlite3 = require("sqlite3").verbose();
 let app = express();
 
@@ -905,4 +906,32 @@ app.get("/landing/release_notes", (req, res, next) => {
       }
     }
   );
+});
+
+app.get("/players/lucky", async (req, res, next) => {
+  const random_number = Math.random();
+
+  // goalies make up about 10% of the player pool
+  let table = random_number > 0.1 ? "skaters_no_percentile" : "goalie_numbers";
+
+  query =
+    "SELECT player_id, firstName, lastName FROM " +
+    table +
+    " WHERE season = 2024 ORDER BY RANDOM() LIMIT 1";
+
+  db.get(query, (err, row) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    if (row) {
+      const response = {
+        playerID: Number(row.player_id),
+        firstName: row.firstName,
+        lastName: row.lastName,
+      };
+      res.status(200).json(response);
+    }
+  });
 });

@@ -7,7 +7,7 @@
 }
 
 .notes-table {
-  width: 50%;
+  width: 100%;
   overflow: auto;
   max-height: 300px; /* Adjust the height as needed */
   border: 1.5px solid grey;
@@ -72,6 +72,7 @@
 }
 .release-subheader {
   font-size: 16px;
+  align-items: center;
 }
 
 mat-large-icon-button {
@@ -126,7 +127,63 @@ mat-large-icon-button {
   width: 40%;
 }
 
-@media (max-width: 600px) {
+.landing-widgets {
+  display: flex;
+  flex-direction: row;
+}
+
+.twitter-feeds {
+  justify-content: space-around;
+  width: 50%;
+  display: flex;
+  flex-direction: row;
+}
+
+.release-widget {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.lucky-player {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-around;
+  background-color: #ffbf00ad;
+  color: black;
+  border: 2px solid black;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 3px;
+}
+
+.lucky-player:hover {
+  background-color: #ffbf00;
+}
+
+.lucky-subheader {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.lucky-player-widget {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid black;
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 768px) {
   .notes-table {
     width: 95%;
     max-height: 375px;
@@ -134,5 +191,20 @@ mat-large-icon-button {
 
   .release-notes {
     max-height: 125px;
+  }
+
+  .release-widget {
+    width: 100%;
+    align-items: center;
+  }
+
+  .landing-widgets {
+    flex-direction: column;
+  }
+
+  .twitter-feeds {
+    width: 95%;
+    flex-direction: column;
+    align-items: center;
   }
 }

@@ -57,7 +57,6 @@ import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DatePipe } from '@angular/common';
 import { GamescoreComponent } from './cards/gamescore/gamescore.component';
-import { MatIconButtonSizesModule } from 'mat-icon-button-sizes';
 
 @NgModule({
   declarations: [
@@ -85,7 +84,6 @@ import { MatIconButtonSizesModule } from 'mat-icon-button-sizes';
     GamescoreComponent,
   ],
   imports: [
-    MatIconButtonSizesModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
