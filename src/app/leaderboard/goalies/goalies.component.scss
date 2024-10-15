@@ -8,6 +8,15 @@
   color: steelblue;
 }
 
+table td {
+  color: var(--textColor);
+}
+
+table th {
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
+
 .logo-div {
   display: flex;
   align-items: center;
@@ -21,7 +30,7 @@
 
 .table-data {
   padding: 10px !important;
-  background-color: white;
+  background-color: var(--bgColor);
 }
 .small-column {
   // leaderboard columns with numbers
@@ -35,7 +44,11 @@
   font-size: 15px;
 }
 
-.mat-mdc-row:hover {
+tr:hover {
   background-color: rgb(196, 191, 191) !important;
   cursor: pointer;
+}
+
+.mat-mdc-button-touch-target {
+  color: var(--textColor);
 }

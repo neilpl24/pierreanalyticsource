@@ -10,7 +10,7 @@
 
 .dropdown-item {
   width: inherit;
-  background-color: #f6f6f6;
+  background-color: var(--bgColor);
   border-left: 2px solid #ccc;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;

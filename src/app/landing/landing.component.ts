@@ -1,7 +1,7 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { TeamsService } from '../services/teams.service';
 import { ReleaseNoteModel } from 'src/models/release-note.model';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { ScoreCardModel, setDefaults } from 'src/models/game.model';
 import { ScoresService } from '../services/scores.service';
 import { ActivatedRoute } from '@angular/router';
@@ -23,6 +23,7 @@ export class LandingComponent implements AfterViewInit, OnInit {
     'Bennett Summy': 'bennett-alt.jpg',
     'Neil Pierre-Louis': 'neil-alt.png',
   };
+  document: Document;
 
   constructor(
     private teamSvc: TeamsService,

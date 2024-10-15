@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableModule } from '@angular/material/table';
 import { TimelineComponent } from './cards/timeline/timeline.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -98,6 +99,7 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     HttpClientModule,
     MatFormFieldModule,
     MatIconModule,
+    MatSlideToggleModule,
     MatNativeDateModule,
     MatSidenavModule,
     MatButtonModule,

@@ -3,9 +3,8 @@
   class="table-data table-hover table-bordered border-secondary"
   [dataSource]="dataSource"
   matSort
-  (matSortChange)="onSortChange($event)"
->
-  <caption>
+  (matSortChange)="onSortChange($event)">
+  <caption class="background">
     Hover over the column names for more info.
   </caption>
   <ng-container matColumnDef="name">
@@ -13,8 +12,7 @@
       mat-header-cell
       *matHeaderCellDef
       mat-sort-header="lastName"
-      class="left"
-    >
+      class="left">
       Name
     </th>
     <td mat-cell *matCellDef="let player" class="left">
@@ -25,8 +23,7 @@
               player.playerID +
               '.png'
           }}"
-          class="logo row"
-        />
+          class="logo row" />
         <div class="row text-size">
           {{ player.firstName }} {{ player.lastName }}
         </div>
@@ -46,8 +43,7 @@
         <div class="logo-div">
           <img
             src="{{ 'assets/teams/' + player.team + '.png' }}"
-            class="logo row"
-          />
+            class="logo row" />
           <div class="row text-size">{{ player.team }}</div>
         </div>
       </a>
@@ -59,16 +55,14 @@
       *matHeaderCellDef
       mat-sort-header="goals"
       [matTooltip]="getTooltip('goals')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       Goals/60
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.goals, 'goals')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.goals }}
     </td>
   </ng-container>
@@ -78,16 +72,14 @@
       *matHeaderCellDef
       mat-sort-header="gsae"
       [matTooltip]="getTooltip('finishing')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       Finishing
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.gsae, 'gsae')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.gsae }}
     </td>
   </ng-container>
@@ -97,16 +89,14 @@
       *matHeaderCellDef
       mat-sort-header="primaryAssistsEV"
       [matTooltip]="getTooltip('assists')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       Assists/60
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.primaryAssistsEV, 'primaryAssistsEV')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.primaryAssistsEV }}
     </td>
   </ng-container>
@@ -116,16 +106,14 @@
       *matHeaderCellDef
       mat-sort-header="xGF"
       [matTooltip]="getTooltip('xgf')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       xGF
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.xGF, 'xGF')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.xGF }}
     </td>
   </ng-container>
@@ -135,16 +123,14 @@
       *matHeaderCellDef
       mat-sort-header="xGA"
       [matTooltip]="getTooltip('xga')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       xGA
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.xGA, 'xGA')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.xGA }}
     </td>
   </ng-container>
@@ -154,16 +140,14 @@
       *matHeaderCellDef
       mat-sort-header="xG"
       [matTooltip]="getTooltip('xgPercent')"
-      matTooltipPosition="above"
-    >
+      matTooltipPosition="above">
       xG%
     </th>
     <td
       mat-cell
       *matCellDef="let player"
       [ngStyle]="getCellColors(player.xG, 'xG')"
-      class="small-column"
-    >
+      class="small-column">
       {{ player.xG }}
     </td>
   </ng-container>
@@ -172,14 +156,13 @@
   <tr
     mat-row
     *matRowDef="let player; columns: displayedColumns"
-    [routerLink]="['/', player.playerID, 'year', season]"
-  ></tr>
+    [routerLink]="['/', player.playerID, 'year', season]"></tr>
 </table>
 
 <mat-paginator
+  class="background"
   [pageSize]="20"
   [pageSizeOptions]="[20, 50, 100, 500]"
   [length]="dataSource.data.length"
-  showFirstLastButtons
-></mat-paginator>
-<ng-template #emptyState> </ng-template>
+  showFirstLastButtons></mat-paginator>
+<ng-template #emptyState></ng-template>

@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: space-around;
   flex-grow: 1;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .notes-table {
@@ -15,11 +17,11 @@
 .release-notes {
   padding: 10px;
   max-height: 100px;
-  background-color: white;
+  background-color: var(--bgColor);
 }
 
 .release-notes:nth-child(odd) {
-  background-color: lightskyblue;
+  background-color: var(--releaseNotesColor);
 }
 
 .masked-image {
@@ -86,7 +88,7 @@ mat-large-icon-button {
 }
 
 .score-bug:nth-child(2n-1) {
-  background-color: rgb(195, 200, 202);
+  background-color: var(--scorebugColor);
 }
 
 .middle-cell {
@@ -94,6 +96,7 @@ mat-large-icon-button {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  color: var(--textColor);
 }
 
 .landing-widgets {
@@ -215,13 +218,11 @@ span {
 
 .middle-cell span {
   margin-bottom: 3px;
-  color: #555;
   font-size: 14px;
 }
 
 .middle-cell span:first-child {
   font-weight: 700;
-  color: #333;
 }
 
 @media only screen and (max-width: 768px) {

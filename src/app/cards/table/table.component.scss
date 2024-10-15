@@ -4,3 +4,13 @@
     overflow: visible;
   }
 }
+
+table td {
+  color: var(--textColor);
+}
+
+table th,
+tr {
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
