@@ -69,12 +69,18 @@
   align-items: stretch;
 }
 
+.text-center {
+  color: var(--textColor);
+}
+
 .player-card {
   justify-content: start;
   width: 32%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .player-card p {
@@ -90,6 +96,8 @@
 .statistics-card {
   width: 32%;
   align-items: center;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .shot-card {
@@ -98,7 +106,10 @@
   width: 32%;
   align-items: center;
   padding: 16px;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
+
 .plot-title-goal {
   font-weight: bold;
 }
@@ -122,6 +133,8 @@
   border: 1px solid #ccc;
   padding: 4px;
   text-align: center;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .table-container table {

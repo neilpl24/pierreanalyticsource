@@ -5,6 +5,13 @@
   gap: 10px;
   justify-content: end;
   padding: 5px;
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
+
+::ng-deep mat-icon,
+.mat-mdc-button.mat-unthemed {
+  color: var(--textColor);
 }
 
 .filter {

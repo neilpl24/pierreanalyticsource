@@ -12,6 +12,49 @@ body {
   min-height: 100%;
   margin: 0;
   font-family: "Yu Gothic Medium", "Yu Gothic", sans-serif !important;
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
+
+$bgColor_light: white;
+$bgColor_dark: #1c1c21;
+
+$textColor_light: black;
+$textColor_dark: rgb(204, 202, 202);
+
+$borderColor_light: black;
+$borderColor_dark: white;
+
+// mixin that enables css variables in light mode
+@mixin lighten() {
+  --bgColor: #{$bgColor_light};
+  --textColor: #{$textColor_light};
+  --borderColor: #{$borderColor_light};
+  --timelineColor: #e5e5e5;
+  --releaseNotesColor: lightskyblue;
+  --scorebugColor: rgb(195, 200, 202);
+}
+
+// mixin that enables css variables in dark mode
+@mixin darken() {
+  --bgColor: #{$bgColor_dark};
+  --textColor: #{$textColor_dark};
+  --borderColor: #{$borderColor_dark};
+  --timelineColor: #4e4d4d;
+  --releaseNotesColor: rgb(36, 102, 143);
+  --scorebugColor: rgb(82, 82, 82);
+}
+
+body.dark {
+  @include darken();
+}
+body.light {
+  @include lighten();
+}
+
+.background {
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .nationality-logo {
@@ -37,6 +80,22 @@ body {
   margin: 20px;
 }
 
+.mat-mdc-paginator-navigation-next .mat-mdc-paginator-icon {
+  fill: var(--textColor) !important;
+}
+
+.mat-mdc-paginator-navigation-previous .mat-mdc-paginator-icon {
+  fill: var(--textColor) !important;
+}
+
+.mat-mdc-paginator-navigation-first .mat-mdc-paginator-icon {
+  fill: var(--textColor) !important;
+}
+
+.mat-mdc-paginator-navigation-last .mat-mdc-paginator-icon {
+  fill: var(--textColor) !important;
+}
+
 .table-wrapper {
   overflow-x: auto;
 }
@@ -48,6 +107,8 @@ body {
 
 .shot-table {
   align-self: left;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .shot-table.assists {
@@ -85,8 +146,7 @@ body {
 .timeline {
   position: relative;
   height: 4px;
-  background-color: #e5e5e5;
-  width: 150px;
+  background-color: var(--bgColor);
 }
 
 .timeline-bar {
@@ -231,6 +291,9 @@ body {
   align-items: center;
   justify-content: center;
   width: 18rem;
+  background-color: var(--bgColor);
+  color: var(--textColor);
+  border-bottom: var(--borderColor);
 }
 
 @media only screen and (max-width: 768px) {

@@ -3,9 +3,18 @@
   color: white;
 }
 
+.form-control {
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
 .search-spacing {
   margin-left: 10px;
   width: 300px;
+}
+
+.toggle {
+  margin-right: 10px;
+  font-weight: 500;
 }
 
 .search-select-height {
@@ -20,6 +29,8 @@ mat-form-field {
 
 .form-select {
   width: 100px;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .custom-navbar {
@@ -58,7 +69,7 @@ mat-form-field {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #f6f6f6;
+  background-color: var(--bgColor);
   min-width: 230px;
   border: 1px solid #ddd;
 }
@@ -80,7 +91,8 @@ mat-form-field {
 
 .dropdown-item {
   width: inherit;
-  background-color: #f6f6f6;
+  background-color: var(--bgColor);
+  color: var(--textColor);
   border-left: 2px solid #ccc;
   border-bottom: 2px solid #ccc;
   border-right: 2px solid #ccc;
@@ -102,7 +114,7 @@ mat-form-field {
 .dropdown-list {
   display: none;
   position: absolute; /* Positions below the button */
-  background-color: #fff;
+  background-color: var(--bgColor);
   border: 1px solid #ccc;
   list-style: none; /* Removes default bullet points */
   padding: 0;

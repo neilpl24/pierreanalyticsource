@@ -166,17 +166,34 @@ app.get("/players/name", (req, res, next) => {
 });
 
 app.get("/players/seasons/:id", (req, res, next) => {
+  // Union wouldn't work for some reason
   const id = Number(req.query.id);
   db.all(
-    `SELECT DISTINCT season FROM skaters WHERE player_id = ? UNION SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
+    `SELECT DISTINCT season FROM skaters WHERE player_id = ?`,
     [id],
-    (err, playerRows) => {
+    (err, skaterRows) => {
       if (err) {
         res.status(400).json({ error: err.message });
         return;
       }
-      rows = playerRows = playerRows.map((x) => x.season).sort((a, b) => a - b);
-      res.status(200).json(playerRows);
+
+      db.all(
+        `SELECT DISTINCT season FROM goalie_numbers WHERE player_id = ?`,
+        [id],
+        (err, goalieRows) => {
+          if (err) {
+            res.status(400).json({ error: err.message });
+            return;
+          }
+
+          const combinedRows = [...skaterRows, ...goalieRows];
+
+          const sortedSeasons = combinedRows
+            .map((row) => row.season)
+            .sort((a, b) => a - b);
+          res.status(200).json(sortedSeasons);
+        }
+      );
     }
   );
 });

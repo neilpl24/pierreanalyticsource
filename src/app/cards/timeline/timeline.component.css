@@ -11,7 +11,7 @@
   align-items: center;
   justify-content: center;
   opacity: 1;
-  background-color: white;
+  background-color: var(--bgColor);
 }
 
 .percentile {
@@ -22,7 +22,7 @@
 
 .timeline {
   height: 4px;
-  background-color: #e5e5e5;
+  background-color: var(--timelineColor);
   max-width: 150px;
   align-items: center;
 }

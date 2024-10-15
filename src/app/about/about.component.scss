@@ -2,6 +2,8 @@
 .table-container td {
   border: 1px solid #ccc;
   padding: 4px;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .colName {
@@ -17,17 +19,26 @@
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ccc;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .table-container th {
-  background-color: #f0f0f0;
+  background-color: var(--bgColor);
   text-align: center;
+}
+
+.paragraph-container {
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .about-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .container-about {
@@ -37,18 +48,24 @@
   flex-direction: column;
   max-width: 80%;
   margin-inline: auto;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 .about-header {
   text-align: center;
   font-size: 25px;
   margin: 20px;
   justify-content: center;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .abt-container {
   justify-content: flex-start;
   display: flex;
   flex-direction: row;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .paragraph {

@@ -25,7 +25,8 @@ td {
 mat-card.score-card {
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #f0f0f0;
+  background-color: var(--bgColor);
+  color: var(--textColor);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 10px;
   width: 300px;
@@ -63,10 +64,6 @@ td {
   text-align: left;
 }
 
-th {
-  background-color: #f0f0f0;
-}
-
 td img {
   max-width: 50px;
 }
@@ -89,7 +86,8 @@ td img {
 }
 
 .table-container th {
-  background-color: #f0f0f0;
+  background-color: var(--bgColor);
+  color: var(--textColor);
 }
 
 .table-container img {

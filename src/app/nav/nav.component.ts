@@ -46,6 +46,7 @@ export class NavComponent implements OnInit, OnDestroy {
 
   dropdownToggle: any;
   showDropdown = false;
+  isDarkMode = localStorage.getItem('theme') === 'dark';
 
   toggleDropdown() {
     this.showDropdown = !this.showDropdown;
@@ -82,6 +83,20 @@ export class NavComponent implements OnInit, OnDestroy {
 
   clearSearchInput() {
     this.searchControl.setValue('');
+  }
+
+  toggleDarkMode() {
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark') {
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+    }
   }
 
   selectYear(event: Event) {
