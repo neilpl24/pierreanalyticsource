@@ -128,7 +128,7 @@ mat-large-icon-button {
   gap: 10px;
   align-items: center;
   justify-content: space-around;
-  background-color: #f8be0e;
+  background-color: rgb(255 191 0);
   color: black;
   border: 2px solid black;
   border-radius: 20px;
@@ -137,7 +137,7 @@ mat-large-icon-button {
 }
 
 .lucky-player:hover {
-  background-color: #ffbf00;
+  background-color: #fdcf45;
 }
 
 .lucky-subheader {
