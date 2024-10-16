@@ -131,15 +131,6 @@
       </div>
     </div>
     <div class="container" style="justify-content: flex-end">
-      <div class="toggle">
-        <mat-slide-toggle
-          [(ngModel)]="isDarkMode"
-          ngDefaultControl
-          labelPosition="before"
-          (change)="toggleDarkMode()">
-          <span style="color: white">Dark Mode</span>
-        </mat-slide-toggle>
-      </div>
       <div class="search-select-height">
         <select class="form-select year-select" (change)="selectYear($event)">
           <option value="null">Year</option>

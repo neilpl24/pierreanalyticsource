@@ -30,14 +30,13 @@ export const gameTypeMap: { [key: string]: string } = {
   '3': 'Playoffs',
 };
 
-// function changeTimeZone(date: Date, offsetMinutes: number) {
-
-//   return utcTimestamp;
-// }
+export const gameStates: { [key: string]: string } = {
+  OFF: 'Final',
+};
 
 export function setDefaults(model: ScoreCardModel): ScoreCardModel {
   model.startTime = new Date(model.startTime);
   model.gameType = gameTypeMap[model.gameType];
-
+  model.gameState = gameStates[model.gameState] || model.gameState;
   return model;
 }

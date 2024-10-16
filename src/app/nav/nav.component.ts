@@ -85,20 +85,6 @@ export class NavComponent implements OnInit, OnDestroy {
     this.searchControl.setValue('');
   }
 
-  toggleDarkMode() {
-    const savedTheme = localStorage.getItem('theme');
-
-    if (savedTheme === 'dark') {
-      document.body.classList.add('light');
-      document.body.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    } else {
-      document.body.classList.add('dark');
-      document.body.classList.remove('light');
-      localStorage.setItem('theme', 'dark');
-    }
-  }
-
   selectYear(event: Event) {
     const year = (event.target as HTMLInputElement).value;
     this.year = year.toString();
