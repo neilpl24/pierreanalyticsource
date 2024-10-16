@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, AfterViewInit, OnInit, Renderer2 } from '@angular/core';
 import { TeamsService } from '../services/teams.service';
 import { ReleaseNoteModel } from 'src/models/release-note.model';
 import { map, Observable } from 'rxjs';
@@ -25,15 +25,17 @@ export class LandingComponent implements AfterViewInit, OnInit {
   };
   document: Document;
 
+  isDarkMode = localStorage.getItem('theme') === 'dark';
+
   constructor(
     private teamSvc: TeamsService,
     private scoresService: ScoresService,
     private playersService: PlayersService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
-    // what does this do?
     gtag('config', 'G-9DLYWS6ZQV', {
       page_path: window.location.pathname,
     });
@@ -50,4 +52,18 @@ export class LandingComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit(): void {}
+
+  toggleDarkMode() {
+    const savedTheme = localStorage.getItem('theme');
+
+    if (savedTheme === 'dark') {
+      document.body.classList.add('light');
+      document.body.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
 }
