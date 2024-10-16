@@ -64,6 +64,7 @@ import { GoaliesLeaderboard } from './leaderboard/goalies/goalies.component';
 import { TeamsLeaderboard } from './leaderboard/teams/teams.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { GamescoreComponent } from './cards/gamescore/gamescore.component';
+import { PlayerComparisonToolComponent } from './player-comparison-tool/player-comparison-tool.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     GoaliesLeaderboard,
     TeamsLeaderboard,
     GamescoreComponent,
+    PlayerComparisonToolComponent,
   ],
   imports: [
     BrowserModule,
