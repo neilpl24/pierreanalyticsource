@@ -47,7 +47,7 @@ function getPlayers(filters, table) {
   if (filters.season) {
     season = filters.season;
   } else {
-    season = "2024";
+    season = "2025";
   }
   let querySegments = [
     `WITH team_ids AS (SELECT team_id, CASE WHEN team_name = 'Montreal Canadiens' THEN 'Montréal Canadiens' ELSE team_name END AS team_name FROM teams) SELECT * FROM ${table} AS p JOIN team_ids t on p.team = t.team_name AND season = ${season}`,
@@ -307,7 +307,7 @@ app.get("/players/card/:id", (req, res, next) => {
   if (req.query.season) {
     season = req.query.season;
   } else {
-    season = "2024";
+    season = "2025";
   }
 
   db.get(
@@ -378,7 +378,7 @@ app.get("/players/info/:id", (req, res, next) => {
   if (req.query.season) {
     season = req.query.season;
   } else {
-    season = "2024";
+    season = "2025";
   }
 
   db.get(
@@ -1072,7 +1072,7 @@ app.get("/players/lucky", async (req, res, next) => {
   query =
     "SELECT player_id, firstName, lastName FROM " +
     table +
-    " WHERE season = 2024 ORDER BY RANDOM() LIMIT 1";
+    " WHERE season = 2025 ORDER BY RANDOM() LIMIT 1";
 
   db.get(query, (err, row) => {
     if (err) {

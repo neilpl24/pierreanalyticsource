@@ -20,7 +20,7 @@ import {
 export class SkatersLeaderboard implements OnInit, AfterViewInit {
   sortedColumn: string = 'goals';
   dataSource = new MatTableDataSource();
-  season = '2024';
+  season = '2025';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'goals_60', direction: 'desc' };

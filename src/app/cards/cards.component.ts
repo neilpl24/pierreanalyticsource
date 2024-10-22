@@ -92,8 +92,9 @@ export class CardsComponent implements AfterViewInit, OnInit {
   seasons$: Observable<number[]>;
 
   seasonMap: any = {
-    undefined: '20232024',
-    '': '20232024',
+    undefined: '20242025',
+    '': '20242025',
+    '2025': '20242025',
     '2024': '20232024',
     '2023': '20222023',
     '2022': '20212022',

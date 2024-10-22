@@ -34,7 +34,7 @@ export class PlayersService {
     }
 
     if (season == '') {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
     return this.http.get<CardModel>(
       `${this.baseUrl}/players/card/${playerId}`,
@@ -58,7 +58,7 @@ export class PlayersService {
     if (season && season != '') {
       params = params.append('season', season?.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     return this.http.get<GamescoreModel[]>(
@@ -83,7 +83,7 @@ export class PlayersService {
     if (season && season != '') {
       params = params.append('season', season?.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     return this.http.get<GamescoreAverageModel>(
@@ -121,7 +121,7 @@ export class PlayersService {
     }
 
     if (season == '') {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
     return this.http.get<PlayerModel>(
       `${this.baseUrl}/players/info/${playerId}`,
@@ -196,11 +196,11 @@ export class PlayersService {
 
     if (filters.season) {
       if (filters.season == '') {
-        filters.season = '2024';
+        filters.season = '2025';
       }
       params = params.append('season', filters.season.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     if (sort.active) {
