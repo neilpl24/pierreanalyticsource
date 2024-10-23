@@ -21,7 +21,7 @@ import { PlayersService } from '../services/players.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare const gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
-import { ShotModel } from 'src/models/shot.model';
+import { setDefaults, ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
 import { countryCodeMap } from '../utils';
 import { GamescoreModel } from 'src/models/gamescore.model';
@@ -242,6 +242,8 @@ export class CardsComponent implements AfterViewInit, OnInit {
                     .replaceAll('Ã\\x83Â¼', 'u')
                 )
               : [];
+
+            this.shotsData.map(setDefaults);
           } else {
             this.shotsData = [];
           }

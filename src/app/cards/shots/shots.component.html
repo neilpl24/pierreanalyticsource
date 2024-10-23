@@ -1,16 +1,1 @@
-<div class="rink-container">
-  <div class="shots-and-canvas">
-    <canvas class="canvas" #rinkCanvas></canvas>
-    <div class="shot-markers">
-      <div
-        *ngFor="let shot of filterShots(shotsData); let i = index"
-        class="shot-marker"
-        [style.left.px]="getShotImageCoordinates(shot.x, shot.y).y"
-        [style.top.px]="getShotImageCoordinates(shot.x, shot.y).x"
-        [matTooltip]="getTooltipContent(shot)"
-        matTooltipPosition="above"
-        (click)="redirectToLink(shot.Link)"
-      ></div>
-    </div>
-  </div>
-</div>
+<div id="half-rink-vert"></div>

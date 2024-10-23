@@ -1,149 +1,136 @@
 import {
   Component,
-  Input,
-  ViewChild,
-  ElementRef,
   AfterViewInit,
   OnChanges,
   SimpleChanges,
+  OnInit,
+  Input,
 } from '@angular/core';
 import { ShotModel } from 'src/models/shot.model';
 import { Router } from '@angular/router';
+import * as d3 from 'd3';
+import { RinkMap } from './rinkPlot.js';
+
+// add more to this as we go
+const CONFIG = {
+  RINK_PADDING: 5,
+  RINK_LENGTH: 200,
+  RINK_WIDTH: 85,
+  BOARDS_RADIUS: 10,
+  BOARDS_WIDTH: 2,
+  LINES_WIDTH: 1.8,
+  NEUTRAL_ZONE_WIDTH: 50,
+  BOARDS_TO_GOAL_LINE: 16,
+  // could move this to it's own object
+  BOARDS_COLOR: 'black',
+  RED_LINE: 'red',
+  BLUE_LINE: 'blue',
+  RINK_FILL: 'white',
+  GOAL_FILL: 'lightblue',
+};
 
 @Component({
   selector: 'shots',
   templateUrl: './shots.component.html',
   styleUrls: ['./shots.component.css'],
 })
-export class ShotsComponent implements AfterViewInit, OnChanges {
-  @ViewChild('rinkCanvas', { static: false }) canvasRef: ElementRef;
+export class ShotsComponent implements AfterViewInit {
   @Input() shotsData: ShotModel[];
 
   constructor(private router: Router) {}
 
-  ngAfterViewInit(): void {
-    this.drawCanvas();
-  }
+  ngAfterViewInit() {
+    const container = document.getElementById('half-rink-vert');
+    if (container) {
+      // leave the rink itself as a separate function
+      var halfVertSvg = d3
+        .select('#half-rink-vert')
+        .append('svg')
+        .attr('width', 500)
+        .attr('height', 800);
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shotsData'] && !changes['shotsData'].firstChange) {
-      const context: CanvasRenderingContext2D | null =
-        this.canvasRef.nativeElement.getContext('2d');
-      this.clearCanvas(context!);
-      this.drawCanvas();
-      this.drawShotMarkers(context!);
+      const halfVertPlot = RinkMap({
+        parent: halfVertSvg,
+        halfRink: true,
+        desiredWidth: 400,
+        horizontal: false,
+      });
+
+      const rinkScale = halfVertPlot.rinkScale;
+      const rinkWidth = halfVertPlot.rinkWidth;
+      halfVertPlot.chart();
+
+      // add the specific purpose later
+      // allows for more applications (e.g. half rink, different sizes, heat maps)
+      const shotsLayer = halfVertSvg.append('g').attr('id', 'shotsLayer');
+
+      console.warn('shotsData', this.shotsData);
+
+      const tooltip = d3
+        .select('body')
+        .append('div')
+        .style('opacity', 0)
+        .style('background-color', '#87cefa')
+        .style('color', '#000')
+        .style('border', '2px solid #24668f')
+        .style('border-radius', '5px')
+        .style('text-align', 'center')
+        .style('padding', '8px')
+        .style('position', 'absolute');
+
+      // Create circles for the shots
+
+      shotsLayer
+        .selectAll('circle')
+        .data(this.shotsData)
+        .enter()
+        .append('circle')
+        .attr('cx', (d) => scaleRink(d.x, d.y, rinkScale, rinkWidth).y)
+        .attr('cy', (d) => scaleRink(d.x, d.y, rinkScale, rinkWidth).x)
+        .attr('r', 5)
+        .attr('fill', 'lightskyblue')
+        .attr('stroke', '#24668f') // add in link based coloring
+        .on('mouseover', function (event, d) {
+          tooltip.transition().duration(200).style('opacity', 1);
+
+          tooltip
+            .html(
+              'Goal Type: ' +
+                d.type +
+                '<br>xG: ' +
+                d.xG +
+                '<br> x: ' +
+                d.x +
+                '<br> y: ' +
+                d.y
+            )
+            .style('left', event.pageX + 10 + 'px')
+            .style('top', event.pageY - 10 + 'px');
+        })
+        .on('mouseout', function () {
+          tooltip.transition().duration(500).style('opacity', 0);
+        });
     }
   }
+}
 
-  clearCanvas(context: CanvasRenderingContext2D | null): void {
-    if (context) {
-      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    }
-  }
-
-  drawCanvas(): void {
-    const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
-    const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-
-    const rinkImage = new Image();
-    rinkImage.src = 'assets/rink3.png';
-    rinkImage.onload = () => {
-      canvas.width = 292;
-      canvas.height = 292;
-      context!.drawImage(rinkImage, 6, 7, 292, 292, 0, 0, 292, 292);
-      this.drawShotMarkers(context!);
+function scaleRink(
+  nhlX: number,
+  nhlY: number,
+  rinkScale: number,
+  rinkWidth: number
+) {
+  // will need a bit different logic for the full rink
+  // since there will be another zone of data
+  if (nhlX >= 0) {
+    return {
+      x: nhlX * rinkScale,
+      y: rinkWidth / 2 + nhlY * rinkScale,
     };
-  }
-
-  getTooltipContent(shot: ShotModel): string {
-    return `Type: ${shot.type}, xG: ${this.roundNumber(shot.xG, 2)}`;
-  }
-
-  roundNumber(number: number | undefined, decimalPlaces: number): number {
-    if (number === undefined) {
-      return 0;
-    }
-
-    const factor = Math.pow(10, decimalPlaces);
-    return Math.round(number * factor) / factor;
-  }
-
-  redirectToLink(link: string) {
-    if (link != 'No link found.') {
-      if (link.slice(-4) == 'm3u8') {
-        const urlTree = this.router.createUrlTree(['/video', link]);
-        const url = this.router.serializeUrl(urlTree);
-        window.open(url, '_blank');
-      } else {
-        window.open(link, '_blank');
-      }
-    }
-  }
-
-  drawShotMarkers(context: CanvasRenderingContext2D) {
-    if (!this.shotsData) return;
-
-    for (const shot of this.filterShots(this.shotsData)) {
-      const { x, y } = this.getShotImageCoordinates(shot.x, shot.y);
-      this.drawShotMarker(context, y, x, shot.Link);
-    }
-  }
-
-  drawShotMarker(
-    context: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    link: string
-  ) {
-    const radius = 6;
-
-    context.beginPath();
-    // this is an arbitrary adjustment to make the shot markers cover the center of the circle
-    context.arc(x + 10, y + 10, radius, 0, 2 * Math.PI, false);
-    if (link == 'No link found.') {
-      // if there's no link, making the shot marker light grey
-      context.fillStyle = 'lightgrey';
-    } else {
-      // the shot markers are light blue if there's a link
-      context.fillStyle = '#529BFD';
-    }
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = 'black';
-    context.stroke();
-  }
-
-  getShotImageCoordinates(
-    nhlX: number,
-    nhlY: number
-  ): { x: number; y: number } {
-    // 0, 0 at center ice
-    // y runs from -42.5 to 42.5 (top to bottom)
-    // x runs from -100 to 100 (left to right)
-
-    // sometimes the nhl shot markers are placed on the wrong side of the ice
-    // but there's nothing we can do about that
-
-    let imageX: number;
-    let imageY: number;
-
-    // the image is 292x292, so my calculations are based on that
-    // updating the image size will require updating these calculations
-
-    // images are plotted from the top and left, so a different coord system needs to be factored in
-
-    if (nhlX < 0) {
-      // if the nhlX is negative, we need to translate it
-      imageX = 292 - Math.abs(nhlX) * 2.92;
-      imageY = 146 + nhlY * 2.92;
-    } else {
-      imageX = 292 - nhlX * 2.92;
-      imageY = 146 - nhlY * 2.92;
-    }
-    return { x: imageX, y: imageY };
-  }
-
-  filterShots(shots: ShotModel[]): ShotModel[] {
-    return shots.filter((shot) => shot.Outcome == 'goal');
+  } else {
+    return {
+      x: Math.abs(nhlX) * rinkScale,
+      y: rinkWidth / 2 + nhlY * rinkScale,
+    };
   }
 }
