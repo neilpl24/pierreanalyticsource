@@ -1,0 +1,30 @@
+@media only screen and (max-width: 768px) {
+  .mdc-data-table__cell {
+    white-space: normal;
+    overflow: visible;
+  }
+}
+
+button {
+  color: aqua !important;
+}
+
+.video-player {
+  margin: 20px auto;
+  max-width: 100%;
+}
+
+table td {
+  color: var(--textColor);
+}
+
+table th,
+tr {
+  background-color: var(--bgColor);
+  color: var(--textColor);
+}
+
+tr:hover {
+  background-color: #3b3b3b !important;
+  cursor: pointer;
+}

@@ -21,7 +21,7 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   sortedColumn: string = 'starts';
   dataSource = new MatTableDataSource();
 
-  season = '2024';
+  season = '2025';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
