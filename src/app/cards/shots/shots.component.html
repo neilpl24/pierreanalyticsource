@@ -1,1 +1,22 @@
+<div class="segmented-button">
+  <button
+    class="segment"
+    (click)="toggleSelection('EV')"
+    [ngClass]="{ active: isSelected('EV') }">
+    EV
+  </button>
+  <button
+    class="segment"
+    (click)="toggleSelection('SH')"
+    [ngClass]="{ active: isSelected('SH') }">
+    SH
+  </button>
+  <button
+    class="segment"
+    (click)="toggleSelection('PP')"
+    [ngClass]="{ active: isSelected('PP') }">
+    PP
+  </button>
+</div>
+
 <div id="half-rink-vert"></div>

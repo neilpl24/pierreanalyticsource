@@ -1,45 +1,25 @@
-.shot-markers {
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  z-index: 2;
-}
-
-.shot-marker {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  transition: transform 0.3s ease;
-  transform: scale(1);
-  z-index: 2;
-}
-
-.shot-marker:hover {
-  cursor: pointer;
-}
-
-.shot-marker:hover::after {
-  opacity: 0.2;
-}
-
-.rink-container {
+.segmented-button {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+}
+.segment {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  text-align: center;
+  color: black;
+}
+.segment.active {
+  background-color: #007bff;
+  color: white;
 }
 
-.shots-and-canvas {
-  /* this is hardcoded to the size of the rink image */
-  width: 292px;
-  height: 292px;
+.segment:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
-.canvas {
-  position: absolute;
-  width: inherit;
-  height: inherit;
-  z-index: 1;
+.segment:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }

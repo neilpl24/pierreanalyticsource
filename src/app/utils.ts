@@ -9,6 +9,23 @@ export function getPlayerPosition(position: string): string {
   }
 }
 
+export function getShotType(type: string): string {
+  switch (type) {
+    case 'wrist':
+      return 'Wrist shot';
+    case 'snap':
+      return 'Snapshot';
+    case 'slap':
+      return 'Slapshot';
+    case 'backhand':
+      return 'Backhander';
+    case 'wrap-around':
+      return 'Wrap-around';
+    default:
+      return type;
+  }
+}
+
 export function roundValue(value: number): number {
   return Math.round(value);
 }

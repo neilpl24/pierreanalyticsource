@@ -62,7 +62,7 @@ export function RinkMap(config) {
 
   var p = {
     chartsize: { width: 500, height: 500 },
-    margins: { top: 30, bottom: 5, left: 10, right: 10 },
+    margins: { top: 0, bottom: 0, left: 0, right: 0 },
     showDanger: false,
     horizontal: true,
     fullRink: false,
