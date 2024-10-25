@@ -107,10 +107,44 @@ export class PlayersService {
     );
   }
 
+  public getGoals(
+    shootingPlayerId?: number,
+    assistingPlayerId?: number,
+    season?: string
+  ) {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+
+    if (shootingPlayerId) {
+      params = params.append('shootingPlayerId', shootingPlayerId.toString());
+    }
+
+    if (assistingPlayerId) {
+      params = params.append('assistingPlayerId', assistingPlayerId.toString());
+    }
+
+    if (season) {
+      params = params.append('season', season);
+    }
+
+    return this.http.get<GoalModel[]>(
+      `${this.baseUrl}/players/goals/singular`,
+      {
+        params,
+        headers,
+      }
+    );
+  }
+
   public getGoalData(
-    season?: number,
-    playerSearchText?: string,
-    teamSearchText?: string
+    playerIds?: number[],
+    teamNames?: string[],
+    shotTypes?: string[],
+    strengths?: string[],
+    season?: string
   ) {
     const headers = new HttpHeaders().set(
       'Content-Type',
@@ -121,15 +155,23 @@ export class PlayersService {
     if (season) {
       params = params.append('season', season);
     } else {
-      params = params.append('season', 2025);
+      params = params.append('season', '2025');
     }
 
-    if (playerSearchText) {
-      params = params.append('playerSearchText', playerSearchText);
+    if (playerIds?.length) {
+      params = params.append('playerIds', playerIds.toString());
     }
 
-    if (teamSearchText) {
-      params = params.append('teamSearchText', teamSearchText);
+    if (teamNames?.length) {
+      params = params.append('teamNames', teamNames.toString());
+    }
+
+    if (shotTypes?.length) {
+      params = params.append('shotTypes', shotTypes.toString());
+    }
+
+    if (strengths?.length) {
+      params = params.append('strengths', strengths.toString());
     }
 
     return this.http.get<GoalModel[]>(`${this.baseUrl}/players/goals`, {

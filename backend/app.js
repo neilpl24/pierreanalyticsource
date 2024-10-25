@@ -325,6 +325,7 @@ app.get("/players/card/:id", (req, res, next) => {
         const response = {
           xGF: playerRow.xGF,
           xGA: playerRow.xGA,
+          wpa: playerRow.wpa,
           goals: playerRow.goals_60,
           sh_xGA: playerRow.sh_xGA,
           primaryAssistsPP: playerRow.primary_assists_PP,
@@ -485,6 +486,7 @@ app.get("/leaderboard/skaters", (req, res, next) => {
       team: row.team,
       position: row.position,
       nationality: row.nationality,
+      wpa: row.wpa,
     }));
     res.status(200).json(rows);
   });
@@ -1088,5 +1090,130 @@ app.get("/players/lucky", async (req, res, next) => {
       };
       res.status(200).json(response);
     }
+  });
+});
+
+app.get("/players/goals", async (req, res, next) => {
+  const season = req.query.season;
+  const playerIds = req.query.playerIds ? req.query.playerIds.split(",") : [];
+  const teamNames = req.query.teamNames ? req.query.teamNames.split(",") : [];
+  const shotTypes = req.query.shotTypes ? req.query.shotTypes.split(",") : [];
+  const strengths = req.query.strengths ? req.query.strengths.split(",") : [];
+
+  let query = "SELECT * FROM goals";
+  const conditions = [];
+
+  if (playerIds?.length > 0) {
+    conditions.push(
+      `shooter_id IN (${playerIds.map((id) => `'${id}'`).join(",")})`
+    );
+  }
+  if (teamNames?.length > 0) {
+    const teamConditions = teamNames
+      .map((name) => `away_team = '${name}'`)
+      .join(" OR ");
+    const homeTeamConditions = teamNames
+      .map((name) => `home_team = '${name}'`)
+      .join(" OR ");
+
+    conditions.push(`(${teamConditions} OR ${homeTeamConditions})`);
+  }
+  if (shotTypes?.length > 0) {
+    conditions.push(
+      `type IN (${shotTypes.map((type) => `'${type}'`).join(",")})`
+    );
+  }
+  if (strengths?.length > 0) {
+    conditions.push(
+      `strength IN (${strengths.map((strength) => `'${strength}'`).join(",")})`
+    );
+  }
+
+  query += ` WHERE season = ${season} `;
+
+  if (conditions?.length > 0) {
+    query += `AND ${conditions.join(" AND ")}`;
+  }
+
+  db.all(query, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    const response = [];
+
+    for (row of rows) {
+      response.push({
+        season: row.season,
+        date: row.date,
+        shooter: row.shooter,
+        shooterId: row.shooter_id,
+        assister: row.assister,
+        assisterId: row.assister_id,
+        goalie: row.goalie,
+        goalieId: row.goalie_id,
+        strength: row.strength,
+        awayGoals: row.away_goals,
+        homeGoals: row.home_goals,
+        homeTeam: row.home_team,
+        awayTeam: row.away_team,
+        x: row.x,
+        y: row.y,
+        prevEvent: row.prev_event,
+        type: row.type,
+        xG: row.xG,
+        outcome: row.outcome,
+        wpa: row.wpa,
+        link: row.link,
+      });
+    }
+    res.status(200).json(response);
+  });
+});
+
+app.get("/players/goals/singular", async (req, res, next) => {
+  const shooterPlayerId = req.query.shootingPlayerId;
+  const assisterPlayerId = req.query.assistingPlayerId;
+  const season = req.query.season;
+
+  let query = `SELECT * FROM goals WHERE (shooter_id = ? OR assister_id = ? OR goalie_id = ?) AND season = ?`;
+
+  let params = [shooterPlayerId, assisterPlayerId, shooterPlayerId, season];
+
+  db.all(query, params, (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    const response = [];
+
+    for (row of rows) {
+      response.push({
+        season: row.season,
+        date: row.date,
+        shooter: row.shooter,
+        shooterId: row.shooter_id,
+        assister: row.assister,
+        assisterId: row.assister_id,
+        goalie: row.goalie,
+        goalieId: row.goalie_id,
+        strength: row.strength,
+        awayGoals: row.away_goals,
+        homeGoals: row.home_goals,
+        homeTeam: row.home_team,
+        awayTeam: row.away_team,
+        x: row.x,
+        y: row.y,
+        prevEvent: row.prev_event,
+        type: row.type,
+        xG: row.xG,
+        outcome: row.outcome,
+        wpa: row.wpa,
+        link: row.link,
+      });
+    }
+    res.status(200).json(response);
   });
 });

@@ -196,10 +196,7 @@
                   </ul>
                 </div>
               </div>
-              <shots
-                *ngIf="player.shots"
-                [shotsData]="shotsData"
-                (shotsDataChange)="onShotsDataChange($event)"></shots>
+              <shots *ngIf="shotsData" [shotsData]="shotsData"></shots>
               <div class="action-container">
                 <img
                   class="action"
@@ -242,19 +239,15 @@
   <ng-container *ngIf="player$ | async as player">
     <div class="goals-table">
       <h2 class="text-center">{{ season }} Goals</h2>
-      <shot-table
-        *ngIf="player.shots"
-        [shotsData]="shotsData"
-        (shotsDataChange)="onShotsDataChange($event)"></shot-table>
+      <shot-table *ngIf="shotsData" [shotsData]="shotsData"></shot-table>
     </div>
     <ng-container *ngIf="player.position != 'G'">
       <div class="assists-table">
         <h2 class="text-center">{{ season }} Primary Assists</h2>
         <shot-table
           class="assists"
-          *ngIf="player.assists"
-          [shotsData]="assistsData"
-          (assistsDataChange)="onAssistsDataChange($event)"></shot-table>
+          *ngIf="assistsData"
+          [shotsData]="assistsData"></shot-table>
       </div>
     </ng-container>
   </ng-container>

@@ -21,11 +21,11 @@
         <th mat-header-cell *matHeaderCellDef class="left">Score</th>
         <td mat-cell *matCellDef="let shot" class="left" style="width: 20%">
           <img
-            src="{{ 'assets/teams/' + shot.away_team + '.png' }}"
+            src="{{ 'assets/teams/' + shot.awayTeam + '.png' }}"
             class="logo" />
           {{ shot.away_goals }}-{{ shot.home_goals }}
           <img
-            src="{{ 'assets/teams/' + shot.home_team + '.png' }}"
+            src="{{ 'assets/teams/' + shot.homeTeam + '.png' }}"
             class="logo" />
         </td>
       </ng-container>
@@ -71,6 +71,20 @@
           {{ this.roundValue(shot.xG) }}
         </td>
       </ng-container>
+      <ng-container matColumnDef="wpa">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="wpa"
+          class="left"
+          [matTooltip]="getTooltip('wpa')"
+          matTooltipPosition="above">
+          WPA
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ this.roundValue(shot.wpa) }}
+        </td>
+      </ng-container>
       <ng-container matColumnDef="link">
         <th
           mat-header-cell
@@ -84,13 +98,13 @@
           *matCellDef="let shot"
           class="left"
           style="width: 20%; max-width: 0">
-          <ng-container *ngIf="shot.Link == 'No link found.'">
+          <ng-container *ngIf="shot.link == 'No link found.'">
             <p>No link found.</p>
           </ng-container>
-          <ng-container *ngIf="shot.Link != 'No link found.'">
+          <ng-container *ngIf="shot.link != 'No link found.'">
             <a
               href="javascript:void(0)"
-              (click)="redirectToLink(shot.Link)"
+              (click)="redirectToLink(shot.link)"
               target="_blank">
               Link
             </a>
@@ -105,13 +119,14 @@
           'strength',
           'type',
           'xG',
+          'wpa',
           'link'
         ]"></tr>
       <tr
         mat-row
         *matRowDef="
           let shot;
-          columns: ['goalie', 'score', 'strength', 'type', 'xG', 'link']
+          columns: ['goalie', 'score', 'strength', 'type', 'xG', 'wpa', 'link']
         "></tr>
     </table>
     <mat-paginator

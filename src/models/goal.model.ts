@@ -3,6 +3,8 @@ export interface GoalModel {
   date: Date;
   shooter: string;
   shooterId: number;
+  assister: string;
+  assisterId: number;
   goalie: string;
   goalieId: number;
   strength: string;

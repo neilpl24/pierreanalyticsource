@@ -123,6 +123,7 @@ export class GamescoreComponent implements OnChanges {
   }
 
   drawChart() {
+    this.tData.sort((a, b) => +a[0] - +b[0]);
     this.x = d3
       .scaleUtc()
       .domain(d3.extent(this.tData, (d) => d[0]) as [Date, Date])
@@ -142,7 +143,16 @@ export class GamescoreComponent implements OnChanges {
       .style('border-width', '1px')
       .style('border-radius', '5px')
       .style('padding', '10px');
+    const startDate = d3.min(this.data, (d) => d.date);
+    const endDate = d3.max(this.data, (d) => d.date);
+    const duration = d3.timeMonth.count(
+      new Date(Date.parse(startDate!)),
+      new Date(Date.parse(endDate!))
+    );
 
+    const tickInterval =
+      duration < 1 ? d3.timeWeek.every(1) : d3.timeMonth.every(1);
+    console.warn(startDate, endDate);
     this.svg
       .append('g')
       .attr('transform', `translate(0, ${this.height - this.marginBottom})`)
@@ -150,7 +160,7 @@ export class GamescoreComponent implements OnChanges {
         d3
           .axisBottom<Date>(this.x)
           .tickSizeOuter(0)
-          .ticks(d3.timeMonth.every(1))
+          .ticks(tickInterval)
           .tickFormat(d3.timeFormat('%m/%d'))
           .tickPadding(10)
       )

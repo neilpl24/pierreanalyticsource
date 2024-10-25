@@ -38,6 +38,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
     'xGPercentage',
     'xGF',
     'xGA',
+    'wpa',
   ];
 
   constructor(
@@ -143,6 +144,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
     xgPercent: 'Expected Goals Percentage',
     xgf: 'Expected Goals For per 60 Minutes',
     xga: 'Expected Goals Against per 60 Minutes',
+    wpa: 'Win Probability Added',
   };
 
   getTooltip(key: string): string {

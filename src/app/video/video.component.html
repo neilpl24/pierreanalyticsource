@@ -1,14 +1,93 @@
 <nav-bar></nav-bar>
+<div *ngIf="videoLink" class="video-player" style="text-align: center">
+  <iframe
+    allow="encrypted-media *;"
+    [src]="videoLink"
+    width="1280"
+    height="720"
+    frameborder="0"
+    allowfullscreen></iframe>
+  <br />
+  <button mat-button primary (click)="closeVideo()">Close Video</button>
+</div>
 <div class="table-wrapper">
-  <div *ngIf="videoLink" class="video-player" style="text-align: center">
-    <iframe
-      [src]="videoLink"
-      width="1280"
-      height="720"
-      frameborder="0"
-      allowfullscreen></iframe>
-    <br />
-    <button mat-button primary (click)="closeVideo()">Close Video</button>
+  <div class="filter-container">
+    <form [formGroup]="filterForm" class="filter-form">
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Year</mat-label>
+        <mat-select formControlName="year">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Player Name</mat-label>
+        <mat-select formControlName="players" multiple>
+          <mat-select-trigger>
+            <ng-container
+              *ngIf="filterForm.get('players')?.value.length; else noSelection">
+              {{ getSelectedPlayerNames().join(", ") }}
+            </ng-container>
+            <ng-template #noSelection>No players selected</ng-template>
+          </mat-select-trigger>
+
+          <!-- Search Input Inside Dropdown -->
+          <mat-form-field class="filter-input" appearance="fill">
+            <input
+              matInput
+              [formControl]="searchControl"
+              placeholder="Search Player" />
+          </mat-form-field>
+
+          <!-- Dropdown Options for Players -->
+          <mat-option
+            *ngFor="let player of filteredPlayers"
+            [value]="player.playerID">
+            <img
+              src="{{
+                'https://assets.nhle.com/mugs/nhl/latest/' +
+                  player.playerID +
+                  '.png'
+              }}"
+              class="logo" />
+            {{ player.firstName }} {{ player.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Team Name</mat-label>
+        <mat-select formControlName="teamNames" multiple>
+          <mat-option *ngFor="let team of teams$ | async" [value]="team">
+            {{ team.teamName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Shot Type (Dropdown) -->
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Shot Type</mat-label>
+        <mat-select formControlName="shotType" multiple>
+          <mat-option *ngFor="let shot of shotTypes" [value]="shot">
+            {{ shot }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Strength (Dropdown) -->
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Strength</mat-label>
+        <mat-select formControlName="strength" multiple>
+          <mat-option *ngFor="let strength of strengths" [value]="strength">
+            {{ strength }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSubmit()">
+        Apply Filters
+      </button>
+    </form>
   </div>
   <div class="shot-table">
     <table
@@ -156,7 +235,7 @@
     <mat-paginator
       class="background"
       [pageSize]="10"
-      [pageSizeOptions]="[10, 25, 50]"
+      [pageSizeOptions]="[5, 10, 25, 50]"
       [length]="dataSource.data.length"
       showFirstLastButtons></mat-paginator>
     <ng-template #emptyState></ng-template>

@@ -3,14 +3,13 @@
     <canvas class="canvas" #rinkCanvas></canvas>
     <div class="shot-markers">
       <div
-        *ngFor="let shot of filterShots(shotsData); let i = index"
+        *ngFor="let shot of shotsData; let i = index"
         class="shot-marker"
         [style.left.px]="getShotImageCoordinates(shot.x, shot.y).y"
         [style.top.px]="getShotImageCoordinates(shot.x, shot.y).x"
         [matTooltip]="getTooltipContent(shot)"
         matTooltipPosition="above"
-        (click)="redirectToLink(shot.Link)"
-      ></div>
+        (click)="redirectToLink(shot.link)"></div>
     </div>
   </div>
 </div>
