@@ -10,6 +10,7 @@ import { VideoPlayerComponent } from './video-player/video-player.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { StandingsComponent } from './standings/standings.component';
 import { TeamsComponent } from './teams/teams.component';
+import { VideoComponent } from './video/video.component';
 
 const routes: Routes = [
   { path: 'leaderboard/:type', component: LeaderboardComponent },
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'scores', component: DatePickerComponent },
   { path: 'scores/:date', component: ScoresComponent },
   { path: 'video/:link', component: VideoPlayerComponent },
+  { path: 'video', component: VideoComponent },
   { path: 'standings', component: StandingsComponent },
   { path: 'teams/:teamID', component: TeamsComponent },
   { path: '', component: LandingComponent },

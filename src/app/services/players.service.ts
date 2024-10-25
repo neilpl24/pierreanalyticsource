@@ -10,6 +10,7 @@ import { GoalieModel } from 'src/models/goalie.model';
 import { TeamLeaderboardModel } from 'src/models/team-leaderboard.model';
 import { Filters } from './leaderboard.service';
 import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
+import { GoalModel } from 'src/models/goal.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class PlayersService {
     }
 
     if (season == '') {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
     return this.http.get<CardModel>(
       `${this.baseUrl}/players/card/${playerId}`,
@@ -58,7 +59,7 @@ export class PlayersService {
     if (season && season != '') {
       params = params.append('season', season?.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     return this.http.get<GamescoreModel[]>(
@@ -83,7 +84,7 @@ export class PlayersService {
     if (season && season != '') {
       params = params.append('season', season?.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     return this.http.get<GamescoreAverageModel>(
@@ -106,6 +107,79 @@ export class PlayersService {
     );
   }
 
+  public getGoals(
+    shootingPlayerId?: number,
+    assistingPlayerId?: number,
+    season?: string
+  ) {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+
+    if (shootingPlayerId) {
+      params = params.append('shootingPlayerId', shootingPlayerId.toString());
+    }
+
+    if (assistingPlayerId) {
+      params = params.append('assistingPlayerId', assistingPlayerId.toString());
+    }
+
+    if (season) {
+      params = params.append('season', season);
+    }
+
+    return this.http.get<GoalModel[]>(
+      `${this.baseUrl}/players/goals/singular`,
+      {
+        params,
+        headers,
+      }
+    );
+  }
+
+  public getGoalData(
+    playerIds?: number[],
+    teamNames?: string[],
+    shotTypes?: string[],
+    strengths?: string[],
+    season?: string
+  ) {
+    const headers = new HttpHeaders().set(
+      'Content-Type',
+      'application/json; charset=utf-8'
+    );
+    let params = new HttpParams();
+
+    if (season) {
+      params = params.append('season', season);
+    } else {
+      params = params.append('season', '2025');
+    }
+
+    if (playerIds?.length) {
+      params = params.append('playerIds', playerIds.toString());
+    }
+
+    if (teamNames?.length) {
+      params = params.append('teamNames', teamNames.toString());
+    }
+
+    if (shotTypes?.length) {
+      params = params.append('shotTypes', shotTypes.toString());
+    }
+
+    if (strengths?.length) {
+      params = params.append('strengths', strengths.toString());
+    }
+
+    return this.http.get<GoalModel[]>(`${this.baseUrl}/players/goals`, {
+      params,
+      headers,
+    });
+  }
+
   public getInfo(
     playerId: number,
     season?: string
@@ -121,7 +195,7 @@ export class PlayersService {
     }
 
     if (season == '') {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
     return this.http.get<PlayerModel>(
       `${this.baseUrl}/players/info/${playerId}`,
@@ -196,11 +270,11 @@ export class PlayersService {
 
     if (filters.season) {
       if (filters.season == '') {
-        filters.season = '2024';
+        filters.season = '2025';
       }
       params = params.append('season', filters.season.toString());
     } else {
-      params = params.append('season', '2024');
+      params = params.append('season', '2025');
     }
 
     if (sort.active) {

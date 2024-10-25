@@ -1,0 +1,257 @@
+<nav-bar></nav-bar>
+<div *ngIf="videoLink" class="video-player" style="text-align: center">
+  <iframe
+    allow="encrypted-media *;"
+    [src]="videoLink"
+    frameborder="0"
+    allowfullscreen></iframe>
+  <br />
+  <button mat-button primary (click)="closeVideo()">Close Video</button>
+</div>
+<div class="table-wrapper">
+  <div class="filter-container">
+    <form [formGroup]="filterForm" class="filter-form">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
+        <mat-label>Year</mat-label>
+        <mat-select formControlName="year">
+          <mat-option *ngFor="let year of years" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
+        <mat-label>Player Name</mat-label>
+        <mat-select formControlName="players" multiple>
+          <mat-select-trigger>
+            <ng-container
+              *ngIf="filterForm.get('players')?.value.length; else noSelection">
+              {{ getSelectedPlayerNames().join(", ") }}
+            </ng-container>
+            <ng-template #noSelection>No players selected</ng-template>
+          </mat-select-trigger>
+
+          <mat-form-field
+            class="filter-input"
+            appearance="fill"
+            subscriptSizing="dynamic">
+            <input
+              matInput
+              [formControl]="searchControl"
+              placeholder="Search Player" />
+          </mat-form-field>
+
+          <mat-option
+            *ngFor="let player of filteredPlayers"
+            [value]="player.playerID">
+            <img
+              src="{{
+                'https://assets.nhle.com/mugs/nhl/latest/' +
+                  player.playerID +
+                  '.png'
+              }}"
+              class="logo" />
+            {{ player.firstName }} {{ player.lastName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
+        <mat-label>Team Name</mat-label>
+        <mat-select formControlName="teamNames" multiple>
+          <mat-option
+            *ngFor="let team of teams$ | async"
+            [value]="team.teamName">
+            {{ team.teamName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
+        <mat-label>Shot Type</mat-label>
+        <mat-select formControlName="shotType" multiple>
+          <mat-option *ngFor="let shot of shotTypes" [value]="shot">
+            {{ shot }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
+        <mat-label>Strength</mat-label>
+        <mat-select formControlName="strength" multiple>
+          <mat-option *ngFor="let strength of strengths" [value]="strength">
+            {{ strength }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSubmit()">
+        Apply Filters
+      </button>
+    </form>
+  </div>
+  <div class="shot-table">
+    <table
+      mat-table
+      class="table table-hover align-middle mb-0 bg-white table-bordered border-secondary"
+      [dataSource]="dataSource"
+      matSort>
+      <ng-container matColumnDef="shooter">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="shooter"
+          class="left">
+          Shooter
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.shooter }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="goalie">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="goalie"
+          class="left">
+          Goalie
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.goalie }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="score">
+        <th mat-header-cell *matHeaderCellDef class="left">Score</th>
+        <td mat-cell *matCellDef="let shot" class="left" style="width: 20%">
+          <img
+            src="{{ 'assets/teams/' + shot.awayTeam + '.png' }}"
+            class="logo" />
+          {{ shot.awayGoals }}-{{ shot.homeGoals }}
+          <img
+            src="{{ 'assets/teams/' + shot.homeTeam + '.png' }}"
+            class="logo" />
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="strength" class="hide-on-mobile">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="strength"
+          class="left">
+          Strength
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.strength }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="type"
+          class="left">
+          Type
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ shot.type }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="xG">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="xG"
+          class="left"
+          [matTooltip]="getTooltip('xg')"
+          matTooltipPosition="above">
+          xG
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ this.roundValue(shot.xG) }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="wpa">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="wpa"
+          class="left"
+          [matTooltip]="getTooltip('wpa')"
+          matTooltipPosition="above">
+          WPA
+        </th>
+        <td mat-cell *matCellDef="let shot" class="left">
+          {{ this.roundValue(shot.wpa) | percent }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="link">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header="link"
+          class="left">
+          Video Link
+        </th>
+        <td
+          mat-cell
+          *matCellDef="let shot"
+          class="left"
+          style="width: 20%; max-width: 0">
+          <ng-container *ngIf="shot.link == 'No link found.'">
+            <p>No link found.</p>
+          </ng-container>
+          <ng-container *ngIf="shot.link != 'No link found.'">
+            <a href="javascript:void(0)" (click)="openVideo(shot.link)">Link</a>
+          </ng-container>
+        </td>
+      </ng-container>
+      <tr
+        mat-header-row
+        *matHeaderRowDef="[
+          'shooter',
+          'goalie',
+          'score',
+          'strength',
+          'type',
+          'xG',
+          'wpa',
+          'link'
+        ]"></tr>
+      <tr
+        mat-row
+        *matRowDef="
+          let shot;
+          columns: [
+            'shooter',
+            'goalie',
+            'score',
+            'strength',
+            'type',
+            'xG',
+            'wpa',
+            'link'
+          ]
+        "></tr>
+    </table>
+    <mat-paginator
+      class="background"
+      [pageSize]="10"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [length]="dataSource.data.length"
+      showFirstLastButtons></mat-paginator>
+    <ng-template #emptyState></ng-template>
+  </div>
+</div>

@@ -7,8 +7,8 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { ShotModel } from 'src/models/shot.model';
 import { Router } from '@angular/router';
+import { GoalModel } from 'src/models/goal.model';
 
 @Component({
   selector: 'shots',
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class ShotsComponent implements AfterViewInit, OnChanges {
   @ViewChild('rinkCanvas', { static: false }) canvasRef: ElementRef;
-  @Input() shotsData: ShotModel[];
+  @Input() shotsData: GoalModel[];
 
   constructor(private router: Router) {}
 
@@ -55,7 +55,7 @@ export class ShotsComponent implements AfterViewInit, OnChanges {
     };
   }
 
-  getTooltipContent(shot: ShotModel): string {
+  getTooltipContent(shot: GoalModel): string {
     return `Type: ${shot.type}, xG: ${this.roundNumber(shot.xG, 2)}`;
   }
 
@@ -83,9 +83,9 @@ export class ShotsComponent implements AfterViewInit, OnChanges {
   drawShotMarkers(context: CanvasRenderingContext2D) {
     if (!this.shotsData) return;
 
-    for (const shot of this.filterShots(this.shotsData)) {
+    for (const shot of this.shotsData) {
       const { x, y } = this.getShotImageCoordinates(shot.x, shot.y);
-      this.drawShotMarker(context, y, x, shot.Link);
+      this.drawShotMarker(context, y, x, shot.link);
     }
   }
 
@@ -141,9 +141,5 @@ export class ShotsComponent implements AfterViewInit, OnChanges {
       imageY = 146 - nhlY * 2.92;
     }
     return { x: imageX, y: imageY };
-  }
-
-  filterShots(shots: ShotModel[]): ShotModel[] {
-    return shots.filter((shot) => shot.Outcome == 'goal');
   }
 }

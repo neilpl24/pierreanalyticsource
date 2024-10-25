@@ -5,12 +5,12 @@ import {
   AfterViewInit,
   OnChanges,
 } from '@angular/core';
-import { ShotModel } from 'src/models/shot.model';
 import { Router } from '@angular/router';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import * as chroma from 'chroma-js';
+import { GoalModel } from 'src/models/goal.model';
 
 @Component({
   selector: 'shot-table',
@@ -18,7 +18,7 @@ import * as chroma from 'chroma-js';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements AfterViewInit, OnChanges {
-  @Input() shotsData: ShotModel[];
+  @Input() shotsData: GoalModel[];
   dataSource = new MatTableDataSource();
 
   @ViewChild(MatSort) sort: MatSort;
@@ -34,15 +34,15 @@ export class TableComponent implements AfterViewInit, OnChanges {
     this.updateDataSource();
   }
 
-  filterShots(shots: ShotModel[]): ShotModel[] {
+  filterShots(shots: GoalModel[]): GoalModel[] {
     return shots
-      .filter((shot) => shot.Outcome == 'goal')
+      .filter((shot) => shot.outcome == 'goal')
       .map((shot) => {
-        if (shot.away_team.slice(0, 3) == 'Mon') {
-          shot.away_team = 'MTL';
+        if (shot.awayTeam.slice(0, 3) == 'Mon') {
+          shot.awayTeam = 'MTL';
         }
-        if (shot.home_team.slice(0, 3) == 'Mon') {
-          shot.home_team = 'MTL';
+        if (shot.homeTeam.slice(0, 3) == 'Mon') {
+          shot.homeTeam = 'MTL';
         }
         return shot;
       });

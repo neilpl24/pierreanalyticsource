@@ -1,5 +1,4 @@
 import { PlayersService } from '../../services/players.service';
-import { SeasonService } from '../../services/season.service';
 import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,7 +20,7 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
   sortedColumn: string = 'starts';
   dataSource = new MatTableDataSource();
 
-  season = '2024';
+  season = '2025';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -43,7 +42,6 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
 
   constructor(
     private playersService: PlayersService,
-    private seasonService: SeasonService,
     private leaderboardService: LeaderboardService
   ) {}
 

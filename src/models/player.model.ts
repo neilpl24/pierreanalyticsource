@@ -21,6 +21,7 @@ export interface PlayerModel {
   xGA: number;
   gsae: number;
   xG: number;
+  wpa: number;
   season: number;
 }
 
@@ -31,5 +32,6 @@ export function setDefaults(model: PlayerModel) {
   model.xGF = roundDecimal(model.xGF);
   model.xGA = roundDecimal(model.xGA);
   model.gsae = roundDecimal(model.gsae);
+  model.wpa = roundDecimal(model.wpa);
   return model;
 }

@@ -6,23 +6,23 @@
       *ngIf="{
         player: player$ | async,
         card: card$ | async,
-      } as playerOverall"
-    >
+      } as playerOverall">
       <ng-container *ngIf="playerOverall.player as player">
         <ng-container *ngIf="playerOverall.card as card">
           <div class="card-container">
             <mat-card class="player-card border">
               <mat-card-content>
-                <mat-card-title class="player-name text-center"
-                  >{{ player.firstName }} {{ player.lastName }}</mat-card-title
-                >
+                <mat-card-title class="player-name text-center">
+                  {{ player.firstName }} {{ player.lastName }}
+                </mat-card-title>
                 <div class="player-headshot-div">
                   <img
                     class="player-headshot"
                     src="https://assets.nhle.com/mugs/nhl/{{
-                      seasonMap[season ?? '2024']
-                    }}/{{ nhlTeamMap[player.team] }}/{{ player.playerID }}.png"
-                  />
+                      seasonMap[season ?? '2025']
+                    }}/{{ nhlTeamMap[player.team] }}/{{
+                      player.playerID
+                    }}.png" />
                   <div class="table-container">
                     <table>
                       <tr>
@@ -30,13 +30,11 @@
                         <td>
                           <a
                             [routerLink]="['/teams', player.teamId]"
-                            class="plain-link"
-                          >
+                            class="plain-link">
                             {{ player.team }}
                             <img
                               src="{{ 'assets/teams/' + player.team + '.png' }}"
-                              class="logo"
-                            />
+                              class="logo" />
                           </a>
                         </td>
                       </tr>
@@ -67,8 +65,7 @@
                           <span
                             class="fi fi-{{
                               countryCodeMap[player.nationality]
-                            }}"
-                          ></span>
+                            }}"></span>
                         </td>
                       </tr>
                     </table>
@@ -79,9 +76,9 @@
                         href="https://edge.nhl.com/en/goalie/{{
                           player.playerID
                         }}"
-                        target="_blank"
-                        >View NHL Edge Data</a
-                      >
+                        target="_blank">
+                        View NHL Edge Data
+                      </a>
                     </div>
                   </ng-container>
                   <ng-template #skaterEdge>
@@ -90,9 +87,9 @@
                         href="https://edge.nhl.com/en/skater/{{
                           player.playerID
                         }}"
-                        target="_blank"
-                        >View NHL Edge Data</a
-                      >
+                        target="_blank">
+                        View NHL Edge Data
+                      </a>
                     </div>
                   </ng-template>
                 </div>
@@ -100,20 +97,20 @@
             </mat-card>
             <mat-card class="statistics-card border">
               <mat-card-content>
-                <mat-card-title class="player-name text-center"
-                  >{{ season }} NHL Percentile Statistics <br />(Per
-                  60)</mat-card-title
-                >
-                <mat-card-subtitle class="text-center"
-                  >Updated on (04/19/24, 12:53pm EST)</mat-card-subtitle
-                >
+                <mat-card-title class="player-name text-center">
+                  {{ season }} NHL Percentile Statistics
+                  <br />
+                  (Per 60)
+                </mat-card-title>
+                <mat-card-subtitle class="text-center">
+                  Updated on (10/25/24, 1:00pm EST)
+                </mat-card-subtitle>
 
                 <div class="timeline-container">
                   <div class="left-timelines">
                     <div
                       *ngFor="let timeline of getLeftTimelines(player.position)"
-                      class="timeline-item"
-                    >
+                      class="timeline-item">
                       <h3>{{ timeline }}</h3>
                       <timeline
                         [title]="timeline"
@@ -121,9 +118,7 @@
                           getPercentiles(card, player)[
                             getTimelines(player.position).indexOf(timeline)
                           ]
-                        "
-                      >
-                      </timeline>
+                        "></timeline>
                     </div>
                   </div>
                   <div class="right-timelines">
@@ -131,8 +126,7 @@
                       *ngFor="
                         let timeline of getRightTimelines(player.position)
                       "
-                      class="timeline-item"
-                    >
+                      class="timeline-item">
                       <h3>{{ timeline }}</h3>
                       <timeline
                         [title]="timeline"
@@ -140,9 +134,7 @@
                           getPercentiles(card, player)[
                             getTimelines(player.position).indexOf(timeline)
                           ]
-                        "
-                      >
-                      </timeline>
+                        "></timeline>
                     </div>
                   </div>
                 </div>
@@ -153,9 +145,7 @@
                   </p>
                   <p class="descriptor-text">
                     Check out the
-                    <a [routerLink]="['/about']" class="plain-link">
-                      glossary
-                    </a>
+                    <a [routerLink]="['/about']" class="plain-link">glossary</a>
                     located on the about page to learn a bit more about the
                     statistics above.
                   </p>
@@ -163,59 +153,50 @@
               </mat-card-content>
             </mat-card>
             <mat-card class="shot-card border">
-              <mat-card-title class="player-name text-center"
-                >{{ season }} Goals Plot</mat-card-title
-              >
-              <mat-card-subtitle class="text-center"
-                >Hover over the dots to see shot type and xG.
+              <mat-card-title class="player-name text-center">
+                {{ season }} Goals Plot
+              </mat-card-title>
+              <mat-card-subtitle class="text-center">
+                Hover over the dots to see shot type and xG.
               </mat-card-subtitle>
               <mat-card-subtitle class="text-center">
-                Click on the blue dots to see goal video!</mat-card-subtitle
-              >
+                Click on the blue dots to see goal video!
+              </mat-card-subtitle>
               <div
                 class="md-form form-fill"
-                *ngIf="seasons$ | async as seasons"
-              >
+                *ngIf="seasons$ | async as seasons">
                 <div mdbDropdown class="dropdown">
                   <button
                     class="btn btn-primary dropdown-toggle mat-form-field-appearance-fill"
                     type="button"
                     id="dropdownMenuButton"
                     aria-expanded="false"
-                    mdbDropdownToggle
-                  >
+                    mdbDropdownToggle>
                     Season
                   </button>
                   <ul
                     mdbDropdownMenu
                     class="dropdown-menu"
-                    aria-labelledby="dropdownMenuButton"
-                  >
+                    aria-labelledby="dropdownMenuButton">
                     <li>
                       <a
                         class="dropdown-item"
-                        [routerLink]="['/', player.playerID, 'year']"
-                        >-</a
-                      >
+                        [routerLink]="['/', player.playerID, 'year']">
+                        -
+                      </a>
                     </li>
                     <li *ngFor="let season of seasons">
                       <a
                         class="dropdown-item"
                         href="#"
-                        [routerLink]="['/', player.playerID, 'year', season]"
-                      >
+                        [routerLink]="['/', player.playerID, 'year', season]">
                         {{ season }}
                       </a>
                     </li>
                   </ul>
                 </div>
               </div>
-              <shots
-                *ngIf="player.shots"
-                [shotsData]="shotsData"
-                (shotsDataChange)="onShotsDataChange($event)"
-              >
-              </shots>
+              <shots *ngIf="shotsData" [shotsData]="shotsData"></shots>
               <div class="action-container">
                 <img
                   class="action"
@@ -223,8 +204,7 @@
                   src="https://assets.nhle.com/mugs/actionshots/1296x729/{{
                     player.playerID
                   }}.jpg"
-                  alt="Player action shot"
-                />
+                  alt="Player action shot" />
               </div>
             </mat-card>
           </div>
@@ -242,8 +222,7 @@
           <gamescore
             [data]="gamescore"
             [showRollingAverage]="showRollingAverage"
-            [average]="gamescoreAverage"
-          ></gamescore>
+            [average]="gamescoreAverage"></gamescore>
         </div>
         <div class="rolling-average-checkbox">
           <label>
@@ -260,21 +239,15 @@
   <ng-container *ngIf="player$ | async as player">
     <div class="goals-table">
       <h2 class="text-center">{{ season }} Goals</h2>
-      <shot-table
-        *ngIf="player.shots"
-        [shotsData]="shotsData"
-        (shotsDataChange)="onShotsDataChange($event)"
-      ></shot-table>
+      <shot-table *ngIf="shotsData" [shotsData]="shotsData"></shot-table>
     </div>
     <ng-container *ngIf="player.position != 'G'">
       <div class="assists-table">
         <h2 class="text-center">{{ season }} Primary Assists</h2>
         <shot-table
           class="assists"
-          *ngIf="player.assists"
-          [shotsData]="assistsData"
-          (assistsDataChange)="onAssistsDataChange($event)"
-        ></shot-table>
+          *ngIf="assistsData"
+          [shotsData]="assistsData"></shot-table>
       </div>
     </ng-container>
   </ng-container>

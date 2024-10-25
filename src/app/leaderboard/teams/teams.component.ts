@@ -27,7 +27,7 @@ export class TeamsLeaderboard implements OnInit {
 
   allTeams: Observable<TeamLeaderboardModel[]>;
 
-  season = '2024';
+  season = '2025';
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   sortDefault: Sort = { active: 'points', direction: 'desc' };
