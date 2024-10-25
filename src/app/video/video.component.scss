@@ -12,6 +12,14 @@ button {
 .table-wrapper {
   display: flex;
   align-items: stretch;
+  flex-direction: row;
+  margin: 10px;
+  gap: 10px;
+}
+
+iframe {
+  width: 1280px;
+  height: 720px;
 }
 
 .video-player {
@@ -41,11 +49,10 @@ tr:hover {
 }
 
 .filter-container {
+  width: 25%;
   border: 1px solid #ccc;
-  padding: 16px;
+  padding: 8px;
   border-radius: 8px;
-  max-width: 300px;
-  margin-right: 10px;
   max-height: fit-content;
   background-color: var(--bgColor);
   flex: 0 0 auto;
@@ -54,7 +61,7 @@ tr:hover {
 .filter-form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .filter-input {
@@ -103,7 +110,14 @@ tr:hover {
     align-items: flex-start;
   }
 
+  iframe {
+    width: 100%;
+    height: auto;
+  }
+
   .filter-container {
-    margin-bottom: 16px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    width: 90%;
   }
 }

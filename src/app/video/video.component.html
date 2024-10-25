@@ -3,8 +3,6 @@
   <iframe
     allow="encrypted-media *;"
     [src]="videoLink"
-    width="1280"
-    height="720"
     frameborder="0"
     allowfullscreen></iframe>
   <br />
@@ -13,7 +11,10 @@
 <div class="table-wrapper">
   <div class="filter-container">
     <form [formGroup]="filterForm" class="filter-form">
-      <mat-form-field appearance="fill" class="filter-field">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
         <mat-label>Year</mat-label>
         <mat-select formControlName="year">
           <mat-option *ngFor="let year of years" [value]="year">
@@ -21,7 +22,10 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field appearance="fill" class="filter-field">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
         <mat-label>Player Name</mat-label>
         <mat-select formControlName="players" multiple>
           <mat-select-trigger>
@@ -32,7 +36,10 @@
             <ng-template #noSelection>No players selected</ng-template>
           </mat-select-trigger>
 
-          <mat-form-field class="filter-input" appearance="fill">
+          <mat-form-field
+            class="filter-input"
+            appearance="fill"
+            subscriptSizing="dynamic">
             <input
               matInput
               [formControl]="searchControl"
@@ -54,7 +61,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="filter-field">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
         <mat-label>Team Name</mat-label>
         <mat-select formControlName="teamNames" multiple>
           <mat-option *ngFor="let team of teams$ | async" [value]="team">
@@ -63,7 +73,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="filter-field">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
         <mat-label>Shot Type</mat-label>
         <mat-select formControlName="shotType" multiple>
           <mat-option *ngFor="let shot of shotTypes" [value]="shot">
@@ -72,7 +85,10 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="fill" class="filter-field">
+      <mat-form-field
+        appearance="fill"
+        class="filter-field"
+        subscriptSizing="dynamic">
         <mat-label>Strength</mat-label>
         <mat-select formControlName="strength" multiple>
           <mat-option *ngFor="let strength of strengths" [value]="strength">
