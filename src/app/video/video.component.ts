@@ -15,6 +15,7 @@ import {
   filter,
   Observable,
   switchMap,
+  tap,
 } from 'rxjs';
 import { Filters } from '../services/leaderboard.service';
 import { ScoresService } from '../services/scores.service';
@@ -103,12 +104,11 @@ export class VideoComponent implements OnInit {
           (searchText: string | null): searchText is string =>
             searchText !== null
         ),
-        switchMap(() => this.svc.getName(this.filters))
+        tap(() => {
+          this.onSearchInputChange();
+        })
       )
-      .subscribe((players: PlayerModel[]) => {
-        this.players = players;
-        this.onSearchInputChange();
-      });
+      .subscribe();
   }
 
   onSubmit() {
@@ -149,22 +149,12 @@ export class VideoComponent implements OnInit {
       this.filteredPlayers = this.players.filter(
         (player) =>
           player.firstName.toLowerCase().includes(searchTerm) ||
-          player.lastName.toLowerCase().includes(searchTerm)
+          player.lastName.toLowerCase().includes(searchTerm) ||
+          this.filterForm.get('players')?.value.includes(player.playerID)
       );
     } else {
       this.filteredPlayers = this.players;
     }
-  }
-
-  selectPlayer(player: PlayerModel) {
-    this.selectedPlayers.push(player);
-    this.filterForm.get('players')!.setValue(this.selectedPlayers);
-    this.clearSearchInput();
-  }
-
-  clearSearchInput() {
-    this.searchControl.setValue('');
-    this.filteredPlayers = [];
   }
 
   closeVideo() {

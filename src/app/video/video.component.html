@@ -67,7 +67,9 @@
         subscriptSizing="dynamic">
         <mat-label>Team Name</mat-label>
         <mat-select formControlName="teamNames" multiple>
-          <mat-option *ngFor="let team of teams$ | async" [value]="team">
+          <mat-option
+            *ngFor="let team of teams$ | async"
+            [value]="team.teamName">
             {{ team.teamName }}
           </mat-option>
         </mat-select>

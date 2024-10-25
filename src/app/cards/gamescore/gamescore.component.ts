@@ -235,6 +235,7 @@ export class GamescoreComponent implements OnChanges {
         .x((d) => this.x(d[0]))
         .y((d) => this.y(d[1]));
 
+      this.rollingData.sort((a, b) => +a[0] - +b[0]);
       this.svg
         .append('path')
         .datum(this.rollingData)

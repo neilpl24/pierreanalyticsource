@@ -1168,6 +1168,7 @@ app.get("/players/goals", async (req, res, next) => {
         link: row.link,
       });
     }
+    response.sort((a, b) => new Date(b.date) - new Date(a.date));
     res.status(200).json(response);
   });
 });
