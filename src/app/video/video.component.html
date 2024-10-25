@@ -32,7 +32,6 @@
             <ng-template #noSelection>No players selected</ng-template>
           </mat-select-trigger>
 
-          <!-- Search Input Inside Dropdown -->
           <mat-form-field class="filter-input" appearance="fill">
             <input
               matInput
@@ -40,7 +39,6 @@
               placeholder="Search Player" />
           </mat-form-field>
 
-          <!-- Dropdown Options for Players -->
           <mat-option
             *ngFor="let player of filteredPlayers"
             [value]="player.playerID">
@@ -65,7 +63,6 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- Shot Type (Dropdown) -->
       <mat-form-field appearance="fill" class="filter-field">
         <mat-label>Shot Type</mat-label>
         <mat-select formControlName="shotType" multiple>
@@ -75,7 +72,6 @@
         </mat-select>
       </mat-form-field>
 
-      <!-- Strength (Dropdown) -->
       <mat-form-field appearance="fill" class="filter-field">
         <mat-label>Strength</mat-label>
         <mat-select formControlName="strength" multiple>

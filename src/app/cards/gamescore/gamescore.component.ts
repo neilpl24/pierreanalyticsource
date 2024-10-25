@@ -152,7 +152,7 @@ export class GamescoreComponent implements OnChanges {
 
     const tickInterval =
       duration < 1 ? d3.timeWeek.every(1) : d3.timeMonth.every(1);
-    console.warn(startDate, endDate);
+
     this.svg
       .append('g')
       .attr('transform', `translate(0, ${this.height - this.marginBottom})`)
