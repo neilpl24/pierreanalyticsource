@@ -12,6 +12,7 @@
   width: 100%;
   overflow: auto;
   border: 1.5px solid grey;
+  max-height: 375px;
 }
 
 .slider {
