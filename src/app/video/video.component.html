@@ -4,7 +4,8 @@
     allow="encrypted-media *;"
     [src]="videoLink"
     frameborder="0"
-    allowfullscreen></iframe>
+    allowfullscreen
+    sandbox="allow-scripts allow-same-origin"></iframe>
   <br />
   <button mat-button primary (click)="closeVideo()">Close Video</button>
 </div>
