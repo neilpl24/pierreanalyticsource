@@ -99,8 +99,8 @@ export class TeamsLeaderboard implements OnInit {
     ev_xGF: 'Expected Goals For per 60 Minutes at Even Strength',
     ev_xGA: 'Expected Goals Against per 60 Minutes at Even Strength',
     xgPercent: 'Expected Goals Percentage',
-    finishing: 'Finishing Measured in Goals Saved Above Expected (GSAE)',
-    gsax: 'Goals Saved Above Expected (GSAE)',
+    finishing: 'Finishing Measured in Goals Scored Above Expected (GSAE)',
+    gsax: 'Goals Saved Above Expected (GSAx)',
     pp: 'Power Play Percentage',
     pk: 'Penalty Kill Percentage',
   };

@@ -139,7 +139,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   // tooltip text with mappings to the column names
   tooltipMappings: { [key: string]: string } = {
     goals: 'Even Strength Goals per 60 Minutes',
-    finishing: 'Finishing Measured in Goals Saved Above Expected (GSAE)',
+    finishing: 'Finishing Measured in Goals Scored Above Expected (GSAE)',
     assists: 'Even Strength Primary Assists per 60 Minutes',
     xgPercent: 'Expected Goals Percentage',
     xgf: 'Expected Goals For per 60 Minutes',
