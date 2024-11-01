@@ -1,25 +1,25 @@
 .segmented-button {
   display: flex;
-}
-.segment {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  text-align: center;
-  color: black;
-}
-.segment.active {
-  background-color: #007bff;
-  color: white;
+  align-items: center;
+  flex-direction: column;
+  margin: 5px;
+  gap: 5px;
 }
 
-.segment:first-child {
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+.top-toggles {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  gap: 5px;
 }
 
-.segment:last-child {
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+.mat-button-toggle {
+  border: var(--borderColor);
+  color: var(--bgColor);
+  padding: 0px 5px;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--releaseNotesColor);
+  color: var(--textColor);
 }

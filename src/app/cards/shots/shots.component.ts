@@ -6,14 +6,20 @@ import {
   OnInit,
   Input,
   OnDestroy,
+  ViewEncapsulation,
 } from '@angular/core';
 import { ShotModel } from 'src/models/shot.model';
 import { Router } from '@angular/router';
 import * as d3 from 'd3';
 import { RinkMap } from './rinkPlot.js';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, filter, max, Subscription } from 'rxjs';
 import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
+import { hexbin, HexbinBin } from 'd3-hexbin';
+import { MatButtonToggle } from '@angular/material/button-toggle/index.js';
 
+interface ExtendedHexbinBin extends HexbinBin<[number, number]> {
+  shots: ShotModel[];
+}
 @Component({
   selector: 'shots',
   templateUrl: './shots.component.html',
@@ -22,12 +28,25 @@ import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 export class ShotsComponent implements OnInit {
   @Input() shotsData: ShotModel[];
 
+  isGoalsToggle: string = 'false';
+  private isGoalsSubject = new BehaviorSubject<boolean>(
+    this.isGoalsToggle === 'true'
+  );
+  isGoals$ = this.isGoalsSubject.asObservable();
+
+  isCirclePlotsToggle: string = 'true';
+  private isCirclePlotsSubject = new BehaviorSubject<boolean>(
+    this.isCirclePlotsToggle === 'true'
+  );
+  isCirclePlots$ = this.isCirclePlotsSubject.asObservable();
+
   private filteredShotsSubject = new BehaviorSubject<ShotModel[]>([]);
   filteredShots$ = this.filteredShotsSubject.asObservable();
 
-  selectedOptions: Set<string> = new Set(['EV', 'SH', 'PP']);
+  selectedOptions: Array<string> = ['EV', 'SH', 'PP'];
 
-  shotsLayer: any;
+  circlesLayer: any;
+  hexbinLayer: any;
 
   rinkScale: number;
   rinkWidth: number;
@@ -35,16 +54,30 @@ export class ShotsComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
+    console.log('shotsData', this.shotsData);
+
     this.createChart();
     this.filterShotsData();
 
-    this.filteredShots$
+    // a change of either observable should trigger the visualization update
+    combineLatest([this.filteredShots$, this.isCirclePlots$])
       .pipe(
-        tap((filteredShots) => {
-          this.updateVisualization(filteredShots);
+        tap(([filteredShots, isCirclePlots]) => {
+          this.updateVisualization(filteredShots, isCirclePlots);
         })
       )
       .subscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['shotsData']) {
+      // Clear old data from the chart
+      this.circlesLayer.selectAll('circle').remove();
+      this.hexbinLayer.selectAll('path').remove();
+
+      // Filter the new shots data
+      this.filterShotsData();
+    }
   }
 
   createChart() {
@@ -54,7 +87,7 @@ export class ShotsComponent implements OnInit {
         .select('#half-rink-vert')
         .append('svg')
         .attr('width', 300)
-        .attr('height', 400);
+        .attr('height', 355);
 
       const halfVertPlot = RinkMap({
         parent: halfVertSvg,
@@ -67,31 +100,51 @@ export class ShotsComponent implements OnInit {
       this.rinkWidth = halfVertPlot.rinkWidth;
       halfVertPlot.chart();
 
-      this.shotsLayer = halfVertSvg.append('g').attr('id', 'shotsLayer');
+      // just create both layers, even if we're not using it
+      this.circlesLayer = halfVertSvg.append('g').attr('id', 'circlesLayer');
+      this.hexbinLayer = halfVertSvg.append('g').attr('id', 'hexbinLayer');
     }
   }
 
   toggleSelection(option: string) {
-    if (this.selectedOptions.has(option)) {
-      this.selectedOptions.delete(option);
+    // has to be an array to satisfy the html component
+    const index = this.selectedOptions.indexOf(option);
+    if (index !== -1) {
+      // Remove the value if it exists
+      this.selectedOptions.splice(index, 1);
     } else {
-      this.selectedOptions.add(option);
+      // Add the value if it doesn't exist
+      this.selectedOptions.push(option);
     }
 
     this.filterShotsData();
   }
 
   isSelected(option: string) {
-    return this.selectedOptions.has(option);
+    return this.selectedOptions.includes(option);
+  }
+
+  toggleCirclePlots(value: string) {
+    this.isCirclePlotsSubject.next(value === 'true');
+  }
+
+  toggleGoals(value: string) {
+    this.isGoalsSubject.next(value === 'true');
   }
 
   filterShotsData() {
-    const filteredShots = this.shotsData.filter((shot) => {
-      const strength = strengthSwitch(shot.strength);
-      return this.selectedOptions.has(strength);
-    });
-
-    this.filteredShotsSubject.next(filteredShots);
+    this.isGoals$
+      .pipe(
+        map((isGoals) => {
+          var filteredShots = this.shotsData.filter((shot) => {
+            const strength = strengthSwitch(shot.strength);
+            const isShotIncluded = isGoals ? shot.Outcome === 'Goal' : true;
+            return this.selectedOptions.includes(strength) && isShotIncluded;
+          });
+          this.filteredShotsSubject.next(filteredShots);
+        })
+      )
+      .subscribe();
   }
 
   scaleRink(nhlX: number, nhlY: number) {
@@ -111,14 +164,60 @@ export class ShotsComponent implements OnInit {
     }
   }
 
-  updateVisualization(filteredShots: ShotModel[]) {
-    // heuristic id function to update the circles
-    const keyFunction = (d: ShotModel) =>
-      `${d.date}${d.shooter_id}${d.away_goals}${d.home_goals}`;
+  updateVisualization(filteredShots: ShotModel[], isCirclePlots: boolean) {
+    // hide the layer that is not being used
+    this.circlesLayer.style('display', isCirclePlots ? 'block' : 'none');
+    this.hexbinLayer.style('display', !isCirclePlots ? 'block' : 'none');
 
-    const circles = this.shotsLayer
-      .selectAll('circle')
-      .data(filteredShots, keyFunction as any);
+    if (isCirclePlots) {
+      // could be shot or goal plots
+      this.plotCircles(filteredShots);
+      return;
+    }
+    // !isCirclePlots, then we plot heat maps
+    this.plotHexagons(filteredShots);
+  }
+
+  plotHexagons(filteredShots: ShotModel[]) {
+    hexbin().size([300, 400]);
+
+    const hexbinGenerator = hexbin().radius(20);
+
+    // this is not an error, y and x should be transposed based on vertical rink alignment
+    var hexbinsGenerated = hexbinGenerator(
+      filteredShots.map((d: ShotModel) => {
+        const scaledCoords = this.scaleRink(d.x, d.y);
+        return [scaledCoords.y, scaledCoords.x];
+      })
+    );
+
+    var color = d3
+      .scaleSequential()
+      .domain([0, 3])
+      .interpolator(d3.interpolateRgb('transparent', '#007bff'));
+
+    const hexagons = this.hexbinLayer.selectAll('path').data(hexbinsGenerated);
+
+    hexagons
+      .enter()
+      .append('path')
+      .attr('d', () => hexbinGenerator.hexagon())
+      .attr('transform', (d: ShotModel) => {
+        return 'translate(' + d.x + ',' + d.y + ')';
+      })
+      .attr('fill', (d: any) => {
+        var value = Math.min(d.length, 3);
+
+        return color(value);
+      })
+      .attr('stroke', 'black')
+      .attr('stroke-width', 0.5);
+
+    hexagons.exit().transition().duration(300).remove();
+  }
+
+  plotCircles(filteredShots: ShotModel[]) {
+    const circles = this.circlesLayer.selectAll('circle').data(filteredShots);
 
     circles
       .enter()
@@ -148,7 +247,7 @@ export class ShotsComponent implements OnInit {
       .style('padding', '8px')
       .style('position', 'absolute');
 
-    this.shotsLayer
+    this.circlesLayer
       .selectAll('circle')
       .on('mouseover', function (event: any, d: ShotModel) {
         const shot = d as ShotModel;

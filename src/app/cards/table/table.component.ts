@@ -35,17 +35,15 @@ export class TableComponent implements AfterViewInit, OnChanges {
   }
 
   filterShots(shots: ShotModel[]): ShotModel[] {
-    return shots
-      .filter((shot) => shot.Outcome == 'goal')
-      .map((shot) => {
-        if (shot.away_team.slice(0, 3) == 'Mon') {
-          shot.away_team = 'MTL';
-        }
-        if (shot.home_team.slice(0, 3) == 'Mon') {
-          shot.home_team = 'MTL';
-        }
-        return shot;
-      });
+    return shots.map((shot) => {
+      if (shot.away_team.slice(0, 3) == 'Mon') {
+        shot.away_team = 'MTL';
+      }
+      if (shot.home_team.slice(0, 3) == 'Mon') {
+        shot.home_team = 'MTL';
+      }
+      return shot;
+    });
   }
 
   getBkgColor(percentile: number): { background: string; color: string } {

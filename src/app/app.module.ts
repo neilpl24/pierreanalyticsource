@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { SearchComponent } from './filters/search/search.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
@@ -100,6 +101,8 @@ import { GamescoreComponent } from './cards/gamescore/gamescore.component';
     MatFormFieldModule,
     MatIconModule,
     MatSlideToggleModule,
+    FormsModule,
+    MatButtonToggleModule,
     MatNativeDateModule,
     MatSidenavModule,
     MatButtonModule,

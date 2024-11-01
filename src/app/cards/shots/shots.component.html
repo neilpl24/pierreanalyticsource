@@ -1,22 +1,28 @@
 <div class="segmented-button">
-  <button
-    class="segment"
-    (click)="toggleSelection('EV')"
-    [ngClass]="{ active: isSelected('EV') }">
-    EV
-  </button>
-  <button
-    class="segment"
-    (click)="toggleSelection('SH')"
-    [ngClass]="{ active: isSelected('SH') }">
-    SH
-  </button>
-  <button
-    class="segment"
-    (click)="toggleSelection('PP')"
-    [ngClass]="{ active: isSelected('PP') }">
-    PP
-  </button>
+  <div class="top-toggles">
+    <mat-button-toggle-group
+      name="circlePlotsToggle"
+      [(ngModel)]="isCirclePlotsToggle"
+      (change)="toggleCirclePlots($event.value)">
+      <mat-button-toggle value="true">Circles</mat-button-toggle>
+      <mat-button-toggle value="false">Heatmaps</mat-button-toggle>
+    </mat-button-toggle-group>
+    <mat-button-toggle-group
+      name="isGoalsToggle"
+      [(ngModel)]="isGoalsToggle"
+      (change)="toggleGoals($event.value)">
+      <mat-button-toggle value="true">Shots</mat-button-toggle>
+      <mat-button-toggle value="false">Goals</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+  <div id="half-rink-vert"></div>
+  <mat-button-toggle-group
+    [(ngModel)]="selectedOptions"
+    aria-label="Font Style"
+    multiple
+    (change)="toggleSelection($event.value)">
+    <mat-button-toggle value="EV">EV</mat-button-toggle>
+    <mat-button-toggle value="PP">PP</mat-button-toggle>
+    <mat-button-toggle value="SH">SH</mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
-
-<div id="half-rink-vert"></div>
