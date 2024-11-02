@@ -37,6 +37,7 @@ import { MdbPopoverModule } from 'mdb-angular-ui-kit/popover';
 import { MdbRadioModule } from 'mdb-angular-ui-kit/radio';
 import { MdbRangeModule } from 'mdb-angular-ui-kit/range';
 import { MdbRippleModule } from 'mdb-angular-ui-kit/ripple';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MdbScrollspyModule } from 'mdb-angular-ui-kit/scrollspy';
 import { MdbTabsModule } from 'mdb-angular-ui-kit/tabs';
 import { MdbTooltipModule } from 'mdb-angular-ui-kit/tooltip';
@@ -102,6 +103,7 @@ import { VideoComponent } from './video/video.component';
     MatFormFieldModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatButtonToggleModule,
     MatNativeDateModule,
     MatSidenavModule,
     MatButtonModule,

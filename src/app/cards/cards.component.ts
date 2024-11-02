@@ -18,7 +18,7 @@ import * as chroma from 'chroma-js';
 import { countryCodeMap } from '../utils';
 import { GamescoreModel } from 'src/models/gamescore.model';
 import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
-import { GoalModel } from 'src/models/goal.model';
+import { GoalModel, setDefaults } from 'src/models/goal.model';
 
 @Component({
   selector: 'app-cards',
@@ -26,7 +26,7 @@ import { GoalModel } from 'src/models/goal.model';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent implements AfterViewInit, OnInit {
-  shotsData: GoalModel[] = [];
+  goalsData: GoalModel[] = [];
   goalieMode: boolean;
   assistsData: GoalModel[] = [];
   gamescore$: Observable<GamescoreModel[]>;
@@ -179,9 +179,15 @@ export class CardsComponent implements AfterViewInit, OnInit {
         this.playersSvc
           .getGoals(this.playerID, this.playerID, this.season)
           .subscribe((goals) => {
-            this.shotsData = goals.filter(
-              (x) => x.shooterId == this.playerID || x.goalieId == this.playerID
-            );
+            this.goalsData = goals
+              .filter(
+                (x) =>
+                  x.shooterId == this.playerID || x.goalieId == this.playerID
+              )
+              .map((goal) => {
+                return setDefaults(goal);
+              });
+
             this.assistsData = goals.filter(
               (x) => x.assisterId == this.playerID
             );

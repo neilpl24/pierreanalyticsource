@@ -99,8 +99,6 @@
               <mat-card-content>
                 <mat-card-title class="player-name text-center">
                   {{ season }} NHL Percentile Statistics
-                  <br />
-                  (Per 60)
                 </mat-card-title>
                 <mat-card-subtitle class="text-center">
                   Updated on (10/29/24, 12:10pm EST)
@@ -138,7 +136,7 @@
                     </div>
                   </div>
                 </div>
-                <div>
+                <!-- <div>
                   <p class="descriptor-text">
                     All data is provided by the NHL's API and calculated on a
                     per 60 basis.
@@ -149,6 +147,15 @@
                     located on the about page to learn a bit more about the
                     statistics above.
                   </p>
+                </div> -->
+                <div class="action-container">
+                  <img
+                    class="action"
+                    style="justify-self: flex-end"
+                    src="https://assets.nhle.com/mugs/actionshots/1296x729/{{
+                      player.playerID
+                    }}.jpg"
+                    alt="Player action shot" />
                 </div>
               </mat-card-content>
             </mat-card>
@@ -196,16 +203,7 @@
                   </ul>
                 </div>
               </div>
-              <shots *ngIf="shotsData" [shotsData]="shotsData"></shots>
-              <div class="action-container">
-                <img
-                  class="action"
-                  style="justify-self: flex-end"
-                  src="https://assets.nhle.com/mugs/actionshots/1296x729/{{
-                    player.playerID
-                  }}.jpg"
-                  alt="Player action shot" />
-              </div>
+              <shots *ngIf="goalsData" [shotsData]="goalsData"></shots>
             </mat-card>
           </div>
         </ng-container>
@@ -239,7 +237,7 @@
   <ng-container *ngIf="player$ | async as player">
     <div class="goals-table">
       <h2 class="text-center">{{ season }} Goals</h2>
-      <shot-table *ngIf="shotsData" [shotsData]="shotsData"></shot-table>
+      <shot-table *ngIf="goalsData" [shotsData]="goalsData"></shot-table>
     </div>
     <ng-container *ngIf="player.position != 'G'">
       <div class="assists-table">

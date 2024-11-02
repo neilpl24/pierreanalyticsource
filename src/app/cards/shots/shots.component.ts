@@ -1,145 +1,279 @@
-import {
-  Component,
-  Input,
-  ViewChild,
-  ElementRef,
-  AfterViewInit,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, SimpleChanges, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { GoalModel } from 'src/models/goal.model';
+import * as d3 from 'd3';
+import { RinkMap } from './rinkPlot.js';
+import { BehaviorSubject } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
+import { hexbin } from 'd3-hexbin';
+import { GoalModel } from 'src/models/goal.model.js';
 
 @Component({
   selector: 'shots',
   templateUrl: './shots.component.html',
   styleUrls: ['./shots.component.css'],
 })
-export class ShotsComponent implements AfterViewInit, OnChanges {
-  @ViewChild('rinkCanvas', { static: false }) canvasRef: ElementRef;
+export class ShotsComponent implements OnInit {
   @Input() shotsData: GoalModel[];
+
+  isGoalsToggle: string = 'false';
+  private isGoalsSubject = new BehaviorSubject<boolean>(
+    this.isGoalsToggle === 'true'
+  );
+  isGoals$ = this.isGoalsSubject.asObservable();
+
+  isCirclePlotsToggle: string = 'true';
+  private isCirclePlotsSubject = new BehaviorSubject<boolean>(
+    this.isCirclePlotsToggle === 'true'
+  );
+  isCirclePlots$ = this.isCirclePlotsSubject.asObservable();
+
+  private filteredShotsSubject = new BehaviorSubject<GoalModel[]>([]);
+  filteredShots$ = this.filteredShotsSubject.asObservable();
+
+  selectedOptions: Array<string> = ['EV', 'SH', 'PP'];
+
+  circlesLayer: any;
+  hexbinLayer: any;
+
+  rinkScale: number;
+  rinkWidth: number;
 
   constructor(private router: Router) {}
 
-  ngAfterViewInit(): void {
-    this.drawCanvas();
+  ngOnInit() {
+    console.log('shotsData', this.shotsData);
+
+    this.createChart();
+    this.filterShotsData();
+
+    // a change of either observable should trigger the visualization update
+    combineLatest([this.filteredShots$, this.isCirclePlots$])
+      .pipe(
+        tap(([filteredShots, isCirclePlots]) => {
+          this.updateVisualization(filteredShots, isCirclePlots);
+        })
+      )
+      .subscribe();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['shotsData'] && !changes['shotsData'].firstChange) {
-      const context: CanvasRenderingContext2D | null =
-        this.canvasRef.nativeElement.getContext('2d');
-      this.clearCanvas(context!);
-      this.drawCanvas();
-      this.drawShotMarkers(context!);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['shotsData']) {
+      // Clear old data from the chart
+      this.circlesLayer.selectAll('circle').remove();
+      this.hexbinLayer.selectAll('path').remove();
+
+      // Filter the new shots data
+      this.filterShotsData();
     }
   }
 
-  clearCanvas(context: CanvasRenderingContext2D | null): void {
-    if (context) {
-      context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+  createChart() {
+    const container = document.getElementById('half-rink-vert');
+    if (container) {
+      var halfVertSvg = d3
+        .select('#half-rink-vert')
+        .append('svg')
+        .attr('width', 300)
+        .attr('height', 355);
+
+      const halfVertPlot = RinkMap({
+        parent: halfVertSvg,
+        halfRink: true,
+        desiredWidth: 300,
+        horizontal: false,
+      });
+
+      this.rinkScale = halfVertPlot.rinkScale;
+      this.rinkWidth = halfVertPlot.rinkWidth;
+      halfVertPlot.chart();
+
+      // just create both layers, even if we're not using it
+      this.circlesLayer = halfVertSvg.append('g').attr('id', 'circlesLayer');
+      this.hexbinLayer = halfVertSvg.append('g').attr('id', 'hexbinLayer');
     }
   }
 
-  drawCanvas(): void {
-    const canvas: HTMLCanvasElement = this.canvasRef.nativeElement;
-    const context: CanvasRenderingContext2D | null = canvas.getContext('2d');
-
-    const rinkImage = new Image();
-    rinkImage.src = 'assets/rink3.png';
-    rinkImage.onload = () => {
-      canvas.width = 292;
-      canvas.height = 292;
-      context!.drawImage(rinkImage, 6, 7, 292, 292, 0, 0, 292, 292);
-      this.drawShotMarkers(context!);
-    };
-  }
-
-  getTooltipContent(shot: GoalModel): string {
-    return `Type: ${shot.type}, xG: ${this.roundNumber(shot.xG, 2)}`;
-  }
-
-  roundNumber(number: number | undefined, decimalPlaces: number): number {
-    if (number === undefined) {
-      return 0;
-    }
-
-    const factor = Math.pow(10, decimalPlaces);
-    return Math.round(number * factor) / factor;
-  }
-
-  redirectToLink(link: string) {
-    if (link != 'No link found.') {
-      if (link.slice(-4) == 'm3u8') {
-        const urlTree = this.router.createUrlTree(['/video', link]);
-        const url = this.router.serializeUrl(urlTree);
-        window.open(url, '_blank');
-      } else {
-        window.open(link, '_blank');
-      }
-    }
-  }
-
-  drawShotMarkers(context: CanvasRenderingContext2D) {
-    if (!this.shotsData) return;
-
-    for (const shot of this.shotsData) {
-      const { x, y } = this.getShotImageCoordinates(shot.x, shot.y);
-      this.drawShotMarker(context, y, x, shot.link);
-    }
-  }
-
-  drawShotMarker(
-    context: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    link: string
-  ) {
-    const radius = 6;
-
-    context.beginPath();
-    // this is an arbitrary adjustment to make the shot markers cover the center of the circle
-    context.arc(x + 10, y + 10, radius, 0, 2 * Math.PI, false);
-    if (link == 'No link found.') {
-      // if there's no link, making the shot marker light grey
-      context.fillStyle = 'lightgrey';
+  toggleSelection(option: string) {
+    // has to be an array to satisfy the html component
+    const index = this.selectedOptions.indexOf(option);
+    if (index !== -1) {
+      // Remove the value if it exists
+      this.selectedOptions.splice(index, 1);
     } else {
-      // the shot markers are light blue if there's a link
-      context.fillStyle = '#529BFD';
+      // Add the value if it doesn't exist
+      this.selectedOptions.push(option);
     }
-    context.fill();
-    context.lineWidth = 2;
-    context.strokeStyle = 'black';
-    context.stroke();
+
+    this.filterShotsData();
   }
 
-  getShotImageCoordinates(
-    nhlX: number,
-    nhlY: number
-  ): { x: number; y: number } {
-    // 0, 0 at center ice
-    // y runs from -42.5 to 42.5 (top to bottom)
-    // x runs from -100 to 100 (left to right)
+  isSelected(option: string) {
+    return this.selectedOptions.includes(option);
+  }
 
-    // sometimes the nhl shot markers are placed on the wrong side of the ice
-    // but there's nothing we can do about that
+  toggleCirclePlots(value: string) {
+    this.isCirclePlotsSubject.next(value === 'true');
+  }
 
-    let imageX: number;
-    let imageY: number;
+  toggleGoals(value: string) {
+    this.isGoalsSubject.next(value === 'true');
+  }
 
-    // the image is 292x292, so my calculations are based on that
-    // updating the image size will require updating these calculations
+  filterShotsData() {
+    this.isGoals$
+      .pipe(
+        map((isGoals) => {
+          var filteredShots = this.shotsData.filter((shot) => {
+            const strength = strengthSwitch(shot.strength);
+            const isShotIncluded = isGoals ? shot.outcome === 'Goal' : true;
+            return this.selectedOptions.includes(strength) && isShotIncluded;
+          });
+          this.filteredShotsSubject.next(filteredShots);
+        })
+      )
+      .subscribe();
+  }
 
-    // images are plotted from the top and left, so a different coord system needs to be factored in
-
-    if (nhlX < 0) {
-      // if the nhlX is negative, we need to translate it
-      imageX = 292 - Math.abs(nhlX) * 2.92;
-      imageY = 146 + nhlY * 2.92;
+  scaleRink(nhlX: number, nhlY: number) {
+    // will need a bit different logic for the full rink
+    // since there will be another zone of data
+    // TODO: check passing of the shots data - moving from one player to the next doesn't update it.
+    if (nhlX >= 0) {
+      return {
+        x: nhlX * this.rinkScale,
+        y: this.rinkWidth / 2 + nhlY * this.rinkScale,
+      };
     } else {
-      imageX = 292 - nhlX * 2.92;
-      imageY = 146 - nhlY * 2.92;
+      return {
+        x: Math.abs(nhlX) * this.rinkScale,
+        y: this.rinkWidth / 2 + nhlY * this.rinkScale,
+      };
     }
-    return { x: imageX, y: imageY };
+  }
+
+  updateVisualization(filteredShots: GoalModel[], isCirclePlots: boolean) {
+    // hide the layer that is not being used
+    this.circlesLayer.style('display', isCirclePlots ? 'block' : 'none');
+    this.hexbinLayer.style('display', !isCirclePlots ? 'block' : 'none');
+
+    if (isCirclePlots) {
+      // could be shot or goal plots
+      this.plotCircles(filteredShots);
+      return;
+    }
+    // !isCirclePlots, then we plot heat maps
+    this.plotHexagons(filteredShots);
+  }
+
+  plotHexagons(filteredShots: GoalModel[]) {
+    hexbin().size([300, 400]);
+
+    const hexbinGenerator = hexbin().radius(20);
+
+    // this is not an error, y and x should be transposed based on vertical rink alignment
+    var hexbinsGenerated = hexbinGenerator(
+      filteredShots.map((d: GoalModel) => {
+        const scaledCoords = this.scaleRink(d.x, d.y);
+        return [scaledCoords.y, scaledCoords.x];
+      })
+    );
+
+    var color = d3
+      .scaleSequential()
+      .domain([0, 3])
+      .interpolator(d3.interpolateRgb('transparent', '#007bff'));
+
+    const hexagons = this.hexbinLayer.selectAll('path').data(hexbinsGenerated);
+
+    hexagons
+      .enter()
+      .append('path')
+      .attr('d', () => hexbinGenerator.hexagon())
+      .attr('transform', (d: GoalModel) => {
+        return 'translate(' + d.x + ',' + d.y + ')';
+      })
+      .attr('fill', (d: any) => {
+        var value = Math.min(d.length, 3);
+
+        return color(value);
+      })
+      .attr('stroke', 'black')
+      .attr('stroke-width', 0.5);
+
+    hexagons.exit().transition().duration(300).remove();
+  }
+
+  plotCircles(filteredShots: GoalModel[]) {
+    const circles = this.circlesLayer.selectAll('circle').data(filteredShots);
+
+    circles
+      .enter()
+      .append('circle')
+      .attr('cx', (d: GoalModel) => this.scaleRink(d.x, d.y).y)
+      .attr('cy', (d: GoalModel) => this.scaleRink(d.x, d.y).x)
+      .attr('r', 0) // Start with radius 0 for transition
+      .attr('fill', (d: GoalModel) =>
+        d.hasLink ? 'lightskyblue' : 'lightgrey'
+      )
+      .attr('stroke', '#24668f')
+      .transition() // Add transition
+      .duration(300)
+      .attr('r', 5); // Transition to radius 5
+
+    circles.exit().transition().duration(300).attr('r', 0).remove();
+
+    const tooltip = d3
+      .select('body')
+      .append('div')
+      .style('opacity', 0)
+      .style('background-color', '#87cefa')
+      .style('color', '#000')
+      .style('border', '2px solid #24668f')
+      .style('border-radius', '5px')
+      .style('text-align', 'center')
+      .style('padding', '8px')
+      .style('position', 'absolute');
+
+    this.circlesLayer
+      .selectAll('circle')
+      .on('mouseover', function (event: any, d: GoalModel) {
+        const shot = d as GoalModel;
+        tooltip.transition().duration(200).style('opacity', 1);
+
+        tooltip
+          .html(
+            'Strength: ' +
+              shot.strength +
+              '<br>Goal Type: ' +
+              shot.type +
+              '<br>xG: ' +
+              shot.xG
+          )
+          .style('left', event.pageX + 10 + 'px')
+          .style('top', event.pageY - 10 + 'px');
+      })
+      .on('mouseout', function () {
+        tooltip.transition().duration(500).style('opacity', 0);
+      })
+      .on('click', function (d: GoalModel) {
+        const shot = d as GoalModel;
+        if (shot.link != 'No link found.') {
+          window.open(shot.link, '_blank');
+        }
+      });
+  }
+}
+
+function strengthSwitch(strength: string) {
+  // doing this to match with the data coming out of the shot model
+  switch (strength) {
+    case 'Powerplay':
+      return 'PP';
+    case 'Shorthanded':
+      return 'SH';
+    case 'EV':
+      return 'EV';
+    default:
+      return strength;
   }
 }
