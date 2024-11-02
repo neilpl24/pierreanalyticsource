@@ -41,8 +41,6 @@ export class ShotsComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    console.log('shotsData', this.shotsData);
-
     this.createChart();
     this.filterShotsData();
 
@@ -58,9 +56,10 @@ export class ShotsComponent implements OnInit {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['shotsData']) {
-      // Clear old data from the chart
-      this.circlesLayer.selectAll('circle').remove();
-      this.hexbinLayer.selectAll('path').remove();
+      if (this.circlesLayer && this.hexbinLayer) {
+        this.circlesLayer.selectAll('circle').remove();
+        this.hexbinLayer.selectAll('path').remove();
+      }
 
       // Filter the new shots data
       this.filterShotsData();
@@ -255,8 +254,7 @@ export class ShotsComponent implements OnInit {
       .on('mouseout', function () {
         tooltip.transition().duration(500).style('opacity', 0);
       })
-      .on('click', function (d: GoalModel) {
-        const shot = d as GoalModel;
+      .on('click', function (event: any, shot: GoalModel) {
         if (shot.link != 'No link found.') {
           window.open(shot.link, '_blank');
         }
