@@ -1,63 +1,254 @@
 <nav-bar [navColor]="navColor"></nav-bar>
 
-<div class="center">
-  <ng-container
-    *ngIf="{
+<div class="container">
+  <div class="center">
+    <ng-container
+      *ngIf="{
         player: player$ | async,
         card: card$ | async,
       } as playerOverall">
-    <ng-container *ngIf="playerOverall.player as player">
-      <ng-container *ngIf="playerOverall.card as card">
-        <div class="card-container">
-          <mat-card class="shot-card border">
-            <mat-card-title class="player-name text-center">
-              {{ season }} Goals Plot
-            </mat-card-title>
-            <mat-card-subtitle class="text-center">
-              Hover over the dots to see shot type and xG.
-            </mat-card-subtitle>
-            <mat-card-subtitle class="text-center">
-              Click on the blue dots to see goal video!
-            </mat-card-subtitle>
-            <div class="md-form form-fill" *ngIf="seasons$ | async as seasons">
-              <div mdbDropdown class="dropdown">
-                <button
-                  class="btn btn-primary dropdown-toggle mat-form-field-appearance-fill"
-                  type="button"
-                  id="dropdownMenuButton"
-                  aria-expanded="false"
-                  mdbDropdownToggle>
-                  Season
-                </button>
-                <ul
-                  mdbDropdownMenu
-                  class="dropdown-menu"
-                  aria-labelledby="dropdownMenuButton">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      [routerLink]="['/', player.playerID, 'year']">
-                      -
-                    </a>
-                  </li>
-                  <li *ngFor="let season of seasons">
-                    <a
-                      class="dropdown-item"
-                      href="#"
-                      [routerLink]="['/', player.playerID, 'year', season]">
-                      {{ season }}
-                    </a>
-                  </li>
-                </ul>
+      <ng-container *ngIf="playerOverall.player as player">
+        <ng-container *ngIf="playerOverall.card as card">
+          <div class="card-container">
+            <mat-card class="player-card border">
+              <mat-card-content>
+                <mat-card-title class="player-name text-center">
+                  {{ player.firstName }} {{ player.lastName }}
+                </mat-card-title>
+                <div class="player-headshot-div">
+                  <img
+                    class="player-headshot"
+                    src="https://assets.nhle.com/mugs/nhl/{{
+                      seasonMap[season ?? '2025']
+                    }}/{{ nhlTeamMap[player.team] }}/{{
+                      player.playerID
+                    }}.png" />
+                  <div class="table-container">
+                    <table>
+                      <tr>
+                        <td>Team</td>
+                        <td>
+                          <a
+                            [routerLink]="['/teams', player.teamId]"
+                            class="plain-link">
+                            {{ player.team }}
+                            <img
+                              src="{{ 'assets/teams/' + player.team + '.png' }}"
+                              class="logo" />
+                          </a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>Birthdate</td>
+                        <td>{{ getBirthdayData(player.birthDate) }}</td>
+                      </tr>
+                      <tr>
+                        <td>Position</td>
+                        <td>{{ getPlayerPosition(player.position) }}</td>
+                      </tr>
+                      <tr>
+                        <td>Handedness</td>
+                        <td>{{ getPlayerHandedness(player.handedness) }}</td>
+                      </tr>
+                      <tr>
+                        <td>Height</td>
+                        <td>{{ height }}</td>
+                      </tr>
+                      <tr>
+                        <td>Weight</td>
+                        <td>{{ player.weight }}</td>
+                      </tr>
+                      <tr>
+                        <td>Nationality</td>
+                        <td>
+                          {{ getPlayerNationality(player.nationality) }}
+                          <span
+                            class="fi fi-{{
+                              countryCodeMap[player.nationality]
+                            }}"></span>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                  <ng-container *ngIf="player.position == 'G'; else skaterEdge">
+                    <div style="margin: 0 auto; text-align: center">
+                      <a
+                        href="https://edge.nhl.com/en/goalie/{{
+                          player.playerID
+                        }}"
+                        target="_blank">
+                        View NHL Edge Data
+                      </a>
+                    </div>
+                  </ng-container>
+                  <ng-template #skaterEdge>
+                    <div style="margin: 0 auto; text-align: center">
+                      <a
+                        href="https://edge.nhl.com/en/skater/{{
+                          player.playerID
+                        }}"
+                        target="_blank">
+                        View NHL Edge Data
+                      </a>
+                    </div>
+                  </ng-template>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="statistics-card border">
+              <mat-card-content>
+                <mat-card-title class="player-name text-center">
+                  {{ season }} NHL Percentile Statistics
+                  <br />
+                  (Per 60)
+                </mat-card-title>
+                <mat-card-subtitle class="text-center">
+                  Updated on (10/29/24, 12:10pm EST)
+                </mat-card-subtitle>
+
+                <div class="timeline-container">
+                  <div class="left-timelines">
+                    <div
+                      *ngFor="let timeline of getLeftTimelines(player.position)"
+                      class="timeline-item">
+                      <h3>{{ timeline }}</h3>
+                      <timeline
+                        [title]="timeline"
+                        [percentile]="
+                          getPercentiles(card, player)[
+                            getTimelines(player.position).indexOf(timeline)
+                          ]
+                        "></timeline>
+                    </div>
+                  </div>
+                  <div class="right-timelines">
+                    <div
+                      *ngFor="
+                        let timeline of getRightTimelines(player.position)
+                      "
+                      class="timeline-item">
+                      <h3>{{ timeline }}</h3>
+                      <timeline
+                        [title]="timeline"
+                        [percentile]="
+                          getPercentiles(card, player)[
+                            getTimelines(player.position).indexOf(timeline)
+                          ]
+                        "></timeline>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div>
+                  <p class="descriptor-text">
+                    All data is provided by the NHL's API and calculated on a
+                    per 60 basis.
+                  </p>
+                  <p class="descriptor-text">
+                    Check out the
+                    <a [routerLink]="['/about']" class="plain-link">glossary</a>
+                    located on the about page to learn a bit more about the
+                    statistics above.
+                  </p>
+                </div> -->
+                <div class="action-container">
+                  <img
+                    class="action"
+                    style="justify-self: flex-end"
+                    src="https://assets.nhle.com/mugs/actionshots/1296x729/{{
+                      player.playerID
+                    }}.jpg"
+                    alt="Player action shot" />
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card class="shot-card border">
+              <mat-card-title class="player-name text-center">
+                {{ season }} Goals Plot
+              </mat-card-title>
+              <mat-card-subtitle class="text-center">
+                Hover over the dots to see shot type and xG.
+              </mat-card-subtitle>
+              <mat-card-subtitle class="text-center">
+                Click on the blue dots to see goal video!
+              </mat-card-subtitle>
+              <div
+                class="md-form form-fill"
+                *ngIf="seasons$ | async as seasons">
+                <div mdbDropdown class="dropdown">
+                  <button
+                    class="btn btn-primary dropdown-toggle mat-form-field-appearance-fill"
+                    type="button"
+                    id="dropdownMenuButton"
+                    aria-expanded="false"
+                    mdbDropdownToggle>
+                    Season
+                  </button>
+                  <ul
+                    mdbDropdownMenu
+                    class="dropdown-menu"
+                    aria-labelledby="dropdownMenuButton">
+                    <li>
+                      <a
+                        class="dropdown-item"
+                        [routerLink]="['/', player.playerID, 'year']">
+                        -
+                      </a>
+                    </li>
+                    <li *ngFor="let season of seasons">
+                      <a
+                        class="dropdown-item"
+                        href="#"
+                        [routerLink]="['/', player.playerID, 'year', season]">
+                        {{ season }}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <shots
-              *ngIf="player.shots"
-              [shotsData]="shotsData"
-              (shotsDataChange)="onShotsDataChange($event)"></shots>
-          </mat-card>
-        </div>
+              <shots *ngIf="goalsData" [shotsData]="goalsData"></shots>
+            </mat-card>
+          </div>
+        </ng-container>
       </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-container *ngIf="gamescoreAverage$ | async as gamescoreAverage">
+  <ng-container *ngIf="gamescore$ | async as gamescore">
+    <ng-container *ngIf="!goalieMode">
+      <div class="gs-container">
+        <div class="gamescore">
+          <gamescore
+            [data]="gamescore"
+            [showRollingAverage]="showRollingAverage"
+            [average]="gamescoreAverage"></gamescore>
+        </div>
+        <div class="rolling-average-checkbox">
+          <label>
+            <input type="checkbox" [(ngModel)]="showRollingAverage" />
+            5-Game Rolling Average
+          </label>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<div class="gtables d-flex justify-content-center">
+  <ng-container *ngIf="player$ | async as player">
+    <div class="goals-table">
+      <h2 class="text-center">{{ season }} Goals</h2>
+      <shot-table *ngIf="goalsData" [shotsData]="goalsData"></shot-table>
+    </div>
+    <ng-container *ngIf="player.position != 'G'">
+      <div class="assists-table">
+        <h2 class="text-center">{{ season }} Primary Assists</h2>
+        <shot-table
+          class="assists"
+          *ngIf="assistsData"
+          [shotsData]="assistsData"></shot-table>
+      </div>
     </ng-container>
   </ng-container>
 </div>

@@ -1,14 +1,7 @@
-import {
-  Component,
-  AfterViewInit,
-  Output,
-  EventEmitter,
-  OnInit,
-} from '@angular/core';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { PlayerModel } from 'src/models/player.model';
 import {
   Observable,
-  map,
   mergeMap,
   catchError,
   of,
@@ -21,11 +14,11 @@ import { PlayersService } from '../services/players.service';
 import { ActivatedRoute, Router } from '@angular/router';
 declare const gtag: Function; // Declare the gtag function
 import { CardModel } from 'src/models/card.model';
-import { setDefaults, ShotModel } from 'src/models/shot.model';
 import * as chroma from 'chroma-js';
 import { countryCodeMap } from '../utils';
 import { GamescoreModel } from 'src/models/gamescore.model';
 import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
+import { GoalModel } from 'src/models/goal.model';
 
 @Component({
   selector: 'app-cards',
@@ -33,15 +26,9 @@ import { GamescoreAverageModel } from 'src/models/gamescore_average.model';
   styleUrls: ['./cards.component.css'],
 })
 export class CardsComponent implements AfterViewInit, OnInit {
-  @Output() shotsDataChange: EventEmitter<ShotModel[]> = new EventEmitter<
-    ShotModel[]
-  >();
-  @Output() assistsDataChange: EventEmitter<ShotModel[]> = new EventEmitter<
-    ShotModel[]
-  >();
-  shotsData: ShotModel[] = [];
+  goalsData: GoalModel[] = [];
   goalieMode: boolean;
-  assistsData: ShotModel[] = [];
+  assistsData: GoalModel[] = [];
   gamescore$: Observable<GamescoreModel[]>;
   gamescoreAverage$: Observable<GamescoreAverageModel>;
   showRollingAverage: boolean = false;
@@ -92,8 +79,9 @@ export class CardsComponent implements AfterViewInit, OnInit {
   seasons$: Observable<number[]>;
 
   seasonMap: any = {
-    undefined: '20232024',
-    '': '20232024',
+    undefined: '20242025',
+    '': '20242025',
+    '2025': '20242025',
     '2024': '20232024',
     '2023': '20222023',
     '2022': '20212022',
@@ -188,6 +176,16 @@ export class CardsComponent implements AfterViewInit, OnInit {
         this.playerID = params['playerID'];
         this.season = params['season'];
         this.seasons$ = this.playersSvc.getYearsPlayed(this.playerID);
+        this.playersSvc
+          .getGoals(this.playerID, this.playerID, this.season)
+          .subscribe((goals) => {
+            this.goalsData = goals.filter(
+              (x) => x.shooterId == this.playerID || x.goalieId == this.playerID
+            );
+            this.assistsData = goals.filter(
+              (x) => x.assisterId == this.playerID
+            );
+          });
         return this.playersSvc.getInfo(this.playerID, this.season).pipe(
           mergeMap(() => this.playersSvc.getInfo(this.playerID, this.season)),
           catchError(() => {
@@ -212,47 +210,9 @@ export class CardsComponent implements AfterViewInit, OnInit {
             this.goalieMode = true;
           }
           this.navColor = this.nhlTeamMainColors[player.team];
-          let shotsString = player.shots;
           this.playerID = player.playerID;
           this.height = this.convertHeight(player.height); // nhl api change now returns height in inches
-          const assistsString = player.assists;
-          // I can't stress how stupid this and how I could easily solve this problem in my scraper, but alas here we are
-          if (player.position != 'G' && player.assists != 'nan') {
-            this.goalieMode = false;
-            this.assistsData = assistsString
-              ? JSON.parse(
-                  assistsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-          } else {
-            this.assistsData = [];
-            this.goalieMode = true;
-          }
-          if (player.shots != 'nan') {
-            this.shotsData = shotsString
-              ? JSON.parse(
-                  shotsString
-                    .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-                    .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-                    .replaceAll(/Ã\\x83/g, 'é')
-                    .replaceAll('Ã\\x83Â¼', 'u')
-                )
-              : [];
-
-            this.shotsData.map(setDefaults);
-          } else {
-            this.shotsData = [];
-          }
-        } else {
-          this.shotsData = [];
-          this.assistsData = [];
         }
-        this.shotsDataChange.emit([...this.shotsData]);
-        this.assistsDataChange.emit([...this.assistsData]);
       })
     );
 
@@ -351,29 +311,6 @@ export class CardsComponent implements AfterViewInit, OnInit {
       Math.round(card.high_danger_freq * 100),
       Math.round(card.pk * 100),
     ];
-  }
-
-  onShotsDataChange(event: Event): void {
-    const shotsData = (event.target as HTMLInputElement).value;
-    this.shotsData = JSON.parse(
-      shotsData
-        .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-        .replaceAll(/Ã\\x83/g, 'é')
-        .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-        .replaceAll('Ã\\x83Â¼', 'u')
-    );
-    this.seasons$ = this.playersSvc.getYearsPlayed(this.playerID);
-  }
-
-  onAssistsDataChange(event: Event): void {
-    const assistsData = (event.target as HTMLInputElement).value;
-    this.assistsData = JSON.parse(
-      assistsData
-        .replaceAll(/'(?=(?:[^"]*"[^"]*")*[^"]*$)/g, '"')
-        .replaceAll(/Ã\\x83/g, 'é')
-        .replaceAll(/MontreÃ\\x8cÂ\\x81al/g, 'Montréal Canadiens')
-        .replaceAll('Ã\\x83Â¼', 'u')
-    );
   }
 
   getPercentileColor(percentile: number): {

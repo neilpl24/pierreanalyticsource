@@ -8,7 +8,6 @@ import {
   OnDestroy,
   ViewEncapsulation,
 } from '@angular/core';
-import { ShotModel } from 'src/models/shot.model';
 import { Router } from '@angular/router';
 import * as d3 from 'd3';
 import { RinkMap } from './rinkPlot.js';
@@ -16,17 +15,15 @@ import { BehaviorSubject, filter, max, Subscription } from 'rxjs';
 import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import { hexbin, HexbinBin } from 'd3-hexbin';
 import { MatButtonToggle } from '@angular/material/button-toggle/index.js';
+import { GoalModel } from 'src/models/goal.model.js';
 
-interface ExtendedHexbinBin extends HexbinBin<[number, number]> {
-  shots: ShotModel[];
-}
 @Component({
   selector: 'shots',
   templateUrl: './shots.component.html',
   styleUrls: ['./shots.component.css'],
 })
 export class ShotsComponent implements OnInit {
-  @Input() shotsData: ShotModel[];
+  @Input() shotsData: GoalModel[];
 
   isGoalsToggle: string = 'false';
   private isGoalsSubject = new BehaviorSubject<boolean>(
@@ -40,7 +37,7 @@ export class ShotsComponent implements OnInit {
   );
   isCirclePlots$ = this.isCirclePlotsSubject.asObservable();
 
-  private filteredShotsSubject = new BehaviorSubject<ShotModel[]>([]);
+  private filteredShotsSubject = new BehaviorSubject<GoalModel[]>([]);
   filteredShots$ = this.filteredShotsSubject.asObservable();
 
   selectedOptions: Array<string> = ['EV', 'SH', 'PP'];
@@ -138,7 +135,7 @@ export class ShotsComponent implements OnInit {
         map((isGoals) => {
           var filteredShots = this.shotsData.filter((shot) => {
             const strength = strengthSwitch(shot.strength);
-            const isShotIncluded = isGoals ? shot.Outcome === 'Goal' : true;
+            const isShotIncluded = isGoals ? shot.outcome === 'Goal' : true;
             return this.selectedOptions.includes(strength) && isShotIncluded;
           });
           this.filteredShotsSubject.next(filteredShots);
@@ -164,7 +161,7 @@ export class ShotsComponent implements OnInit {
     }
   }
 
-  updateVisualization(filteredShots: ShotModel[], isCirclePlots: boolean) {
+  updateVisualization(filteredShots: GoalModel[], isCirclePlots: boolean) {
     // hide the layer that is not being used
     this.circlesLayer.style('display', isCirclePlots ? 'block' : 'none');
     this.hexbinLayer.style('display', !isCirclePlots ? 'block' : 'none');
@@ -178,14 +175,14 @@ export class ShotsComponent implements OnInit {
     this.plotHexagons(filteredShots);
   }
 
-  plotHexagons(filteredShots: ShotModel[]) {
+  plotHexagons(filteredShots: GoalModel[]) {
     hexbin().size([300, 400]);
 
     const hexbinGenerator = hexbin().radius(20);
 
     // this is not an error, y and x should be transposed based on vertical rink alignment
     var hexbinsGenerated = hexbinGenerator(
-      filteredShots.map((d: ShotModel) => {
+      filteredShots.map((d: GoalModel) => {
         const scaledCoords = this.scaleRink(d.x, d.y);
         return [scaledCoords.y, scaledCoords.x];
       })
@@ -202,7 +199,7 @@ export class ShotsComponent implements OnInit {
       .enter()
       .append('path')
       .attr('d', () => hexbinGenerator.hexagon())
-      .attr('transform', (d: ShotModel) => {
+      .attr('transform', (d: GoalModel) => {
         return 'translate(' + d.x + ',' + d.y + ')';
       })
       .attr('fill', (d: any) => {
@@ -216,16 +213,16 @@ export class ShotsComponent implements OnInit {
     hexagons.exit().transition().duration(300).remove();
   }
 
-  plotCircles(filteredShots: ShotModel[]) {
+  plotCircles(filteredShots: GoalModel[]) {
     const circles = this.circlesLayer.selectAll('circle').data(filteredShots);
 
     circles
       .enter()
       .append('circle')
-      .attr('cx', (d: ShotModel) => this.scaleRink(d.x, d.y).y)
-      .attr('cy', (d: ShotModel) => this.scaleRink(d.x, d.y).x)
+      .attr('cx', (d: GoalModel) => this.scaleRink(d.x, d.y).y)
+      .attr('cy', (d: GoalModel) => this.scaleRink(d.x, d.y).x)
       .attr('r', 0) // Start with radius 0 for transition
-      .attr('fill', (d: ShotModel) =>
+      .attr('fill', (d: GoalModel) =>
         d.hasLink ? 'lightskyblue' : 'lightgrey'
       )
       .attr('stroke', '#24668f')
@@ -249,8 +246,8 @@ export class ShotsComponent implements OnInit {
 
     this.circlesLayer
       .selectAll('circle')
-      .on('mouseover', function (event: any, d: ShotModel) {
-        const shot = d as ShotModel;
+      .on('mouseover', function (event: any, d: GoalModel) {
+        const shot = d as GoalModel;
         tooltip.transition().duration(200).style('opacity', 1);
 
         tooltip
@@ -268,10 +265,10 @@ export class ShotsComponent implements OnInit {
       .on('mouseout', function () {
         tooltip.transition().duration(500).style('opacity', 0);
       })
-      .on('click', function (d: ShotModel) {
-        const shot = d as ShotModel;
-        if (shot.Link != 'No link found.') {
-          window.open(shot.Link, '_blank');
+      .on('click', function (d: GoalModel) {
+        const shot = d as GoalModel;
+        if (shot.link != 'No link found.') {
+          window.open(shot.link, '_blank');
         }
       });
   }
