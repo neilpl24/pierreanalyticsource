@@ -6,3 +6,4 @@ VALUES
 ('Gamescore', '2024-09-12 09:08:00', 'Neil Pierre-Louis', 'Built a gamescore metric, and created the accompanying D3.js chart.', 'https://github.com/neilpl24/pierreanalyticsource/pull/45'),
 ('Dark Mode', '2024-10-14 09:08:00', 'Neil Pierre-Louis', 'Added a dark mode toggle + small bug fixes', 'https://github.com/neilpl24/pierreanalyticsource/pull/52'),
 ('Landing Page', '2024-10-16 09:08:00', 'Bennett Summy', 'Moved dark mode toggle to the landing page to improve the mobile nav.', 'https://github.com/neilpl24/pierreanalyticsource/pull/53');
+('Goals Chart', '2024-11-02 12:08:00', 'Bennett Summy', 'Used Alexandra Mandrycky's D3 ice rink to build better shot charts and heatmaps', 'https://github.com/neilpl24/pierreanalyticsource/pull/55');

@@ -19,12 +19,16 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "es2020",
-    "lib": ["es2021", "dom"]
+    "lib": ["es2021", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
   }
 }

@@ -9,6 +9,23 @@ export function getPlayerPosition(position: string): string {
   }
 }
 
+export function getShotType(type: string): string {
+  switch (type) {
+    case 'wrist':
+      return 'Wrist shot';
+    case 'snap':
+      return 'Snapshot';
+    case 'slap':
+      return 'Slapshot';
+    case 'backhand':
+      return 'Backhander';
+    case 'wrap-around':
+      return 'Wrap-around';
+    default:
+      return type;
+  }
+}
+
 export function roundValue(value: number): number {
   return Math.round(value);
 }
@@ -19,7 +36,6 @@ export function roundDecimal(value: number): number {
 
 // keeping track of what seasons of data we have centralized here
 export const availableSeasons = [
-  '2025',
   '2024',
   '2023',
   '2022',
