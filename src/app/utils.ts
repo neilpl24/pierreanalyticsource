@@ -36,6 +36,7 @@ export function roundDecimal(value: number): number {
 
 // keeping track of what seasons of data we have centralized here
 export const availableSeasons = [
+  '2025',
   '2024',
   '2023',
   '2022',
