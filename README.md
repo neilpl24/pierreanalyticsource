@@ -47,7 +47,7 @@ There is a goal plot that links to video of their goals, as well as a goal and p
 Very similar to skaters, just different statistics and the videos are goals that they have conceded.
 
 ## PR Rules
-I won't be super strict, just please do a better job of documenting than I did. Have a screenshot/video in the description of your PRs! Create a new branch and merge to dev.
+I won't be super strict, just please do a better job of documenting than I did. Have a screenshot/video in the description of your PRs! Fork the repo, create a new branch and make a PR to merge to main.
 
 ## Code scaffolding
 
