@@ -252,10 +252,8 @@ app.get("/players/gamescore/averages/:id", (req, res, next) => {
   const id = Number(req.query.id);
   const season = req.query.season;
   db.get(
-    `SELECT * FROM gamescore_percentiles WHERE PlayerId = ? AND season = ${
-      season - 1
-    }`,
-    [id],
+    `SELECT * FROM gamescore_percentiles WHERE PlayerId = ? AND season = ?`,
+    [id, season - 1],
     (err, row) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -313,8 +311,8 @@ app.get("/players/card/:id", (req, res, next) => {
   db.get(
     `SELECT *
             FROM skaters
-            WHERE player_id = ? AND season = ${season}`,
-    [id],
+            WHERE player_id = ? AND season = ?`,
+    [id, season],
     (err, playerRow) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -341,8 +339,8 @@ app.get("/players/card/:id", (req, res, next) => {
         db.get(
           `SELECT *
                 FROM goalie_numbers
-                WHERE player_id = ? AND season = ${season}`,
-          [id],
+                WHERE player_id = ? AND season = ?`,
+          [id, season],
           (err, goalieRow) => {
             if (err) {
               res.status(400).json({ error: err.message });
@@ -392,8 +390,8 @@ app.get("/players/info/:id", (req, res, next) => {
     SELECT *
         FROM skaters p
         JOIN team_ids t on p.team = t.team_name
-        WHERE player_id = ? AND season = ${season}`,
-    [id],
+        WHERE player_id = ? AND season = ?`,
+    [id, season],
     (err, row) => {
       if (err) {
         res.status(400).json({ error: err.message });
@@ -428,8 +426,8 @@ app.get("/players/info/:id", (req, res, next) => {
             SELECT *
             FROM goalie_numbers p
             JOIN team_ids t on p.team = t.team_name
-            WHERE player_id = ? AND season = ${season}`,
-          [id],
+            WHERE player_id = ? AND season = ?`,
+          [id, season],
           (err, row) => {
             if (err) {
               res.status(400).json({ error: err.message });

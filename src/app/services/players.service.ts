@@ -31,7 +31,7 @@ export class PlayersService {
     let params = new HttpParams();
     params = params.append('id', playerId.toString());
     if (season && season != '') {
-      params = params.append('season', season?.toString());
+      params = params.append('season', season.toString());
     }
 
     if (season == '') {
