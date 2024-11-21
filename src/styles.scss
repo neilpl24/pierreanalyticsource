@@ -19,6 +19,9 @@ body {
 $bgColor_light: white;
 $bgColor_dark: #1c1c21;
 
+$hoverColor_light: rgb(196, 191, 191);
+$hoverColor_dark: rgb(66, 66, 66);
+
 $textColor_light: black;
 $textColor_dark: rgb(204, 202, 202);
 
@@ -30,6 +33,7 @@ $borderColor_dark: white;
   --bgColor: #{$bgColor_light};
   --textColor: #{$textColor_light};
   --borderColor: #{$borderColor_light};
+  --hoverColor: #{$hoverColor_light};
   --timelineColor: #e5e5e5;
   --releaseNotesColor: lightskyblue;
   --scorebugColor: rgb(195, 200, 202);
@@ -40,6 +44,7 @@ $borderColor_dark: white;
   --bgColor: #{$bgColor_dark};
   --textColor: #{$textColor_dark};
   --borderColor: #{$borderColor_dark};
+  --hoverColor: #{$hoverColor_dark};
   --timelineColor: #4e4d4d;
   --releaseNotesColor: rgb(36, 102, 143);
   --scorebugColor: rgb(82, 82, 82);
@@ -55,6 +60,11 @@ body.light {
 .background {
   background-color: var(--bgColor);
   color: var(--textColor);
+}
+
+tr:hover {
+  background-color: var(--hoverColor) !important;
+  cursor: pointer;
 }
 
 .nationality-logo {

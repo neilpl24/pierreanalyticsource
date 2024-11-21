@@ -106,6 +106,7 @@
   </div>
   <div class="shot-table">
     <table
+      *ngIf="filteredPlayers.length; else spinner"
       mat-table
       class="table table-hover align-middle mb-0 bg-white table-bordered border-secondary"
       [dataSource]="dataSource"
@@ -256,3 +257,4 @@
     <ng-template #emptyState></ng-template>
   </div>
 </div>
+<ng-template #spinner><mat-spinner></mat-spinner></ng-template>
