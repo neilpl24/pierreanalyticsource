@@ -22,6 +22,7 @@ export class LandingComponent implements AfterViewInit, OnInit {
   public imageMap: { [key: string]: string } = {
     'Bennett Summy': 'bennett-alt.jpg',
     'Neil Pierre-Louis': 'neil-alt.png',
+    bgraver: 'bgraver.png',
   };
   document: Document;
 
