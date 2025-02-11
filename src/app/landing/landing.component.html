@@ -83,9 +83,7 @@
     <div *ngFor="let game of scores$ | async" class="score-bug">
       <!-- Away Team Info -->
       <div class="score-cell">
-        <img
-          src="assets/teams/{{ game.awayTeamCity }} {{ game.awayTeamName }}.png"
-          class="team-logo" />
+        <img src="{{ game.awayTeamLogo }}" class="team-logo" />
         <span>{{ game.awayTeamName }}</span>
         <span>{{ game.awayTeamRecord }}</span>
       </div>
@@ -105,9 +103,7 @@
 
       <!-- Home Team Info -->
       <div class="score-cell">
-        <img
-          src="assets/teams/{{ game.homeTeamCity }} {{ game.homeTeamName }}.png"
-          class="team-logo" />
+        <img src="{{ game.homeTeamLogo }}" class="team-logo" />
         <span>{{ game.homeTeamName }}</span>
         <span>{{ game.homeTeamRecord }}</span>
       </div>
