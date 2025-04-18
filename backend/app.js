@@ -961,7 +961,7 @@ app.get("/teams/standings/:id", (req, res, next) => {
   standings_db.get(
     `SELECT * FROM standings
        WHERE team_id = ?
-       AND last_updated = (SELECT MAX(last_updated) FROM standings2 WHERE team_id = ?)`,
+       AND last_updated = (SELECT MAX(last_updated) FROM  WHERE team_id = ?)`,
     [id, id],
     (err, row) => {
       if (err) {

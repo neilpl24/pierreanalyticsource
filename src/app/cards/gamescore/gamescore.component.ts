@@ -64,7 +64,7 @@ export class GamescoreComponent implements OnChanges {
       .scale(['#c70039', '#ff5722', '#ffffff', '#7ecef9', '#007bff'])
       .mode('lab')
       .padding(0.1)
-      .colors(100);
+      .colors(101);
 
     const textColor = 'black';
     const val = Math.floor(percentile);
