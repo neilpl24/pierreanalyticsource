@@ -10,7 +10,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 ### Landing Page
 
-List of all current NHL skaters with at least 100 minutes of ice time in the specified season and goaltenders with at least 300 minutes of ice time. Can filter by season (Earliest is 2017-2018), team, position, and nationality.
+List of all current NHL skaters with at least 200 minutes of ice time in the specified season and goaltenders with at least 300 minutes of ice time. Can filter by season (Earliest is 2010-2011), team, position, and nationality.
 
 ### Scores (Unavailable)
 
@@ -23,12 +23,13 @@ Very self explanatory, section that describes the website and my background.
 ### Leaderboards
 
 A leaderboard of eligible skaters that can be sorted by the following statistics:
-  - EV Goals/60
-  - Goals Saved Above Expected
-  - EV Primary Assists/60
-  - EV xG%
-  - EV xGF
-  - EV xGA
+
+- EV Goals/60
+- Goals Saved Above Expected
+- EV Primary Assists/60
+- EV xG%
+- EV xGF
+- EV xGA
 
 Would like to get goalies on here at some point! Also can filter on this tab.
 
@@ -44,9 +45,11 @@ Percentile rankings (hopefully will change to z scores before the 2024-2025 seas
 There is a goal plot that links to video of their goals, as well as a goal and primary assist table below that does the same.
 
 #### Goalies
+
 Very similar to skaters, just different statistics and the videos are goals that they have conceded.
 
 ## PR Rules
+
 I won't be super strict, just please do a better job of documenting than I did. Have a screenshot/video in the description of your PRs! Fork the repo, create a new branch and make a PR to merge to main.
 
 ## Code scaffolding

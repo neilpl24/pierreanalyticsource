@@ -49,6 +49,7 @@ export class SkatersLeaderboard implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.allPlayers = this.leaderboardService.filters$.pipe(
       switchMap((filters: Filters) => {
+        this.season = filters.season;
         return this.playersService
           .getSkaterLeaderboard(filters, this.sortDefault)
           .pipe(
