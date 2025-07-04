@@ -70,6 +70,7 @@ export class GoaliesLeaderboard implements AfterViewInit, OnInit {
     combineLatest([this.allPlayers, this.leaderboardService.filters$])
       .pipe(
         map(([players, filters]) => {
+          this.season = filters.season;
           const filteredPlayers = players.filter((player) => {
             // Apply filtering logic based on the filters
             if (
